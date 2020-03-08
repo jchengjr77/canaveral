@@ -1,6 +1,6 @@
-// Package canaveral contains API for Canaveral CLI.
+// Package main contains API for Canaveral CLI.
 // See README.md for more documentation
-package canaveral
+package main
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"os"
 	"os/user"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli"
 )
 
 // usrHome will be changed to the current user's home dir
@@ -138,6 +138,9 @@ func main() {
 				Usage:       "Create New Project",
 				Action: func(c *cli.Context) error {
 					projName := c.Args().Get(0)
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
 					addProjectHandler(projName)
 					return nil
 				},
@@ -150,6 +153,9 @@ func main() {
 				Usage: "Delete Existing Project",
 				Action: func(c *cli.Context) error {
 					projName := c.Args().Get(0)
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
 					remProjectHandler(projName)
 					return nil
 				},
@@ -163,12 +169,18 @@ func main() {
 				Usage: "Set canaveral workspace path.",
 				Action: func(c *cli.Context) error {
 					newWorkspace := c.Args().Get(0)
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
 					setWorkspaceHandler(newWorkspace)
 					return nil
 				},
 			},
 		},
 		Action: func(c *cli.Context) error {
+			if qFlag {
+				fmt.Println("(okay, I'll try to be quiet.)")
+			}
 			showWorkspaceHandler()
 			return nil
 		},
