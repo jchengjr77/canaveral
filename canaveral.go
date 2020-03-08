@@ -1,6 +1,6 @@
-// Package main contains API for Canaveral CLI.
+// Package canaveral contains API for Canaveral CLI.
 // See README.md for more documentation
-package main
+package canaveral
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"os"
 	"os/user"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 // usrHome will be changed to the current user's home dir
