@@ -9,7 +9,7 @@ import (
 	"os"
 	"os/user"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli"
 )
 
 // usrHome will be changed to the current user's home dir
