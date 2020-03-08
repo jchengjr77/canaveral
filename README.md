@@ -12,9 +12,25 @@ Cape Canaveral Air Force Station is one of two main launch sites for U.S. space 
 
 While both sites are important, Canaveral just sounded cooler than Vanderberg. 
 
-## Usage
+## Getting Started
 
-(To be added)
+WARNING: The CLI is still in development mode, and has yet to be packaged properly. If you want to jump in early, follow the instructions below. Otherwise, stay posted for the next stable release.
+
+First, you need to have Go installed. Follow the instructions [here](https://golang.org/doc/install).
+
+We use [cli by urfave](https://github.com/urfave/cli) to create Canaveral. Install it using:
+
+```bash
+$ go get github.com/urfave/cli
+```
+
+Then, be sure that your GOPATH is configured correctly:
+
+```bash
+$ export PATH=$PATH:$GOPATH/bin
+```
+
+Finally, 
 
 ## Features
 
