@@ -8,9 +8,9 @@ Canaveral is a Command Line Interface (CLI) tool that can add, remove, and view 
 
 ## The Name
 
-Cape Canaveral Air Force Station is one of two main launch sites for U.S. space missions. It is used primarily for launching spacecraft into equatorial orbits (as opposed to the Vanderberg Air Force Station in California, for polar orbits). This tool is designed to help you launch all your projects without having to worry about the slow, mundane early stages of setting up. Hence we chose the spaceship-launch naming theme. 
+Cape Canaveral Air Force Station is one of two main launch sites for U.S. space missions. It is used primarily for launching spacecraft into equatorial orbits (as opposed to the Vanderberg Air Force Station in California, for polar orbits). This tool is designed to help you launch all your projects without having to worry about the slow, mundane early stages of setting up. Hence we chose the spaceship-launch naming theme.
 
-While both sites are important, Canaveral just sounded cooler than Vanderberg. 
+While both sites are important, Canaveral just sounded cooler than Vanderberg.
 
 ## Getting Started
 
@@ -18,16 +18,16 @@ WARNING: The CLI is still in development mode, and has yet to be packaged proper
 
 First, you need to have Go installed. Follow the instructions [here](https://golang.org/doc/install).
 
+Be sure that your GOPATH is configured correctly, so you are able to execute go binaries:
+
+```bash
+$ export PATH=$PATH:$GOPATH/bin
+```
+
 We use [cli by urfave](https://github.com/urfave/cli) to create Canaveral. Install it using:
 
 ```bash
 $ go get github.com/urfave/cli
-```
-
-Then, be sure that your GOPATH is configured correctly:
-
-```bash
-$ export PATH=$PATH:$GOPATH/bin
 ```
 
 Finally, clone this repo and install Canaveral:
@@ -71,13 +71,11 @@ Project creation automatically creates `src` and `tests` folders for your code o
 
 Project creation automatically creates subdirectories `/src` and `/include` for your modules and headers. Canaveral also gives you a basic `Makefile` that you can customize. Canaveral also automatically initializes a README, personalized with your project's details.
 
-
-
 ## Contributing
 
 Since we want Canaveral to be for all developers, contributions are super welcome! Whether you fix a bug, provide user feedback, create a big feature PR, or make our documentation prettier, the help is appreciated.
 
-Contribution is especially useful for adding support for new technologies. The more diversity Canaveral receives, the more useful the tool is for everybody. If you know a certain technology that isn't on the current list, please reach out! 
+Contribution is especially useful for adding support for new technologies. The more diversity Canaveral receives, the more useful the tool is for everybody. If you know a certain technology that isn't on the current list, please reach out!
 
 For all contribution inquiries, please email [JJ Cheng](mailto:jonathanchengjr77@gmail.com)
 

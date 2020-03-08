@@ -1,6 +1,6 @@
-// Package canaveral contains API for Canaveral CLI.
+// Package main contains API for Canaveral CLI.
 // See README.md for more documentation
-package canaveral
+package main
 
 import (
 	"fmt"
