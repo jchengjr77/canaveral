@@ -30,7 +30,12 @@ Then, be sure that your GOPATH is configured correctly:
 $ export PATH=$PATH:$GOPATH/bin
 ```
 
-Finally, 
+Finally, clone this repo and install Canaveral:
+
+```bash
+$ git clone https://github.com/jchengjr77/canaveral.git
+$ go install canaveral
+```
 
 ## Features
 
