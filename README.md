@@ -14,9 +14,30 @@ While both sites are important, Canaveral just sounded cooler than Vanderberg.
 
 ## Getting Started
 
-WARNING: The CLI is still in development mode, and has yet to be packaged properly. If you want to jump in early, follow the instructions below. Otherwise, stay posted for the next stable release.
+WARNING: The CLI is still in development, and has yet to be packaged properly. If you want to jump in early, follow the instructions below. Otherwise, stay posted for the next stable release.
 
-First, you need to have Go installed. Follow the instructions [here](https://golang.org/doc/install).
+There are two ways to install Canaveral. We suggest using the [first method](#download-executable) for simplicity. However, if you have previous experience with Go and already have a working Go environment set up, then the [second method](#go-build) may be easier.
+
+### Download Executable
+
+In the [Canaveral Releases](https://github.com/jchengjr77/canaveral/releases) section, you will find all current releases of Canaveral.
+We suggest you grab the latest one: [v0.1.2-alpha](https://github.com/jchengjr77/canaveral/releases/tag/v0.1.2-alpha.1)
+
+Select the correct package for your computer system and download it. See release notes for guidance.
+After you download and unzip Canaveral, you will be left with a single executable. You need to add it to your \$PATH.
+
+```bash
+$ export PATH=$PATH:$HOME/path/to/canaveral
+```
+
+If you are having trouble, here are some helpful links related to adding to \$PATH:
+
+[For Mac](https://apple.stackexchange.com/questions/41542/adding-a-new-executable-to-the-path-environment-variable)
+[For Linux](https://askubuntu.com/questions/322772/how-do-i-add-an-executable-to-my-search-path)
+
+### Go build
+
+First, you need to have Go installed. If you don't, follow the instructions [here](https://golang.org/doc/install).
 
 Be sure that your GOPATH is configured correctly, so you are able to execute go binaries:
 
@@ -36,6 +57,8 @@ Finally, clone this repo and install Canaveral:
 $ git clone https://github.com/jchengjr77/canaveral.git
 $ go install canaveral
 ```
+
+This should have put an executable named `canaveral` into the folder `$GOPATH/bin`. If Canaveral isn't working, check that folder to see if the executable really exists.
 
 ## Features
 
@@ -77,10 +100,10 @@ Since we want Canaveral to be for all developers, contributions are super welcom
 
 Contribution is especially useful for adding support for new technologies. The more diversity Canaveral receives, the more useful the tool is for everybody. If you know a certain technology that isn't on the current list, please reach out!
 
-For all contribution inquiries, please email [JJ Cheng](mailto:jonathanchengjr77@gmail.com)
+For all contribution inquiries, please email [JJ Cheng](mailto:jonathanchengjr77@gmail.com).
 
 ## The Creators
 
-Jonathan Cheng - [github](https://github.com/jchengjr77) - [jjcheng.me](https://jjcheng.me)
+JJ Cheng - [github](https://github.com/jchengjr77) - [jjcheng.me](https://jjcheng.me)
 
 Sean Prendi - [github](https://github.com/SeanPrendi)
