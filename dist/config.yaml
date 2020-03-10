@@ -76,6 +76,7 @@ env_files:
   gitea_token: ~/.config/goreleaser/gitea_token
 before:
   hooks:
+  - go mod download
   - go generate ./...
 github_urls:
   download: https://github.com

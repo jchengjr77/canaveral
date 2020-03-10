@@ -1,5 +1,7 @@
 # Canaveral
 
+![Go](https://github.com/jchengjr77/canaveral/workflows/Go/badge.svg?branch=master)
+
 Launch your new projects seamlessly. Canaveral automates all your project setup away.
 
 **I wanted to have a project manager that was fast, intuitive, and actually useful. So I made Canaveral.**
