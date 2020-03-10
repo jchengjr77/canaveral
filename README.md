@@ -108,4 +108,4 @@ For all contribution inquiries, please email [JJ Cheng](mailto:jonathanchengjr77
 
 JJ Cheng - [github](https://github.com/jchengjr77) - [jjcheng.me](https://jjcheng.me)
 
-Sean Prendi - [github](https://github.com/SeanPrendi)
+Sean Prendi - [github](https://github.com/SeanPrendi) - [seanprendi.me](https://seanprendi.me)
