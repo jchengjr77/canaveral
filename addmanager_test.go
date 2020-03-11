@@ -8,6 +8,10 @@ import (
 )
 
 func TestAddProj(t *testing.T) {
+	origOut := lib.RedirOut()
+	defer func() {
+		lib.ResetOut(origOut)
+	}()
 	testProjName := "testProj"
 	tempusr, err := user.Current()
 	check(err)

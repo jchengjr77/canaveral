@@ -40,3 +40,19 @@ func CaptureOutput(f func()) string {
 	writer.Close()
 	return <-out
 }
+
+// RedirOut redirects standard out away, and returns original *file.
+// This is mainly so whilst testing, the console doesn't get flooded.
+func RedirOut() *os.File {
+	_, writer, _ := os.Pipe()
+	realStdout := os.Stdout
+	os.Stdout = writer // redirect output away
+	return realStdout
+}
+
+// ResetOut resets os.stdout to the original stdout
+func ResetOut(stdout *os.File) {
+	tempstdOut := os.Stdout
+	os.Stdout = stdout
+	tempstdOut.Close()
+}

@@ -9,6 +9,10 @@ import (
 )
 
 func TestConfirmDelete(t *testing.T) {
+	origOut := lib.RedirOut()
+	defer func() {
+		lib.ResetOut(origOut) // reset it
+	}()
 	var stdin bytes.Buffer // testable io
 	stdin.WriteByte(byte('y'))
 	res := confirmDelete("testProj", &stdin)
