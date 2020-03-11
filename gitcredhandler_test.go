@@ -2,10 +2,18 @@ package main
 
 import (
 	"canaveral/nativestore"
+	"os"
 	"testing"
 )
 
 func TestAddGitCredsHandler(t *testing.T) {
+	os.Setenv("CredentialsTest", "true")
+	// Git credentials shouldn't exist
+	if gitCredsExist() {
+		t.Error("Git credentials exist on entry into test (bad state)")
+	}
+
+	// Testing failure with no username
 	resNoUsr := captureOutput(
 		func() {
 			addGitCredsHandler("", "password")
@@ -14,6 +22,8 @@ func TestAddGitCredsHandler(t *testing.T) {
 		t.Logf("addGitCredsHandler('', _) output: %s\n", resNoUsr)
 		t.Error("func addGitCredsHandler() failed in case of ('', _)\n")
 	}
+
+	// Testing failure with no password
 	resNoPass := captureOutput(
 		func() {
 			addGitCredsHandler("username", "")
@@ -22,6 +32,8 @@ func TestAddGitCredsHandler(t *testing.T) {
 		t.Logf("addGitCredsHandler('', _) output: %s\n", resNoPass)
 		t.Error("func addGitCredsHandler() failed in case of (_, '')\n")
 	}
+
+	// Testing success with valid input
 	resValid := captureOutput(
 		func() {
 			addGitCredsHandler("username", "password")
@@ -30,6 +42,13 @@ func TestAddGitCredsHandler(t *testing.T) {
 		t.Logf("addGitCredsHandler('u', 'p') output: %s\n", resValid)
 		t.Error("func addGitCredsHandler() failed on valid input\n")
 	}
+
+	// Git credentials should
+	if !gitCredsExist() {
+		t.Error("Git credentials don't exist after adding")
+	}
+
+	// Checking inserted properly
 	fetchUsr, fetchSec, fetchErr := nativestore.FetchCreds("github credentials", "https://api.github.com")
 	if fetchErr == nil {
 		if fetchUsr != "username" {
@@ -40,9 +59,18 @@ func TestAddGitCredsHandler(t *testing.T) {
 	} else {
 		t.Errorf("Fetch exited on error: %s", fetchErr)
 	}
+
+	// Checking removed properly
 	if remErr := remGitCredsHandler(); remErr != nil {
 		t.Errorf("Removed exited on error: %s", remErr)
 	}
+
+	// Git credentials should
+	if gitCredsExist() {
+		t.Error("Git credentials exist after removing")
+	}
+
+	// Checking manually removing fails
 	manualRem := nativestore.DeleteCreds("github credentials", "https://api.github.com")
 	if manualRem == nil {
 		t.Error("Manual remove succeeded but should have failed as credentials should have already been removed.\n")

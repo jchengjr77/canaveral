@@ -23,7 +23,15 @@ func addGitCredsHandler(username, secret string) error {
 	}
 }
 
+// Removes git credentials from native storage
 func remGitCredsHandler() error {
 	fmt.Println("Removing git from canaveral.")
 	return nativestore.DeleteCreds(label, url)
+}
+
+// Checks whether or not the user has git credentials set
+func gitCredsExist() bool {
+	fmt.Println("Checking whether or not git credentials have been added.")
+	_, _, err := nativestore.FetchCreds(label, url)
+	return (err == nil)
 }

@@ -1,9 +1,13 @@
 package nativestore
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 // test configuration directory location
 func TestSetGetCreds(t *testing.T) {
+	os.Setenv("CredentialsTest", "true")
 	label := "test credentials"
 	url := "https://api.github.com"
 	SetCreds(label, url, "username", "password")
