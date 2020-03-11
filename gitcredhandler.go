@@ -3,10 +3,29 @@ package main
 import (
 	"canaveral/nativestore"
 	"fmt"
+	"syscall"
+
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 var label string = "github credentials"
 var url string = "https://api.github.com"
+
+// gitAddWrapper wraps the addGitCredsHandler function, taking in a username
+// and securely reading the password
+func gitAddWrapper() error {
+	fmt.Print("Enter username: ")
+	var username string
+	fmt.Scan(&username)
+	fmt.Print("Enter Password: ")
+	bytePassword, err := terminal.ReadPassword(int(syscall.Stdin))
+	if err == nil {
+		password := string(bytePassword)
+		fmt.Print("\r\n")
+		return addGitCredsHandler(username, password)
+	}
+	return err
+}
 
 // gitCredsHandler takes in a git username and password and stores them
 // ? Implement a no-password version of this perhaps?
