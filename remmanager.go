@@ -3,15 +3,17 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 )
 
 // confirmDelete listens for user confirmation and returns a boolean
-// ! untested
-func confirmDelete(projName string) bool {
+// Takes in an input channel to increase testability
+// * tested
+func confirmDelete(projName string, stdin io.Reader) bool {
 	fmt.Printf("Are you sure you want to delete %s? ('y' or 'n')\n>", projName)
-	reader := bufio.NewReader(os.Stdin)
+	reader := bufio.NewReader(stdin)
 	response, err := reader.ReadByte()
 	check(err)
 	return (response == 'y')
@@ -20,15 +22,15 @@ func confirmDelete(projName string) bool {
 // tryRemProj tries to delete a project of specified name.
 // if the project exists, it will delete it and return true.
 // else, it will return false or throw an error.
-// ! untested
-func tryRemProj(projName string) bool {
-	ws, err := ioutil.ReadFile(usrHome + confDir + wsFName)
+// * tested
+func tryRemProj(projName string, wsPath string) bool {
+	ws, err := ioutil.ReadFile(wsPath)
 	check(err)
 	files, err := ioutil.ReadDir(string(ws))
 	check(err)
 	for _, file := range files {
 		if file.Name() == projName {
-			confirm := confirmDelete(projName)
+			confirm := confirmDelete(projName, os.Stdin)
 			if !confirm {
 				fmt.Println("Cancelling project deletion.")
 				return true
@@ -48,7 +50,7 @@ func tryRemProj(projName string) bool {
 //		if deletion confirmed -> delete project entirely
 // 		if deletion cancelled -> exit
 // 	if project is not found, exit.
-// ! untested
+// * tested
 func remProjectHandler(projName string) error {
 	if projName == "" {
 		fmt.Println("Cannot remove an unspecified project. Please provide the project name.")
@@ -60,7 +62,8 @@ func remProjectHandler(projName string) error {
 		fmt.Println("(For help, type 'canaveral --help')")
 		return nil
 	}
-	if tryRemProj(projName) {
+	wsPath := usrHome + confDir + wsFName
+	if tryRemProj(projName, wsPath) {
 		return nil
 	}
 	fmt.Printf("Could not find project %s in canaveral workspace.\n", projName)
