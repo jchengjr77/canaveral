@@ -9,7 +9,7 @@ import (
 // addProj takes in a project name and adds it to the workspace.
 // Requires that the workspace exists.
 // Requires that the project name is non-empty
-// ! untested
+// * tested
 func addProj(projName string, wsPath string) {
 	ws, err := ioutil.ReadFile(wsPath)
 	check(err)
@@ -23,7 +23,7 @@ func addProj(projName string, wsPath string) {
 // If the project name is empty, it prompts the user to enter a name.
 // Vanilla behavior includes generating a directory labeled the project name.
 // Initializes all boilerplate code for specified project type.
-// ! untested
+// * tested
 func addProjectHandler(projName string) error {
 	if projName == "" {
 		fmt.Println("Please provide a project name.")
