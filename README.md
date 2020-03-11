@@ -1,6 +1,7 @@
 # Canaveral
 
 ![Go](https://github.com/jchengjr77/canaveral/workflows/Go/badge.svg?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Launch your new projects seamlessly. Canaveral automates all your project setup away.
 
@@ -103,6 +104,10 @@ Since we want Canaveral to be for all developers, contributions are super welcom
 Contribution is especially useful for adding support for new technologies. The more diversity Canaveral receives, the more useful the tool is for everybody. If you know a certain technology that isn't on the current list, please reach out!
 
 For all contribution inquiries, please email [JJ Cheng](mailto:jonathanchengjr77@gmail.com).
+
+## License
+
+See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
 
 ## The Creators
 
