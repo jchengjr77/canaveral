@@ -9,7 +9,7 @@ import (
 // showWorkspaceHandler checks the confDir for the workspace file.
 // If such a file exists, it reads its contents and navigates to that path.
 // Otherwise, it notifies the user that there is no canaveral workspace set.
-// ! untested
+// ? untested, low priority
 func showWorkspaceHandler() error {
 	if !fileExists(usrHome + confDir + wsFName) {
 		fmt.Printf("Can't find workspace file in %s\n", usrHome+confDir+wsFName)
@@ -32,7 +32,7 @@ func showWorkspaceHandler() error {
 // setWorkspaceHandler takes in a new path and writes to the confDir.
 // If the workspace file already exists, it overwrites it with the new path.
 // Otherwise, it creates the workspace file and writes the path in.
-// ! untested
+// ? untested, low priority
 func setWorkspaceHandler(newWorkspace string) error {
 	err := os.MkdirAll(usrHome+confDir, os.ModePerm)
 	check(err)
