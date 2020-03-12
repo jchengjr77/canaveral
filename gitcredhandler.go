@@ -73,7 +73,7 @@ func gitAddWrapper() error {
 		if verifyErr == nil {
 			return addGitCredsHandler(username, token)
 		}
-		fmt.Println(verifyErr)
+		// fmt.Println(verifyErr)
 		return verifyErr
 
 	}
