@@ -78,6 +78,36 @@ func main() {
 					return nil
 				},
 			},
+			{
+				Name:    "add git",
+				Aliases: []string{"git", "addgit"},
+				Description: `Allows canaveral to use your git credentials for repo management.
+					Username and password are required.
+					Username and password are stored in native storage for security.`,
+				Usage: "Add git info to canaveral.",
+				Action: func(c *cli.Context) error {
+					// gitUsr := c.Args().Get(0)
+					// gitPass := c.Args().Get(1)
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					// return addGitCredsHandler(gitUsr, gitPass)
+					return gitAddWrapper()
+				},
+			},
+			{
+				Name:    "remove git",
+				Aliases: []string{"rgit", "remgit", "removegit"},
+				Description: `Deletes your git credentials from native storage.
+					Canaveral will no longer have any way to reference your git credentials.`,
+				Usage: "Remove git info from canaveral",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					return remGitCredsHandler()
+				},
+			},
 		},
 		Action: func(c *cli.Context) error {
 			if qFlag {
