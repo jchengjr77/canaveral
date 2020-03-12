@@ -110,3 +110,12 @@ func gitCredsExist() bool {
 	_, _, err := nativestore.FetchCreds(label, url)
 	return (err == nil)
 }
+
+func printGitUser() {
+	if gitCredsExist() {
+		usr, _, err := nativestore.FetchCreds(label, url)
+		check(err)
+		fmt.Println(usr)
+	}
+	fmt.Println("-no git username stored-")
+}
