@@ -8,11 +8,9 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 )
 
-var label string = "github credentials"
-var url string = "https://api.github.com"
-
 // gitAddWrapper wraps the addGitCredsHandler function, taking in a username
 // and securely reading the password
+// * tested
 func gitAddWrapper() error {
 	fmt.Print("Enter username: ")
 	var username string
@@ -29,6 +27,7 @@ func gitAddWrapper() error {
 
 // gitCredsHandler takes in a git username and password and stores them
 // ? Implement a no-password version of this perhaps?
+// * tested
 func addGitCredsHandler(username, secret string) error {
 	if username == "" {
 		fmt.Println("A git username is required. Please provide one.")
@@ -43,12 +42,14 @@ func addGitCredsHandler(username, secret string) error {
 }
 
 // Removes git credentials from native storage
+// * tested
 func remGitCredsHandler() error {
 	fmt.Println("Removing git from canaveral.")
 	return nativestore.DeleteCreds(label, url)
 }
 
 // Checks whether or not the user has git credentials set
+// * tested
 func gitCredsExist() bool {
 	fmt.Println("Checking whether or not git credentials have been added.")
 	_, _, err := nativestore.FetchCreds(label, url)

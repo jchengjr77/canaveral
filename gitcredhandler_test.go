@@ -7,7 +7,8 @@ import (
 )
 
 func TestAddGitCredsHandler(t *testing.T) {
-	os.Setenv("CredentialsTest", "true")
+	err := os.Setenv("CredentialsTest", "true")
+	check(err)
 	// Git credentials shouldn't exist
 	if gitCredsExist() {
 		t.Error("Git credentials exist on entry into test (bad state)")
@@ -65,7 +66,7 @@ func TestAddGitCredsHandler(t *testing.T) {
 		t.Errorf("Removed exited on error: %s", remErr)
 	}
 
-	// Git credentials should
+	// Git credentials should not exist after removal
 	if gitCredsExist() {
 		t.Error("Git credentials exist after removing")
 	}
