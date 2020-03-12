@@ -2,7 +2,12 @@ package main
 
 import (
 	"canaveral/nativestore"
+	"encoding/json"
+	"errors"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strings"
 	"syscall"
 
 	"golang.org/x/crypto/ssh/terminal"
@@ -11,18 +16,69 @@ import (
 var label string = "github credentials"
 var url string = "https://api.github.com"
 
+type goodResponse struct {
+	Login string
+}
+
+// Checks that user auth token corresponds to a valid auth token and matches
+// the username passed in
+func verifyCreds(usr, secret string) error {
+	var goodFill []goodResponse
+
+	usrURL := url + "/user"
+	request, reqErr := http.NewRequest("GET", usrURL, nil)
+	if reqErr != nil {
+		return reqErr
+	}
+	request.Header.Set("Authorization", "token "+secret)
+
+	response, respErr := http.DefaultClient.Do(request)
+	if respErr != nil {
+		return respErr
+	}
+	defer response.Body.Close()
+
+	responseJSONData, readErr := ioutil.ReadAll(response.Body)
+	if readErr != nil {
+		return readErr
+	}
+
+	start := make([]byte, 1)
+	last := make([]byte, 1)
+	start[0] = '['
+	last[0] = ']'
+	toDecode := append(start, append(responseJSONData, last...)...)
+
+	err := json.Unmarshal(toDecode, &goodFill)
+	if goodFill[0].Login == "" {
+		return errors.New("Failed to authenticate token")
+	} else if err == nil {
+		if strings.ToLower(usr) == strings.ToLower(goodFill[0].Login) {
+			return nil
+		}
+		return errors.New("Token didn't correspond to username")
+	}
+	return err
+}
+
 // gitAddWrapper wraps the addGitCredsHandler function, taking in a username
-// and securely reading the password
+// and securely reading the personal auth token
 func gitAddWrapper() error {
 	fmt.Print("Enter username: ")
 	var username string
 	fmt.Scan(&username)
-	fmt.Print("Enter Password: ")
-	bytePassword, err := terminal.ReadPassword(int(syscall.Stdin))
+	fmt.Print("Enter Personal Auth Token: ")
+	byteToken, err := terminal.ReadPassword(int(syscall.Stdin))
 	if err == nil {
-		password := string(bytePassword)
+		token := string(byteToken)
 		fmt.Print("\r\n")
-		return addGitCredsHandler(username, password)
+		verifyErr := verifyCreds(username, token)
+		if verifyErr == nil {
+			return addGitCredsHandler(username, token)
+		}
+		fmt.Println(verifyErr)
+		return verifyErr
+
 	}
 	return err
 }
@@ -34,7 +90,7 @@ func addGitCredsHandler(username, secret string) error {
 		fmt.Println("A git username is required. Please provide one.")
 		return nil
 	} else if secret == "" {
-		fmt.Println("A git password is required. Please provide one.")
+		fmt.Println("A git personal auth token is required. Please provide one.")
 		return nil
 	} else {
 		fmt.Printf("Adding git account: %s\n", username)
