@@ -1,6 +1,7 @@
 package main
 
 import (
+	"canaveral/lib"
 	"os"
 	"testing"
 )
@@ -14,7 +15,7 @@ func TestAddGitCredsHandler(t *testing.T) {
 	}
 
 	// Testing failure with no username
-	resNoUsr := captureOutput(
+	resNoUsr := lib.CaptureOutput(
 		func() {
 			addGitCredsHandler("", "password")
 		})
@@ -24,7 +25,7 @@ func TestAddGitCredsHandler(t *testing.T) {
 	}
 
 	// Testing failure with no password
-	resNoPass := captureOutput(
+	resNoPass := lib.CaptureOutput(
 		func() {
 			addGitCredsHandler("username", "")
 		})
