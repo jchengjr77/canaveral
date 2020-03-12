@@ -116,6 +116,7 @@ func printGitUser() {
 		usr, _, err := nativestore.FetchCreds(label, url)
 		check(err)
 		fmt.Println(usr)
+		return
 	}
 	fmt.Println("-no git username stored-")
 }
