@@ -81,7 +81,7 @@ func main() {
 			{
 				Name:    "add git",
 				Aliases: []string{"git", "addgit"},
-				Description: `Allows canaveral to utilize your git credentials for repo management.
+				Description: `Allows canaveral to use your git credentials for repo management.
 					Username and password are required.
 					Username and password are stored in native storage for security.`,
 				Usage: "Add git info to canaveral.",
