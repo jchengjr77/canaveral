@@ -13,8 +13,9 @@ import (
 
 func main() {
 
-	// quiet flag
+	// Flags
 	var qFlag = false
+	var projType = "default"
 
 	// Set home directory path of current user
 	usr, err := user.Current()
@@ -43,8 +44,16 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					addProjectHandler(projName)
+					addProjectHandler(projName, projType)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "type",
+						Aliases:     []string{"t"},
+						Usage:       "Specify the type of project you create.",
+						Destination: &projType,
+					},
 				},
 			},
 			{
@@ -86,12 +95,9 @@ func main() {
 					Username and password are stored in native storage for security.`,
 				Usage: "Add git info to canaveral.",
 				Action: func(c *cli.Context) error {
-					// gitUsr := c.Args().Get(0)
-					// gitPass := c.Args().Get(1)
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					// return addGitCredsHandler(gitUsr, gitPass)
 					return gitAddWrapper()
 				},
 			},

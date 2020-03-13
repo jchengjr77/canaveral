@@ -5,7 +5,7 @@
 
 Launch your new projects seamlessly. Canaveral automates all your project setup away.
 
-**I wanted to have a project manager that was fast, intuitive, and actually useful. So I made Canaveral.**
+**We wanted to have a project manager that was fast, intuitive, and actually useful. So we made Canaveral.**
 
 Canaveral is a Command Line Interface (CLI) tool that can add, remove, and view your projects. It is a tool built by developers for developers. Don't worry about where your projects are located, how they are organized, what their names are, or how to set them up. Canaveral does that for you.
 
