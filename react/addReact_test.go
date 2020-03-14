@@ -8,12 +8,17 @@ import (
 )
 
 func TestCheckCRAExists(t *testing.T) {
+	craPath := setCRAPath()
+	usr, err := user.Current()
+	check(err)
+	home := usr.HomeDir
+	err = os.Chdir(home + "/canaveral")
 	uninCRA := exec.Command("npm", "uninstall", "create-react-app")
 	uninCRA.Stderr = os.Stderr
 	uninCRA.Stdout = os.Stdout
-	err := uninCRA.Run()
+	err = uninCRA.Run()
 	check(err)
-	res := checkCRAExists()
+	res := checkCRAExists(craPath)
 	if res != false {
 		t.Errorf(
 			"func checkCRAExists() true when create-react-app is uninstalled")
@@ -23,7 +28,7 @@ func TestCheckCRAExists(t *testing.T) {
 	inCRA.Stdout = os.Stdout
 	err = inCRA.Run()
 	check(err)
-	res = checkCRAExists()
+	res = checkCRAExists(craPath)
 	if res != true {
 		t.Errorf(
 			"func checkCRAExists() false when create-react-app is installed")
@@ -39,8 +44,10 @@ func TestAddReactProj(t *testing.T) {
 	wsPath := tempHome + "/tmpcnavrlws"
 	f, err := os.Create(wsPath)
 	check(err)
-	defer os.Remove(wsPath)
-	defer f.Close()
+	defer func() {
+		f.Close()
+		os.Remove(wsPath)
+	}()
 	f.WriteString(newPath)
 	err = os.Chdir("../")
 	check(err)

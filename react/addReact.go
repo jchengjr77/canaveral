@@ -5,17 +5,15 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"os/user"
 )
 
-// Path to create-react-app executable (local path)
-const craPath string = "./node_modules/.bin/create-react-app"
-
-// checkCRAExists looks in the parent path for create-react-app
+// checkCRAExists looks in the parent for create-react-app
 // If there is no executable in the path, then throws error.
 // Else, returns a message with the path of create-react-app
 // * tested
-func checkCRAExists() bool {
-	if !fileExists("." + craPath) {
+func checkCRAExists(craPath string) bool {
+	if !fileExists(craPath) {
 		fmt.Printf(
 			"ERROR: didn't find 'create-react-app' in local path '%s'\n", craPath)
 		return false
@@ -32,11 +30,25 @@ func installCRA() {
 	fmt.Println(
 		"\nLooks like you don't have create-react-app. Let's install it...")
 	// Install it locally instead of globally
+	usr, err := user.Current()
+	check(err)
+	home := usr.HomeDir
+	err = os.MkdirAll(home+"/canaveral", os.ModePerm)
+	err = os.Chdir(home + "/canaveral")
 	installCRA := exec.Command("npm", "install", "create-react-app")
 	installCRA.Stdout = os.Stdout
 	installCRA.Stderr = os.Stderr
-	err := installCRA.Run()
+	err = installCRA.Run()
 	check(err)
+}
+
+// setCRAPath generates the path to create-react-app
+// ? untested, trivial
+func setCRAPath() string {
+	usr, err := user.Current()
+	check(err)
+	home := usr.HomeDir
+	return home + "/canaveral/node_modules/.bin/create-react-app"
 }
 
 // AddReactProj launches a new react project.
@@ -44,11 +56,12 @@ func installCRA() {
 // However, create-react-app plays a large role in setup.
 // * tested
 func AddReactProj(projName string, wsPath string) {
+	craPath := setCRAPath()
 	ws, err := ioutil.ReadFile(wsPath)
 	check(err)
 	err = os.MkdirAll(string(ws), os.ModePerm)
 	check(err)
-	if !checkCRAExists() {
+	if !checkCRAExists(craPath) {
 		installCRA()
 	}
 	cmd := exec.Command(craPath, string(ws)+"/"+projName)
