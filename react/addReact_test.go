@@ -1,7 +1,6 @@
 package react
 
 import (
-	"canaveral/lib"
 	"os"
 	"os/exec"
 	"os/user"
@@ -9,7 +8,7 @@ import (
 )
 
 func TestCheckCRAExists(t *testing.T) {
-	uninCRA := exec.Command("npm", "uninstall", "-g", "create-react-app")
+	uninCRA := exec.Command("npm", "uninstall", "create-react-app")
 	uninCRA.Stderr = os.Stderr
 	uninCRA.Stdout = os.Stdout
 	err := uninCRA.Run()
@@ -19,7 +18,7 @@ func TestCheckCRAExists(t *testing.T) {
 		t.Errorf(
 			"func checkCRAExists() true when create-react-app is uninstalled")
 	}
-	inCRA := exec.Command("npm", "install", "-g", "create-react-app")
+	inCRA := exec.Command("npm", "install", "create-react-app")
 	inCRA.Stderr = os.Stderr
 	inCRA.Stdout = os.Stdout
 	err = inCRA.Run()
@@ -32,10 +31,6 @@ func TestCheckCRAExists(t *testing.T) {
 }
 
 func TestAddReactProj(t *testing.T) {
-	origOut := lib.RedirOut()
-	defer func() {
-		lib.ResetOut(origOut)
-	}()
 	testProjName := "testproj"
 	tempusr, err := user.Current()
 	check(err)
@@ -47,6 +42,11 @@ func TestAddReactProj(t *testing.T) {
 	defer os.Remove(wsPath)
 	defer f.Close()
 	f.WriteString(newPath)
+	err = os.Chdir("../")
+	check(err)
+	dir, err := os.Getwd()
+	check(err)
+	t.Logf("\nCurrent Dir: %s\n", dir)
 	AddReactProj(testProjName, wsPath)
 	if !dirExists(newPath + "/" + testProjName) {
 		t.Errorf("func AddReactProj() failed to create ws at path: %s\n",

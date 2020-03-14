@@ -7,17 +7,20 @@ import (
 	"os/exec"
 )
 
-// checkCRAExists looks in the path for create-react-app
+// Path to create-react-app executable (local path)
+const craPath string = "./node_modules/.bin/create-react-app"
+
+// checkCRAExists looks in the parent path for create-react-app
 // If there is no executable in the path, then throws error.
 // Else, returns a message with the path of create-react-app
 // * tested
 func checkCRAExists() bool {
-	path, err := exec.LookPath("create-react-app")
-	if err != nil {
-		fmt.Printf("ERROR: didn't find 'create-react-app' in path\n")
+	if !fileExists("." + craPath) {
+		fmt.Printf(
+			"ERROR: didn't find 'create-react-app' in local path '%s'\n", craPath)
 		return false
 	}
-	fmt.Printf("'create-react-app' executable is in '%s'\n", path)
+	fmt.Printf("'create-react-app' executable is in '%s'\n", craPath)
 	return true
 }
 
@@ -28,7 +31,8 @@ func checkCRAExists() bool {
 func installCRA() {
 	fmt.Println(
 		"\nLooks like you don't have create-react-app. Let's install it...")
-	installCRA := exec.Command("npm", "install", "-g", "create-react-app")
+	// Install it locally instead of globally
+	installCRA := exec.Command("npm", "install", "create-react-app")
 	installCRA.Stdout = os.Stdout
 	installCRA.Stderr = os.Stderr
 	err := installCRA.Run()
@@ -44,12 +48,10 @@ func AddReactProj(projName string, wsPath string) {
 	check(err)
 	err = os.MkdirAll(string(ws), os.ModePerm)
 	check(err)
-	err = os.Chdir(string(ws))
-	check(err)
 	if !checkCRAExists() {
 		installCRA()
 	}
-	cmd := exec.Command("create-react-app", projName)
+	cmd := exec.Command(craPath, string(ws)+"/"+projName)
 	// set correct pipes
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
