@@ -19,7 +19,13 @@ While both sites are important, Canaveral just sounded cooler than Vanderberg.
 
 ### Dependencies
 
+#### npm
+
 Canaveral uses `npm` to install useful dependencies for you. To ensure that Canaveral works properly, please make sure you have `npm` installed: [Node.js Download](https://nodejs.org/en/)
+
+#### Github
+
+If you want to use Canaveral's Github features, you will need a github account, as well as a personal access token. Find out how to get a personal access token [here](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).
 
 ### Installation
 
@@ -71,11 +77,12 @@ This should have put an executable named `canaveral` into the folder `$GOPATH/bi
 
 ## Features
 
-Canaveral should be usable for all developers. Creating projects, looking at all your projects, and removing projects are universal features that any developer can use. These are fundamental features to Canaveral.
+Canaveral should be usable for all developers. Creating projects, looking at all your projects, and removing projects are universal features that anybody can use. These are fundamental features to Canaveral.
 
 Additionally, Canaveral can make a new Github repo for you! Once you create a project, it will push a standard initial commit for you, and provide you with the link to your repo. Just give Canaveral your git credentials and it will do the rest.
 
-However, if you use one of the following technologies, you're in luck. More features for you!
+Furthermore, if you use one of the following technologies, you're in luck. More features for you!
+(This list will most likely expand, so keep an eye out).
 
 #### React.js
 

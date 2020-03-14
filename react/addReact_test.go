@@ -28,6 +28,8 @@ func TestCheckCRAExists(t *testing.T) {
 	inCRA.Stdout = os.Stdout
 	err = inCRA.Run()
 	check(err)
+	out, err := exec.Command("ls node_modules/.bin").Output()
+	t.Logf("%s\n", string(out))
 	res = checkCRAExists(craPath)
 	if res != true {
 		t.Errorf(
