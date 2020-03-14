@@ -1,3 +1,8 @@
+//Package lib contains testing functions for canaveral
+// includes:
+// - capture output (from stdout)
+// - redirect stdout
+// - reset stdout
 package lib
 
 import (

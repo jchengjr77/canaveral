@@ -7,6 +7,9 @@ import (
 	"testing"
 )
 
+// Instead of taking from parent, define here
+const testFile = "canaveral_test_file"
+
 func checkPanic(t *testing.T, f func()) {
 	defer func() bool {
 		if r := recover(); r == nil {

@@ -17,6 +17,12 @@ While both sites are important, Canaveral just sounded cooler than Vanderberg.
 
 ## Getting Started
 
+### Dependencies
+
+Canaveral uses `npm` to install useful dependencies for you. To ensure that Canaveral works properly, please make sure you have `npm` installed: [Node.js Download](https://nodejs.org/en/)
+
+### Installation
+
 WARNING: The CLI is still in development, and has yet to be packaged properly. If you want to jump in early, follow the instructions below. Otherwise, stay posted for the next stable release.
 
 There are two ways to install Canaveral. We suggest using the [first method](#download-executable) for simplicity. However, if you have previous experience with Go and already have a working Go environment set up, then the [second method](#go-build) may be easier.

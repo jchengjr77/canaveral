@@ -10,7 +10,7 @@ import (
 // checkCRAExists looks in the path for create-react-app
 // If there is no executable in the path, then throws error.
 // Else, returns a message with the path of create-react-app
-// ! untested
+// * tested
 func checkCRAExists() bool {
 	path, err := exec.LookPath("create-react-app")
 	if err != nil {
@@ -24,10 +24,10 @@ func checkCRAExists() bool {
 // installCRA() installs create-react-app.
 // REQUIRES (soft): create-react-app isn't already installed.
 // This is a soft requirement bc npm will just update it if it is.
-// ! untested
+// ? untested, low priority
 func installCRA() {
 	fmt.Println(
-		"\nLooks like you don't have create-react-app. Let's install it...\n")
+		"\nLooks like you don't have create-react-app. Let's install it...")
 	installCRA := exec.Command("npm", "install", "-g", "create-react-app")
 	installCRA.Stdout = os.Stdout
 	installCRA.Stderr = os.Stderr
@@ -38,9 +38,11 @@ func installCRA() {
 // AddReactProj launches a new react project.
 // The main mechanism is similar to addProj (in root folder).
 // However, create-react-app plays a large role in setup.
-// ! untested
+// * tested
 func AddReactProj(projName string, wsPath string) {
 	ws, err := ioutil.ReadFile(wsPath)
+	check(err)
+	err = os.MkdirAll(string(ws), os.ModePerm)
 	check(err)
 	err = os.Chdir(string(ws))
 	check(err)
