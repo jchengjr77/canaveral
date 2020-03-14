@@ -48,6 +48,7 @@ $ export PATH=$PATH:$HOME/path/to/canaveral
 If you are having trouble, here are some helpful links related to adding to \$PATH:
 
 [For Mac](https://apple.stackexchange.com/questions/41542/adding-a-new-executable-to-the-path-environment-variable)
+
 [For Linux](https://askubuntu.com/questions/322772/how-do-i-add-an-executable-to-my-search-path)
 
 ### Go build
