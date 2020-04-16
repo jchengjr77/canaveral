@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"canaveral/lib"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -15,7 +16,7 @@ func confirmDelete(projName string, stdin io.Reader) bool {
 	fmt.Printf("Are you sure you want to delete %s? ('y' or 'n')\n>", projName)
 	reader := bufio.NewReader(stdin)
 	response, err := reader.ReadByte()
-	check(err)
+	lib.Check(err)
 	return (response == 'y')
 }
 
@@ -25,9 +26,9 @@ func confirmDelete(projName string, stdin io.Reader) bool {
 // * tested
 func tryRemProj(projName string, wsPath string) bool {
 	ws, err := ioutil.ReadFile(wsPath)
-	check(err)
+	lib.Check(err)
 	files, err := ioutil.ReadDir(string(ws))
-	check(err)
+	lib.Check(err)
 	for _, file := range files {
 		if file.Name() == projName {
 			confirm := confirmDelete(projName, os.Stdin)
@@ -36,7 +37,7 @@ func tryRemProj(projName string, wsPath string) bool {
 				return true
 			}
 			err = os.RemoveAll(string(ws) + "/" + projName)
-			check(err)
+			lib.Check(err)
 			fmt.Printf("Removed Project: %s\n", string(ws)+"/"+projName)
 			return true
 		}
@@ -55,7 +56,7 @@ func remProjectHandler(projName string) error {
 	if projName == "" {
 		fmt.Println("Cannot remove an unspecified project. Please provide the project name.")
 		return nil
-	} else if !fileExists(usrHome + confDir + wsFName) {
+	} else if !lib.FileExists(usrHome + confDir + wsFName) {
 		fmt.Println("No canaveral workspace set. Please specify a workspace.")
 		fmt.Println(
 			"Canaveral needs a workspace to remove projects from.")

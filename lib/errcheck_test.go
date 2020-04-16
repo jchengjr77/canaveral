@@ -1,4 +1,4 @@
-package main
+package lib
 
 import (
 	"errors"
@@ -6,6 +6,8 @@ import (
 	"os/user"
 	"testing"
 )
+
+const testFile = "canaveral_test_file"
 
 func checkPanic(t *testing.T, f func()) {
 	defer func() bool {
@@ -23,35 +25,35 @@ func TestCheck(t *testing.T) {
 	var err1 error = nil
 	t.Log("Following check should not panic")
 	checkPanic(t, func() {
-		check(err1)
+		Check(err1)
 	})
 
 	var err2 error = errors.New("Test Error")
 	t.Log("Following check should panic")
 	checkPanic(t, func() {
-		check(err2)
+		Check(err2)
 	})
 }
 
 func TestFileExists(t *testing.T) {
 	tempusr, err := user.Current()
-	check(err)
+	Check(err)
 	tempHome := tempusr.HomeDir
 	newPath := tempHome + "/canaveral_test_dir/"
-	if fileExists(newPath+testFile) == true {
-		t.Errorf("function fileExists() found a non-existent file at: %s",
+	if FileExists(newPath+testFile) == true {
+		t.Errorf("function FileExists() found a non-existent file at: %s",
 			tempHome+testFile)
 		t.Errorf("Check that no file exists there already.")
 	}
 
 	err = os.MkdirAll(newPath, os.ModePerm)
-	check(err)
+	Check(err)
 	f, err := os.Create(newPath + testFile)
-	check(err)
+	Check(err)
 	defer os.RemoveAll(newPath)
 	defer f.Close()
-	if fileExists(newPath+testFile) == false {
-		t.Errorf("function fileExists() failed to recognize file at: %s",
+	if FileExists(newPath+testFile) == false {
+		t.Errorf("function FileExists() failed to recognize file at: %s",
 			tempHome+testFile)
 	}
 
@@ -59,20 +61,20 @@ func TestFileExists(t *testing.T) {
 
 func TestDirExists(t *testing.T) {
 	tempusr, err := user.Current()
-	check(err)
+	Check(err)
 	tempHome := tempusr.HomeDir
 	newPath := tempHome + "/canaveral_test_dir/"
-	if dirExists(newPath) == true {
-		t.Errorf("function dirExists() found a non-existent dir at: %s",
+	if DirExists(newPath) == true {
+		t.Errorf("function DirExists() found a non-existent dir at: %s",
 			newPath)
 		t.Errorf("Check that no dir exists there already.")
 	}
 
 	err = os.MkdirAll(newPath, os.ModePerm)
-	check(err)
+	Check(err)
 	defer os.RemoveAll(newPath)
-	if dirExists(newPath) == false {
-		t.Errorf("function dirExists() failed to recognize dir at: %s",
+	if DirExists(newPath) == false {
+		t.Errorf("function DirExists() failed to recognize dir at: %s",
 			newPath)
 	}
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"canaveral/lib"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -24,25 +25,25 @@ func formatProjects(rawString string) string {
 // Otherwise, it notifies the user that there is no canaveral workspace set.
 // ? untested, low priority
 func showWorkspaceHandler() error {
-	if !fileExists(usrHome + confDir + wsFName) {
+	if !lib.FileExists(usrHome + confDir + wsFName) {
 		fmt.Printf("Can't find workspace file in %s\n", usrHome+confDir+wsFName)
 		fmt.Println("Please specify a canaveral workspace.")
 		fmt.Println("(For help, type 'canaveral --help')")
 		return nil
 	}
 	ws, err := ioutil.ReadFile(usrHome + confDir + wsFName)
-	check(err)
+	lib.Check(err)
 	fmt.Printf("\nYour canaveral path: %s\n", ws)
 	fmt.Printf("\nCurrent canaveral projects:\n")
 	err = os.Chdir(string(ws))
-	check(err)
+	lib.Check(err)
 	cmd := exec.Command("ls", "-la")
-	check(err)
+	lib.Check(err)
 	if runtime.GOOS == "windows" { // windows support
 		cmd = exec.Command("tasklist")
 	}
 	out, err := cmd.Output()
-	check(err)
+	lib.Check(err)
 	fmt.Println(formatProjects(string(out)))
 	return nil
 }
@@ -53,10 +54,10 @@ func showWorkspaceHandler() error {
 // ? untested, low priority
 func setWorkspaceHandler(newWorkspace string) error {
 	err := os.MkdirAll(usrHome+confDir, os.ModePerm)
-	check(err)
+	lib.Check(err)
 	f, err := os.Create(usrHome + confDir + wsFName)
 	// If file exists, truncates
-	check(err)
+	lib.Check(err)
 	defer f.Close() // Close the file at the return of this function
 	f.WriteString(newWorkspace)
 	fmt.Printf("Set canaveral workspace to: %s\n", newWorkspace)

@@ -14,17 +14,17 @@ func TestAddProj(t *testing.T) {
 	}()
 	testProjName := "testProj"
 	tempusr, err := user.Current()
-	check(err)
+	lib.Check(err)
 	tempHome := tempusr.HomeDir
 	newPath := tempHome + "/canaveral_test_ws"
 	wsPath := tempHome + "/tmpcnavrlws"
 	f, err := os.Create(wsPath)
-	check(err)
+	lib.Check(err)
 	defer os.Remove(wsPath)
 	defer f.Close()
 	f.WriteString(newPath)
 	addProj(testProjName, wsPath)
-	if !dirExists(newPath + "/" + testProjName) {
+	if !lib.DirExists(newPath + "/" + testProjName) {
 		t.Errorf("func addProj() failed to create ws at path: %s\n",
 			newPath+"/"+testProjName)
 		return

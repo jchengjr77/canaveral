@@ -3,6 +3,7 @@
 package main
 
 import (
+	"canaveral/lib"
 	"fmt"
 	"log"
 	"os"
@@ -19,7 +20,7 @@ func main() {
 
 	// Set home directory path of current user
 	usr, err := user.Current()
-	check(err)
+	lib.Check(err)
 	usrHome = usr.HomeDir
 
 	app := &cli.App{

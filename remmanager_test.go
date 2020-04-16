@@ -33,11 +33,11 @@ func TestConfirmDelete(t *testing.T) {
 
 func TestTryRemProj(t *testing.T) {
 	tempusr, err := user.Current()
-	check(err)
+	lib.Check(err)
 	tempHome := tempusr.HomeDir
 	newPath := tempHome + "/canaveral_test_ws/"
 	err = os.MkdirAll(newPath, os.ModePerm)
-	check(err)
+	lib.Check(err)
 	f, err := os.Create(newPath + "testProj")
 	defer os.RemoveAll(newPath)
 	defer f.Close()

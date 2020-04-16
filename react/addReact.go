@@ -1,6 +1,7 @@
 package react
 
 import (
+	"canaveral/lib"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -13,7 +14,7 @@ import (
 // Else, returns a message with the path of create-react-app
 // * tested
 func checkCRAExists(craPath string) bool {
-	if !fileExists(craPath) {
+	if !lib.FileExists(craPath) {
 		fmt.Printf(
 			"ERROR: didn't find 'create-react-app' in local path '%s'\n", craPath)
 		return false
@@ -31,7 +32,7 @@ func installCRA() {
 		"\nLooks like you don't have create-react-app. Let's install it...")
 	// Install it locally instead of globally
 	usr, err := user.Current()
-	check(err)
+	lib.Check(err)
 	home := usr.HomeDir
 	err = os.MkdirAll(home+"/canaveral", os.ModePerm)
 	err = os.Chdir(home + "/canaveral")
@@ -39,14 +40,14 @@ func installCRA() {
 	installCRA.Stdout = os.Stdout
 	installCRA.Stderr = os.Stderr
 	err = installCRA.Run()
-	check(err)
+	lib.Check(err)
 }
 
 // setCRAPath generates the path to create-react-app
 // ? untested, trivial
 func setCRAPath() string {
 	usr, err := user.Current()
-	check(err)
+	lib.Check(err)
 	home := usr.HomeDir
 	return home + "/canaveral/node_modules/.bin/create-react-app"
 }
@@ -58,9 +59,9 @@ func setCRAPath() string {
 func AddReactProj(projName string, wsPath string) {
 	craPath := setCRAPath()
 	ws, err := ioutil.ReadFile(wsPath)
-	check(err)
+	lib.Check(err)
 	err = os.MkdirAll(string(ws), os.ModePerm)
-	check(err)
+	lib.Check(err)
 	if !checkCRAExists(craPath) {
 		installCRA()
 	}
@@ -69,6 +70,6 @@ func AddReactProj(projName string, wsPath string) {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
-	check(err)
+	lib.Check(err)
 	fmt.Printf("Added React project %s to workspace %s\n", projName, string(ws))
 }
