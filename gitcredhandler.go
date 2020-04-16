@@ -1,6 +1,7 @@
 package main
 
 import (
+	"canaveral/lib"
 	"canaveral/nativestore"
 	"encoding/json"
 	"errors"
@@ -114,7 +115,7 @@ func gitCredsExist() bool {
 func printGitUser() {
 	if gitCredsExist() {
 		usr, _, err := nativestore.FetchCreds(label, url)
-		check(err)
+		lib.Check(err)
 		fmt.Println(usr)
 		return
 	}
