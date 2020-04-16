@@ -38,7 +38,7 @@ func main() {
 			{
 				Name:        "launch",
 				Aliases:     []string{"c", "add", "create"},
-				Description: "Creates a new project with name of your choice.",
+				Description: "Creates a new project, specify name and type.",
 				Usage:       "Launch New Project",
 				Action: func(c *cli.Context) error {
 					projName := c.Args().Get(0)

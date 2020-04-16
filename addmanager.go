@@ -2,6 +2,7 @@ package main
 
 import (
 	"canaveral/lib"
+	"canaveral/node"
 	"canaveral/react"
 	"fmt"
 	"io/ioutil"
@@ -41,6 +42,9 @@ func addProjectHandler(projName string, projType string) error {
 	if projType == "react" {
 		fmt.Println("Creating React project...")
 		react.AddReactProj(projName, usrHome+confDir+wsFName)
+	} else if projType == "node" {
+		fmt.Println("Creating Node project...")
+		node.AddNodeProj(projName, usrHome+confDir+wsFName)
 	} else {
 		fmt.Println("Creating generic project...")
 		addProj(projName, usrHome+confDir+wsFName)
