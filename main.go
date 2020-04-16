@@ -115,6 +115,19 @@ func main() {
 					return remGitCredsHandler()
 				},
 			},
+			{
+				Name:        "print git",
+				Aliases:     []string{"pgit", "printgit"},
+				Description: `Prints the git username currntly stored`,
+				Usage:       "Print git info to command line",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					printGitUser()
+					return nil
+				},
+			},
 		},
 		Action: func(c *cli.Context) error {
 			if qFlag {
