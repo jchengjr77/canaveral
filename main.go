@@ -128,6 +128,19 @@ func main() {
 					return nil
 				},
 			},
+			{
+				Name:        "code",
+				Aliases:     []string{"vscode"},
+				Description: "Opens selected project in vscode",
+				Usage:       "Opens selected project in vscode",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					fmt.Println("We can't actually do that action yet... soh")
+					return nil
+				},
+			},
 		},
 		Action: func(c *cli.Context) error {
 			if qFlag {
