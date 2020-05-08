@@ -1,6 +1,8 @@
 package main
 
 import (
+	"canaveral/lib"
+	"canaveral/node"
 	"canaveral/react"
 	"fmt"
 	"io/ioutil"
@@ -13,9 +15,9 @@ import (
 // * tested
 func addProj(projName string, wsPath string) {
 	ws, err := ioutil.ReadFile(wsPath)
-	check(err)
+	lib.Check(err)
 	err = os.MkdirAll(string(ws)+"/"+projName, os.ModePerm)
-	check(err)
+	lib.Check(err)
 	fmt.Printf("Added project %s to workspace %s\n", projName, string(ws))
 }
 
@@ -30,7 +32,7 @@ func addProjectHandler(projName string, projType string) error {
 		fmt.Println("Please provide a project name.")
 		fmt.Println("(For more info, 'canaveral --help')")
 		return nil
-	} else if !fileExists(usrHome + confDir + wsFName) {
+	} else if !lib.FileExists(usrHome + confDir + wsFName) {
 		fmt.Println("No canaveral workspace set. Please specify a workspace.")
 		fmt.Println(
 			"Canaveral needs a workspace to add projects to.")
@@ -40,6 +42,9 @@ func addProjectHandler(projName string, projType string) error {
 	if projType == "react" {
 		fmt.Println("Creating React project...")
 		react.AddReactProj(projName, usrHome+confDir+wsFName)
+	} else if projType == "node" {
+		fmt.Println("Creating Node project...")
+		node.AddNodeProj(projName, usrHome+confDir+wsFName)
 	} else {
 		fmt.Println("Creating generic project...")
 		addProj(projName, usrHome+confDir+wsFName)
