@@ -13,6 +13,6 @@ const wsFName = "cnavrlws"
 const testFile = "canaveral_test_file"
 
 // GITHUB
-// * untested
+// ! untested
 var label string = "github credentials"
 var url string = "https://api.github.com"

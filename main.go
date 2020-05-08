@@ -139,7 +139,7 @@ func main() {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
 					projName := c.Args().Get(0)
-					vscodesupport.OpenCode(projName)
+					vscodesupport.OpenCode(projName, usrHome+confDir+wsFName)
 					return nil
 				},
 			},
