@@ -4,6 +4,7 @@ package main
 
 import (
 	"canaveral/lib"
+	"canaveral/vscodesupport"
 	"fmt"
 	"log"
 	"os"
@@ -137,7 +138,8 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					fmt.Println("We can't actually do that action yet... soh")
+					projName := c.Args().Get(0)
+					vscodesupport.OpenCode(projName)
 					return nil
 				},
 			},
