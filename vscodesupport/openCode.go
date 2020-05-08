@@ -14,17 +14,18 @@ import (
 
 // OpenCode will take in a project name, and open it in vscode.
 // If such a project doesn't exist, it will return an error.
+// * tested
 func OpenCode(projName string, configPath string) error {
 	if projName == "" {
 		fmt.Println("Please provide a project name.")
 		fmt.Println("(For more info, 'canaveral --help')")
-		return nil
+		return errors.New("No project name specified")
 	} else if !lib.FileExists(configPath) {
 		fmt.Println("No canaveral workspace set. Please specify a workspace.")
 		fmt.Println(
 			"Canaveral needs a workspace to add projects to.")
 		fmt.Println("(For help, type 'canaveral --help')")
-		return nil
+		return errors.New("No canaveral workspace set")
 	}
 	fmt.Printf("Attempting to open Project '%s'\n", projName)
 	ws, err := ioutil.ReadFile(configPath)
