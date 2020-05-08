@@ -17,7 +17,7 @@ While both sites are important, Canaveral just sounded cooler than Vanderberg.
 
 ## Getting Started
 
-### Dependencies
+### Dependencies: _IMPORTANT_
 
 #### npm
 
@@ -26,6 +26,10 @@ Canaveral uses `npm` to install useful dependencies for you. To ensure that Cana
 #### Github
 
 If you want to use Canaveral's Github features, you will need a github account, as well as a personal access token. Find out how to get a personal access token [here](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).
+
+#### VSCode
+
+Canaveral has support for opening projects in [VSCode](https://code.visualstudio.com/). To enable this, you will need to make sure you can run the `code` command from the command line. Mac OS users will need to install this through VSCode if they have not already. Instructions can be found [here](https://code.visualstudio.com/docs/editor/command-line#_launching-from-command-line).
 
 ### Installation
 
