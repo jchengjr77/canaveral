@@ -1,3 +1,8 @@
+//Package lib contains testing functions for canaveral
+// includes:
+// - capture output (from stdout)
+// - redirect stdout
+// - reset stdout
 package lib
 
 import (
@@ -11,6 +16,7 @@ import (
 // CaptureOutput takes in a function and reads all print statements.
 // Code snippet taken from:
 // https://medium.com/@hau12a1/golang-capturing-log-println-and-fmt-println-output-770209c791b4
+// * tested
 func CaptureOutput(f func()) string {
 	reader, writer, err := os.Pipe()
 	if err != nil {
@@ -43,6 +49,7 @@ func CaptureOutput(f func()) string {
 
 // RedirOut redirects standard out away, and returns original *file.
 // This is mainly so whilst testing, the console doesn't get flooded.
+// * tested
 func RedirOut() *os.File {
 	_, writer, _ := os.Pipe()
 	realStdout := os.Stdout
@@ -51,6 +58,7 @@ func RedirOut() *os.File {
 }
 
 // ResetOut resets os.stdout to the original stdout
+// * tested
 func ResetOut(stdout *os.File) {
 	tempstdOut := os.Stdout
 	os.Stdout = stdout

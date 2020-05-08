@@ -4,7 +4,20 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
+	"runtime"
+	"strings"
 )
+
+// formatProjects takes the raw ls output and removes extra lines.
+// The command ls returns extra lines above (with . and .., etc).
+// formatProject removes the top three lines from the output.
+// * tested
+func formatProjects(rawString string) string {
+	lines := strings.Split(rawString, "\n")
+	newLines := lines[3:]
+	return strings.Join(newLines, "\n")
+}
 
 // showWorkspaceHandler checks the confDir for the workspace file.
 // If such a file exists, it reads its contents and navigates to that path.
@@ -21,11 +34,16 @@ func showWorkspaceHandler() error {
 	check(err)
 	fmt.Printf("\nYour canaveral path: %s\n", ws)
 	fmt.Printf("\nCurrent canaveral projects:\n")
-	files, err := ioutil.ReadDir(string(ws))
+	err = os.Chdir(string(ws))
 	check(err)
-	for _, file := range files {
-		fmt.Println(file.Name())
+	cmd := exec.Command("ls", "-la")
+	check(err)
+	if runtime.GOOS == "windows" { // windows support
+		cmd = exec.Command("tasklist")
 	}
+	out, err := cmd.Output()
+	check(err)
+	fmt.Println(formatProjects(string(out)))
 	return nil
 }
 

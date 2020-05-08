@@ -1,6 +1,7 @@
 package main
 
 import (
+	"canaveral/react"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -24,7 +25,7 @@ func addProj(projName string, wsPath string) {
 // Vanilla behavior includes generating a directory labeled the project name.
 // Initializes all boilerplate code for specified project type.
 // * tested
-func addProjectHandler(projName string) error {
+func addProjectHandler(projName string, projType string) error {
 	if projName == "" {
 		fmt.Println("Please provide a project name.")
 		fmt.Println("(For more info, 'canaveral --help')")
@@ -36,6 +37,12 @@ func addProjectHandler(projName string) error {
 		fmt.Println("(For help, type 'canaveral --help')")
 		return nil
 	}
-	addProj(projName, usrHome+confDir+wsFName)
+	if projType == "react" {
+		fmt.Println("Creating React project...")
+		react.AddReactProj(projName, usrHome+confDir+wsFName)
+	} else {
+		fmt.Println("Creating generic project...")
+		addProj(projName, usrHome+confDir+wsFName)
+	}
 	return nil
 }
