@@ -3,6 +3,8 @@
 package main
 
 import (
+	gh "canaveral/gh"
+	"canaveral/git"
 	"canaveral/lib"
 	"fmt"
 	"log"
@@ -38,7 +40,7 @@ func main() {
 		Commands: []*cli.Command{
 			{
 				Name:        "launch",
-				Aliases:     []string{"c", "add", "create"},
+				Aliases:     []string{"c", "create"},
 				Description: "Creates a new project, specify name and type.",
 				Usage:       "Launch New Project",
 				Action: func(c *cli.Context) error {
@@ -96,45 +98,96 @@ func main() {
 				},
 			},
 			{
-				Name:    "add git",
-				Aliases: []string{"git", "addgit"},
-				Description: `Allows canaveral to use your git credentials for repo management.
+				Name:    "add github credentials",
+				Aliases: []string{"gh", "github", "addgh", "addgithub"},
+				Description: `Allows canaveral to use your github credentials for repo management.
 					Username and password are required.
 					Username and password are stored in native storage for security.`,
-				Usage: "Add git info to canaveral.",
+				Usage: "Add github info to canaveral.",
 				Action: func(c *cli.Context) error {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					return gitAddWrapper()
+					return gh.GHAddWrapper()
 				},
 			},
 			{
-				Name:    "remove git",
-				Aliases: []string{"rgit", "remgit", "removegit"},
-				Description: `Deletes your git credentials from native storage.
-					Canaveral will no longer have any way to reference your git credentials.`,
-				Usage: "Remove git info from canaveral",
+				Name:        "remove github",
+				Aliases:     []string{"rgh", "remgh", "rgithub", "remgithub", "removegithub"},
+				Description: `Deletes your github credentials from native storage. Canaveral will no longer have any way to reference your githubcredentials.`,
+				Usage:       "Remove github info from canaveral",
 				Action: func(c *cli.Context) error {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					return remGitCredsHandler()
+					return gh.RemGHCredsHandler()
 				},
 			},
 			{
-				Name:        "print git",
-				Aliases:     []string{"pgit", "printgit"},
-				Description: `Prints the git username currntly stored`,
-				Usage:       "Print git info to command line",
+				Name:        "print github",
+				Aliases:     []string{"pgh", "pgithub", "printgithub"},
+				Description: `Prints the github username currntly stored`,
+				Usage:       "Print github info to command line",
 				Action: func(c *cli.Context) error {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					printGitUser()
+					gh.PrintGHUser()
 					return nil
 				},
 			},
+			{
+				Name:        "git status",
+				Aliases:     []string{"status"},
+				Description: `Prints current git status in a git directory`,
+				Usage:       "Print git status",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					git.GitStatus()
+					return nil
+				},
+			},
+			{
+				Name:        "git add",
+				Aliases:     []string{"add"},
+				Description: `Adds all files to next git commit`,
+				Usage:       "Add git files",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					git.GitAdd()
+					return nil
+				},
+			},
+			{
+				Name:        "git commit",
+				Aliases:     []string{"commit"},
+				Description: `Commits currently added files`,
+				Usage:       "Commit changed files",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					git.GitCommit()
+					return nil
+				},
+			},
+			// {
+			// 	Name:        "git remove",
+			// 	Aliases:     []string{"rm"},
+			// 	Description: `Removed currently added file`,
+			// 	Usage:       "Commit changed files",
+			// 	Action: func(c *cli.Context) error {
+			// 		if qFlag {
+			// 			fmt.Println("(okay, I'll try to be quiet.)")
+			// 		}
+			// 		git.GitCommit()
+			// 		return nil
+			// 	},
+			// },
 		},
 		Action: func(c *cli.Context) error {
 			if qFlag {

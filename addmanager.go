@@ -1,31 +1,20 @@
 package main
 
 import (
+	"canaveral/git"
 	"canaveral/lib"
 	"canaveral/node"
 	"canaveral/react"
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/exec"
 )
 
-// initRepo initializes a git repo if the -g flag is set
-// and git credentials are stored in the users native storage
-// ? untested
-func initRepo(projName string) {
-	if projName == "" {
-		fmt.Println("Please provide a repo name.")
-		fmt.Println("(For more info, 'canaveral --help')")
-	}
+func createAndInit(projName string) {
 	ws, err := ioutil.ReadFile(usrHome + confDir + wsFName)
 	lib.Check(err)
 	os.Chdir(string(ws))
-	createRepo := exec.Command("git", "init", projName)
-	createRepo.Stdout = os.Stdout
-	createRepo.Stdin = os.Stdin
-	err = createRepo.Run()
-	lib.Check(err)
+	git.InitRepo(projName)
 }
 
 // addProj takes in a project name and adds it to the workspace.
@@ -62,19 +51,19 @@ func addProjectHandler(projName string, projType string, init bool) error {
 		fmt.Println("Creating React project...")
 		react.AddReactProj(projName, usrHome+confDir+wsFName)
 		if init {
-			initRepo(projName)
+			createAndInit(projName)
 		}
 	} else if projType == "node" {
 		fmt.Println("Creating Node project...")
 		node.AddNodeProj(projName, usrHome+confDir+wsFName)
 		if init {
-			initRepo(projName)
+			createAndInit(projName)
 		}
 	} else {
 		fmt.Println("Creating generic project...")
 		addProj(projName, usrHome+confDir+wsFName)
 		if init {
-			initRepo(projName)
+			createAndInit(projName)
 		}
 	}
 	return nil
