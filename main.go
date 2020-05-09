@@ -145,7 +145,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.GitStatus()
+					git.Status()
 					return nil
 				},
 			},
@@ -158,7 +158,11 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.GitAdd()
+					if len(os.Args) <= 2 {
+						fmt.Println("A filename is required. Use '.' to add all files.")
+						return nil // Should this be an error?
+					}
+					git.Add(os.Args[2])
 					return nil
 				},
 			},
@@ -171,7 +175,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.GitCommit()
+					git.Commit()
 					return nil
 				},
 			},

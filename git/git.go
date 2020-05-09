@@ -21,7 +21,7 @@ func InitRepo(projName string) {
 	lib.Check(err)
 }
 
-func GitStatus() {
+func Status() {
 	gitStatus := exec.Command("git", "status")
 	gitStatus.Stdout = os.Stdout
 	gitStatus.Stdin = os.Stdin
@@ -29,16 +29,15 @@ func GitStatus() {
 	lib.Check(err)
 }
 
-func GitAdd() {
-	gitAdd := exec.Command("git", "add", ".")
+func Add(fileName string) {
+	gitAdd := exec.Command("git", "add", fileName)
 	gitAdd.Stdout = os.Stdout
 	gitAdd.Stdin = os.Stdin
 	err := gitAdd.Run()
 	lib.Check(err)
-	// fmt.Println("Here")
 }
 
-func GitCommit() {
+func Commit() {
 	gitCommit := exec.Command("git", "commit")
 	gitCommit.Stdout = os.Stdout
 	gitCommit.Stdin = os.Stdin
