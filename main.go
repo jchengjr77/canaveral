@@ -20,6 +20,7 @@ func main() {
 	var qFlag = false
 	var projType = "default"
 	var initRepo = false
+	var commitMessage = ""
 
 	// Set home directory path of current user
 	usr, err := user.Current()
@@ -174,8 +175,16 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Commit()
+					git.Commit(commitMessage)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "commit message",
+						Aliases:     []string{"m"},
+						Usage:       "Add commit message from commandline",
+						Destination: &commitMessage,
+					},
 				},
 			},
 		},

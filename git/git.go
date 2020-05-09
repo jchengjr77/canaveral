@@ -48,11 +48,16 @@ func Add(files []string) {
 
 // Commit performs a git commit on added files
 // ? untested
-func Commit() {
+func Commit(commitMessage string) {
 	gitCommit := exec.Command("git", "commit")
 	gitCommit.Stdout = os.Stdout
 	gitCommit.Stdin = os.Stdin
 	gitCommit.Stderr = os.Stderr
+	if commitMessage != "" {
+		gitCommit.Args = append(gitCommit.Args, "-m", "\""+commitMessage+"\"")
+	}
 	err := gitCommit.Run()
-	lib.Check(err)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 }
