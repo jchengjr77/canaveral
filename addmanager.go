@@ -7,12 +7,25 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 )
 
-// initRepo initializes a git repo if the -g flag is set and git credentials
-// are stored in the users native storage
+// initRepo initializes a git repo if the -g flag is set
+// and git credentials are stored in the users native storage
+// ? untested
 func initRepo(projName string) {
-	// Figure this out at some point
+	if projName == "" {
+		fmt.Println("Please provide a repo name.")
+		fmt.Println("(For more info, 'canaveral --help')")
+	}
+	ws, err := ioutil.ReadFile(usrHome + confDir + wsFName)
+	lib.Check(err)
+	os.Chdir(string(ws))
+	createRepo := exec.Command("git", "init", projName)
+	createRepo.Stdout = os.Stdout
+	createRepo.Stdin = os.Stdin
+	err = createRepo.Run()
+	lib.Check(err)
 }
 
 // addProj takes in a project name and adds it to the workspace.
@@ -33,7 +46,7 @@ func addProj(projName string, wsPath string) {
 // Vanilla behavior includes generating a directory labeled the project name.
 // Initializes all boilerplate code for specified project type.
 // * tested
-func addProjectHandler(projName string, projType string) error {
+func addProjectHandler(projName string, projType string, init bool) error {
 	if projName == "" {
 		fmt.Println("Please provide a project name.")
 		fmt.Println("(For more info, 'canaveral --help')")
@@ -48,12 +61,21 @@ func addProjectHandler(projName string, projType string) error {
 	if projType == "react" {
 		fmt.Println("Creating React project...")
 		react.AddReactProj(projName, usrHome+confDir+wsFName)
+		if init {
+			initRepo(projName)
+		}
 	} else if projType == "node" {
 		fmt.Println("Creating Node project...")
 		node.AddNodeProj(projName, usrHome+confDir+wsFName)
+		if init {
+			initRepo(projName)
+		}
 	} else {
 		fmt.Println("Creating generic project...")
 		addProj(projName, usrHome+confDir+wsFName)
+		if init {
+			initRepo(projName)
+		}
 	}
 	return nil
 }

@@ -17,6 +17,7 @@ func main() {
 	// Flags
 	var qFlag = false
 	var projType = "default"
+	var initRepo = false
 
 	// Set home directory path of current user
 	usr, err := user.Current()
@@ -45,7 +46,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					addProjectHandler(projName, projType)
+					addProjectHandler(projName, projType, initRepo)
 					return nil
 				},
 				Flags: []cli.Flag{
@@ -54,6 +55,12 @@ func main() {
 						Aliases:     []string{"t"},
 						Usage:       "Specify the type of project you create.",
 						Destination: &projType,
+					},
+					&cli.BoolFlag{
+						Name:        "gitinit",
+						Aliases:     []string{"g"},
+						Usage:       "Initialize a git repo",
+						Destination: &initRepo,
 					},
 				},
 			},
