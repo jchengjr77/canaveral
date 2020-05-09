@@ -127,4 +127,4 @@ See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
 
 JJ Cheng - [github](https://github.com/jchengjr77) - [jjcheng.me](https://jjcheng.me)
 
-Sean Prendi - [github](https://github.com/SeanPrendi) - [seanprendi.me](https://seanprendi.me)
+Sean Prendi - [github](https://github.com/SeanPrendi) - [seanprendi.me](https://www.seanprendi.me)
