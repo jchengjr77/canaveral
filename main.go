@@ -187,6 +187,19 @@ func main() {
 					},
 				},
 			},
+			{
+				Name:        "git ignore",
+				Aliases:     []string{"ignore", "ign"},
+				Description: `Add specified file to .gitignore`,
+				Usage:       "Ignore specified files",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					git.Ignore(c.Args().Slice())
+					return nil
+				},
+			},
 		},
 		Action: func(c *cli.Context) error {
 			if qFlag {

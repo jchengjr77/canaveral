@@ -1,8 +1,10 @@
 package git
 
 import (
+	"bufio"
 	"canaveral/lib"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 )
@@ -29,7 +31,9 @@ func Status() {
 	gitStatus.Stdin = os.Stdin
 	gitStatus.Stderr = os.Stderr
 	err := gitStatus.Run()
-	lib.Check(err)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 }
 
 // Add performs a git add on the specified files
@@ -60,4 +64,45 @@ func Commit(commitMessage string) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+}
+
+func inFile(file io.Reader, searchFor string) bool {
+	s := bufio.NewScanner(file)
+	if err := s.Err(); err != nil {
+		fmt.Println(err)
+	}
+	for s.Scan() {
+		if s.Text() == searchFor {
+			return true
+		}
+	}
+	return false
+}
+
+// Ignore adds files to the .gitignore file in the current directory
+// ? untested
+func Ignore(files []string) {
+	var startsEmpty = false
+	gitignore, err := os.OpenFile(".gitignore", os.O_APPEND|os.O_WRONLY, 0644)
+	ignoreReader, err := os.OpenFile(".gitignore", os.O_RDONLY, 0644)
+	lib.Check(err)
+	stat, err := gitignore.Stat()
+	if stat.Size() == 0 {
+		startsEmpty = true
+	}
+	defer gitignore.Close()
+	for idx, file := range files {
+		ignoreReader.Seek(0, io.SeekStart)
+		if inFile(ignoreReader, file) {
+			fmt.Println("Skipping", file, "because it is already being ignored.")
+			continue
+		}
+		if idx == 0 && !startsEmpty {
+			gitignore.Write([]byte{'\n'})
+		} else if idx > 0 {
+			gitignore.Write([]byte{'\n'})
+		}
+		_, err = gitignore.WriteString(file)
+	}
+	lib.Check(err)
 }
