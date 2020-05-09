@@ -178,19 +178,6 @@ func main() {
 					return nil
 				},
 			},
-			// {
-			// 	Name:        "git remove",
-			// 	Aliases:     []string{"rm"},
-			// 	Description: `Removed currently added file`,
-			// 	Usage:       "Commit changed files",
-			// 	Action: func(c *cli.Context) error {
-			// 		if qFlag {
-			// 			fmt.Println("(okay, I'll try to be quiet.)")
-			// 		}
-			// 		git.GitCommit()
-			// 		return nil
-			// 	},
-			// },
 		},
 		Action: func(c *cli.Context) error {
 			if qFlag {

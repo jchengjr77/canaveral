@@ -22,6 +22,7 @@ func InitRepo(projName string) {
 }
 
 // Status prints current git status in a git directory
+// ? untested
 func Status() {
 	gitStatus := exec.Command("git", "status")
 	gitStatus.Stdout = os.Stdout
@@ -31,6 +32,8 @@ func Status() {
 	lib.Check(err)
 }
 
+// Add performs a git add on the specified files
+// ? untested
 func Add(files []string) {
 	gitAdd := exec.Command("git", "add")
 	gitAdd.Stdout = os.Stdout
@@ -41,22 +44,15 @@ func Add(files []string) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	// lib.Check(err)
 }
 
+// Commit performs a git commit on added files
+// ? untested
 func Commit() {
 	gitCommit := exec.Command("git", "commit")
 	gitCommit.Stdout = os.Stdout
 	gitCommit.Stdin = os.Stdin
 	gitCommit.Stderr = os.Stderr
 	err := gitCommit.Run()
-	lib.Check(err)
-}
-
-func GitRm() {
-	gitRm := exec.Command("git", "rm")
-	gitRm.Stdout = os.Stdout
-	gitRm.Stdin = os.Stdin
-	err := gitRm.Run()
 	lib.Check(err)
 }
