@@ -9,6 +9,12 @@ import (
 	"os"
 )
 
+// initRepo initializes a git repo if the -g flag is set and git credentials
+// are stored in the users native storage
+func initRepo(projName string) {
+	// Figure this out at some point
+}
+
 // addProj takes in a project name and adds it to the workspace.
 // Requires that the workspace exists.
 // Requires that the project name is non-empty
