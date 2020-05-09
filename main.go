@@ -158,11 +158,10 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					adding := ""
-					for i := 0; i < (c.Args().Len()); i++ {
-						adding += c.Args().Get(i) + " "
+					if c.Args().Len() == 0 {
+						fmt.Println("Files to add must be specified. Use '.' for all files")
 					}
-					git.Add(adding)
+					git.Add(c.Args().Slice())
 					return nil
 				},
 			},
