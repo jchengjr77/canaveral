@@ -153,16 +153,16 @@ func main() {
 				Name:        "git add",
 				Aliases:     []string{"add"},
 				Description: `Adds all files to next git commit`,
-				Usage:       "Add git files",
+				Usage:       "Add git files. Specify filenames as commandline arguments, use '.' to add all files",
 				Action: func(c *cli.Context) error {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					if len(os.Args) <= 2 {
-						fmt.Println("A filename is required. Use '.' to add all files.")
-						return nil // Should this be an error?
+					adding := ""
+					for i := 0; i < (c.Args().Len()); i++ {
+						adding += c.Args().Get(i) + " "
 					}
-					git.Add(os.Args[2])
+					git.Add(adding)
 					return nil
 				},
 			},
