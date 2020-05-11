@@ -6,6 +6,7 @@ import (
 	gh "canaveral/gh"
 	"canaveral/git"
 	"canaveral/lib"
+	"canaveral/vscodesupport"
 	"fmt"
 	"log"
 	"os"
@@ -197,6 +198,20 @@ func main() {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
 					git.Ignore(c.Args().Slice())
+					return nil
+				},
+			},
+			{
+				Name:        "code",
+				Aliases:     []string{"vscode"},
+				Description: "Opens selected project in vscode",
+				Usage:       "Opens selected project in vscode",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					projName := c.Args().Get(0)
+					vscodesupport.OpenCode(projName, usrHome+confDir+wsFName)
 					return nil
 				},
 			},
