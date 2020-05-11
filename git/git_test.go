@@ -146,3 +146,136 @@ func TestAdd(t *testing.T) {
 	err = exec.Command("rm", "-rf", ".git").Run()
 	lib.Check(err)
 }
+
+func TestCommit(t *testing.T) {
+	usr, err := user.Current()
+	lib.Check(err)
+	home := usr.HomeDir
+	err = os.Chdir(home + "/canaveral")
+	lib.Check(err)
+
+	// Initially no git repo
+	retByte, err := exec.Command("git", "status").CombinedOutput()
+	ret := string(retByte)
+	if ret != "fatal: not a git repository (or any of the parent directories): .git\n" {
+		t.Errorf("Bad state. Expected directory not to be a git repo, instead got: %s\n", ret)
+	}
+
+	// Initialize git repo
+	retByte, err = exec.Command("git", "init").CombinedOutput()
+	ret = string(retByte)
+	if ret[:32] != "Initialized empty Git repository" {
+		t.Errorf("Initialized failed. Expected an empty repo to be initialized, instead got: %s", ret)
+	}
+
+	// Create file to commit
+	err = exec.Command("touch", "commit-test").Run()
+	lib.Check(err)
+
+	// Add file
+	err = exec.Command("git", "add", "commit-test").Run()
+	lib.Check(err)
+
+	// Commit file with message
+	ret = lib.CaptureOutput(func() {
+		Commit("Testing commit.")
+	})
+
+	re := regexp.MustCompile(`Testing commit.`)
+	output := re.FindString(ret)
+	if output == "" {
+		t.Errorf("Expected commit message to go through. Instead, got: %s", ret)
+	}
+
+	// Remove file and git
+	err = exec.Command("rm", "commit-test").Run()
+	lib.Check(err)
+	err = exec.Command("rm", "-rf", ".git").Run()
+	lib.Check(err)
+}
+
+func TestIgnore(t *testing.T) {
+	usr, err := user.Current()
+	lib.Check(err)
+	home := usr.HomeDir
+	err = os.Chdir(home + "/canaveral")
+	lib.Check(err)
+
+	// Initially no git repo
+	retByte, err := exec.Command("git", "status").CombinedOutput()
+	ret := string(retByte)
+	if ret != "fatal: not a git repository (or any of the parent directories): .git\n" {
+		t.Errorf("Bad state. Expected directory not to be a git repo, instead got: %s\n", ret)
+	}
+
+	// Initialize git repo
+	retByte, err = exec.Command("git", "init").CombinedOutput()
+	ret = string(retByte)
+	if ret[:32] != "Initialized empty Git repository" {
+		t.Errorf("Initialized failed. Expected an empty repo to be initialized, instead got: %s", ret)
+	}
+
+	// Create file to ignore and gitignore file
+	err = exec.Command("touch", "IgnoreMe").Run()
+	lib.Check(err)
+	err = exec.Command("touch", ".gitignore").Run()
+	lib.Check(err)
+
+	// Check isn't ignored
+	retByte, err = exec.Command("git", "status").CombinedOutput()
+	ret = string(retByte)
+	re := regexp.MustCompile(`IgnoreMe`)
+	output := re.FindString(ret)
+	if output == "" {
+		t.Errorf("Expected to find IgnoreMe in git status. Instead got: %s", ret)
+	}
+
+	// Ignore the IgnoreMe file
+	ignoring := []string{"IgnoreMe"}
+	Ignore(ignoring)
+
+	// Check is ignored
+	retByte, err = exec.Command("git", "status").CombinedOutput()
+	ret = string(retByte)
+	re = regexp.MustCompile(`IgnoreMe`)
+	output = re.FindString(ret)
+	if output != "" {
+		t.Errorf("Expected IgnoreMe to not be in git status. Instead got: %s", ret)
+	}
+
+	// Create another file to ignore
+	err = exec.Command("touch", "IgnoreMeToo").Run()
+	lib.Check(err)
+
+	// Check isn't ignored
+	retByte, err = exec.Command("git", "status").CombinedOutput()
+	ret = string(retByte)
+	re = regexp.MustCompile(`IgnoreMeToo`)
+	output = re.FindString(ret)
+	if output == "" {
+		t.Errorf("Expected to find IgnoreMeToo in git status. Instead got: %s", ret)
+	}
+
+	// Ignore the IgnoreMeToo file and skip the IgnoreMe file
+	ignoring = append(ignoring, "IgnoreMeToo")
+	ret = lib.CaptureOutput(func() {
+		Ignore(ignoring)
+	})
+	if ret != "Skipping IgnoreMe because it is already being ignored.\n" {
+		t.Errorf("Expected to skip IgnoreMe because it's already being ignored. Instead got: %s", ret)
+	}
+
+	// Check the IgnoreMeToo is being ignored now
+	retByte, err = exec.Command("git", "status").CombinedOutput()
+	ret = string(retByte)
+	re = regexp.MustCompile(`IgnoreMeToo`)
+	output = re.FindString(ret)
+	if output != "" {
+		t.Errorf("Expected IgnoreMeToo to not be in git status. Instead got: %s", ret)
+	}
+	// Remove files and git
+	err = exec.Command("rm", "IgnoreMe", "IgnoreMeToo", ".gitignore").Run()
+	lib.Check(err)
+	err = exec.Command("rm", "-rf", ".git").Run()
+	lib.Check(err)
+}

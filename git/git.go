@@ -50,7 +50,7 @@ func Add(files []string) {
 }
 
 // Commit performs a git commit on added files
-// ! untested
+// * tested
 func Commit(commitMessage string) {
 	gitCommit := exec.Command("git", "commit")
 	gitCommit.Stdout = os.Stdout
