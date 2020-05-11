@@ -12,16 +12,14 @@ import (
 // InitRepo initializes a git repo in the current directory
 // ! untested
 func InitRepo() {
-	// if projName == "" {
-	// fmt.Println("Please provide a repo name.")
-	// fmt.Println("(For more info, 'canaveral --help')")
-	// }
 	initRepo := exec.Command("git", "init")
 	initRepo.Stdout = os.Stdout
 	initRepo.Stdin = os.Stdin
 	initRepo.Stderr = os.Stderr
-	_ = initRepo.Run()
-	// lib.Check(err)
+	err := initRepo.Run()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 }
 
 // Status prints current git status in a git directory
