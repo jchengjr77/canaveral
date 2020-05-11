@@ -36,7 +36,7 @@ func Status() {
 }
 
 // Add performs a git add on the specified files
-// ! untested
+// * tested
 func Add(files []string) {
 	gitAdd := exec.Command("git", "add")
 	gitAdd.Stdout = os.Stdout
