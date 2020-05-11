@@ -23,7 +23,7 @@ func InitRepo() {
 }
 
 // Status prints current git status in a git directory
-// ! untested
+// * tested
 func Status() {
 	gitStatus := exec.Command("git", "status")
 	gitStatus.Stdout = os.Stdout
