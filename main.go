@@ -101,7 +101,7 @@ func main() {
 			},
 			{
 				Name:    "add github credentials",
-				Aliases: []string{"gh", "github", "addgh", "addgithub"},
+				Aliases: []string{"agh", "agithub", "addgh", "addgithub"},
 				Description: `Allows canaveral to use your github credentials for repo management.
 					Username and password are required.
 					Username and password are stored in native storage for security.`,
