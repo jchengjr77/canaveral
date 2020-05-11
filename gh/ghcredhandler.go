@@ -74,7 +74,6 @@ func GHAddWrapper() error {
 		if verifyErr == nil {
 			return addGHCredsHandler(username, token)
 		}
-		// fmt.Println(verifyErr)
 		return verifyErr
 
 	}
@@ -97,21 +96,23 @@ func addGHCredsHandler(username, secret string) error {
 	}
 }
 
-// Removes github credentials from native storage
-// * tested
+// RemGHCredsHandler removes github credentials from native storage
+// * wraps a tested function
 func RemGHCredsHandler() error {
 	fmt.Println("Removing github from canaveral.")
 	return nativestore.DeleteCreds(label, url)
 }
 
 // Checks whether or not the user has github credentials set
-// * tested
+// * wraps a tested function
 func ghCredsExist() bool {
 	fmt.Println("Checking whether or not github credentials have been added.")
 	_, _, err := nativestore.FetchCreds(label, url)
 	return (err == nil)
 }
 
+// PrintGHUser prints the natively stored github username to the commandline
+// * wraps a tested function
 func PrintGHUser() {
 	if ghCredsExist() {
 		usr, _, err := nativestore.FetchCreds(label, url)
