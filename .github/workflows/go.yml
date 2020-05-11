@@ -34,6 +34,8 @@ jobs:
         run: go test ./nativestore
       - name: Test (lib)
         run: go test ./lib
+      - name: Test (gh)
+        run: go test ./gh
         
       - name: Build
         run: go build -v .
