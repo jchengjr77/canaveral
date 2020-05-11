@@ -10,7 +10,7 @@ import (
 )
 
 // InitRepo initializes a git repo in the current directory
-// ! untested
+// * tested
 func InitRepo() {
 	initRepo := exec.Command("git", "init")
 	initRepo.Stdout = os.Stdout
