@@ -65,6 +65,8 @@ func Commit(commitMessage string) {
 	}
 }
 
+// Checks if searchFor is a line in file
+// ? untested, low priority
 func inFile(file io.Reader, searchFor string) bool {
 	s := bufio.NewScanner(file)
 	if err := s.Err(); err != nil {

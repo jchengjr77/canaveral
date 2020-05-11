@@ -10,6 +10,8 @@ import (
 	"os"
 )
 
+// Wraps the init repo to perform init in correct directory
+// * wraps tested function
 func createAndInit(projName string) {
 	ws, err := ioutil.ReadFile(usrHome + confDir + wsFName)
 	lib.Check(err)
