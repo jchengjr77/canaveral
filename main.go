@@ -202,6 +202,19 @@ func main() {
 				},
 			},
 			{
+				Name:        "git init",
+				Aliases:     []string{"gitinit"},
+				Description: `Initialize git repo`,
+				Usage:       "Initialize git repo",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					git.InitRepo()
+					return nil
+				},
+			},
+			{
 				Name:        "code",
 				Aliases:     []string{"vscode"},
 				Description: "Opens selected project in vscode",

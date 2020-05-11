@@ -10,21 +10,22 @@ import (
 )
 
 // InitRepo initializes a git repo in the current directory
-// ? untested
-func InitRepo(projName string) {
-	if projName == "" {
-		fmt.Println("Please provide a repo name.")
-		fmt.Println("(For more info, 'canaveral --help')")
-	}
-	initRepo := exec.Command("git", "init", projName)
+// ! untested
+func InitRepo() {
+	// if projName == "" {
+	// fmt.Println("Please provide a repo name.")
+	// fmt.Println("(For more info, 'canaveral --help')")
+	// }
+	initRepo := exec.Command("git", "init")
 	initRepo.Stdout = os.Stdout
 	initRepo.Stdin = os.Stdin
-	err := initRepo.Run()
-	lib.Check(err)
+	initRepo.Stderr = os.Stderr
+	_ = initRepo.Run()
+	// lib.Check(err)
 }
 
 // Status prints current git status in a git directory
-// ? untested
+// ! untested
 func Status() {
 	gitStatus := exec.Command("git", "status")
 	gitStatus.Stdout = os.Stdout
@@ -37,7 +38,7 @@ func Status() {
 }
 
 // Add performs a git add on the specified files
-// ? untested
+// ! untested
 func Add(files []string) {
 	gitAdd := exec.Command("git", "add")
 	gitAdd.Stdout = os.Stdout
@@ -51,7 +52,7 @@ func Add(files []string) {
 }
 
 // Commit performs a git commit on added files
-// ? untested
+// ! untested
 func Commit(commitMessage string) {
 	gitCommit := exec.Command("git", "commit")
 	gitCommit.Stdout = os.Stdout
@@ -80,7 +81,7 @@ func inFile(file io.Reader, searchFor string) bool {
 }
 
 // Ignore adds files to the .gitignore file in the current directory
-// ? untested
+// ! untested
 func Ignore(files []string) {
 	var startsEmpty = false
 	gitignore, err := os.OpenFile(".gitignore", os.O_APPEND|os.O_WRONLY, 0644)
