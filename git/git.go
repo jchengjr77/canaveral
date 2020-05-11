@@ -79,7 +79,7 @@ func inFile(file io.Reader, searchFor string) bool {
 }
 
 // Ignore adds files to the .gitignore file in the current directory
-// ! untested
+// * tested
 func Ignore(files []string) {
 	var startsEmpty = false
 	gitignore, err := os.OpenFile(".gitignore", os.O_APPEND|os.O_WRONLY, 0644)
