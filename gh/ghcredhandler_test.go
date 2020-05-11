@@ -19,7 +19,7 @@ func TestAddGHCredsHandler(t *testing.T) {
 		func() {
 			addGHCredsHandler("", "password")
 		})
-	if resNoUsr != "A git username is required. Please provide one.\n" {
+	if resNoUsr != "A github username is required. Please provide one.\n" {
 		t.Logf("addGHCredsHandler('', _) output: %s\n", resNoUsr)
 		t.Error("func addGHCredsHandler() failed in case of ('', _)\n")
 	}
@@ -29,7 +29,7 @@ func TestAddGHCredsHandler(t *testing.T) {
 		func() {
 			addGHCredsHandler("username", "")
 		})
-	if resNoPass != "A git personal auth token is required. Please provide one.\n" {
+	if resNoPass != "A github personal auth token is required. Please provide one.\n" {
 		t.Logf("addGHCredsHandler('', _) output: %s\n", resNoPass)
 		t.Error("func addGHCredsHandler() failed in case of (_, '')\n")
 	}
