@@ -58,6 +58,9 @@ func TestInit(t *testing.T) {
 	retByte, err := exec.Command("git", "status").CombinedOutput()
 	ret := string(retByte)
 	if ret != "fatal: not a git repository (or any of the parent directories): .git\n" {
+		retByte, err = exec.Command("ls", "-la").CombinedOutput()
+		ret = string(retByte)
+		t.Errorf("ret")
 		t.Errorf("Bad state. Expected directory not to be a git repo, instead got: %s\n", ret)
 	}
 
