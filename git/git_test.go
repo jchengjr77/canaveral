@@ -168,7 +168,6 @@ func TestAdd(t *testing.T) {
 }
 
 func TestCommit(t *testing.T) {
-	return // Remove this
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
@@ -214,8 +213,14 @@ func TestCommit(t *testing.T) {
 		Commit("Testing commit.")
 	})
 
-	re := regexp.MustCompile(`Testing commit.`)
-	output := re.FindString(ret)
+	loggedIn := regexp.MustCompile(`Testing commit.`)
+	output := loggedIn.FindString(ret)
+
+	notLoggedIn := regexp.MustCompile(`Please tell me who you are.`)
+	if output == "" {
+		output = notLoggedIn.FindString(ret)
+	}
+
 	if output == "" {
 		t.Errorf("Expected commit message to go through. Instead, got: %s", ret)
 	}
