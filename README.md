@@ -40,7 +40,7 @@ There are two ways to install Canaveral. We suggest using the [first method](#do
 ### Download Executable
 
 In the [Canaveral Releases](https://github.com/jchengjr77/canaveral/releases) section, you will find all current releases of Canaveral.
-We suggest you grab the latest one: [v0.1.3](https://github.com/jchengjr77/canaveral/releases/tag/v0.1.3)
+We suggest you grab the latest one: [v0.2.0](https://github.com/jchengjr77/canaveral/releases/tag/v0.2.0)
 
 Select the correct package for your computer system and download it. See release notes for guidance.
 After you download and unzip Canaveral, you will be left with a single executable. You need to add it to your \$PATH.

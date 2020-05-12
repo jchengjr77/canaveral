@@ -24,6 +24,7 @@ func TestOpenCode(t *testing.T) {
 	actual := OpenCode("", wsPath)
 	if expect.Error() != actual.Error() {
 		t.Errorf("Empty project name did not yield correct error")
+		t.Errorf("expected: %s\n", expect)
 		t.Errorf("actual: %s\n", actual)
 		return
 	}
@@ -31,6 +32,8 @@ func TestOpenCode(t *testing.T) {
 	actual = OpenCode("FakeProject", wsPath)
 	if expect.Error() != actual.Error() {
 		t.Errorf("No workspace set did not yield correct error")
+		t.Errorf("expected: %s\n", expect)
+		t.Errorf("actual: %s\n", actual)
 		return
 	}
 }
