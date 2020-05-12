@@ -13,7 +13,7 @@ func TestStatus(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral"
+	workingPath := home + "/canaveral_git_ws"
 	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
@@ -43,7 +43,7 @@ func TestInit(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral"
+	workingPath := home + "/canaveral_git_ws"
 	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
@@ -78,7 +78,7 @@ func TestAdd(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral"
+	workingPath := home + "/canaveral_git_ws"
 	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
@@ -171,7 +171,7 @@ func TestCommit(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral"
+	workingPath := home + "/canaveral_git_ws"
 	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
@@ -224,7 +224,7 @@ func TestIgnore(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral"
+	workingPath := home + "/canaveral_git_ws"
 	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
