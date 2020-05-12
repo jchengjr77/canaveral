@@ -13,7 +13,16 @@ func TestStatus(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	err = os.Chdir(home + "/canaveral")
+	workingPath := home + "/canaveral"
+	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
+		os.MkdirAll(workingPath, os.ModePerm)
+		defer os.RemoveAll(workingPath)
+	} else {
+		t.Errorf("canaveral folder already exists")
+		return
+	}
+	err = os.Chdir(workingPath)
+	lib.Check(err)
 
 	// Initially no git repo
 	ret := lib.CaptureOutput(Status)
@@ -28,21 +37,22 @@ func TestStatus(t *testing.T) {
 	if ret[:16] != "On branch master" {
 		t.Errorf("Expected git repo to exist, instead got: %s\n", ret)
 	}
-
-	// Remove git repo
-	err = exec.Command("rm", "-rf", ".git").Run()
-	lib.Check(err)
-	ret = lib.CaptureOutput(Status)
-	if ret != "fatal: not a git repository (or any of the parent directories): .git\nexit status 128\n" {
-		t.Errorf("Status failed after cleanup. Expected no repo to exist, instead got: %s", ret)
-	}
 }
 
 func TestInit(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	err = os.Chdir(home + "/canaveral")
+	workingPath := home + "/canaveral"
+	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
+		os.MkdirAll(workingPath, os.ModePerm)
+		defer os.RemoveAll(workingPath)
+	} else {
+		t.Errorf("canaveral folder already exists")
+		return
+	}
+	err = os.Chdir(workingPath)
+	lib.Check(err)
 
 	// Initially no git repo
 	retByte, err := exec.Command("git", "status").CombinedOutput()
@@ -62,17 +72,21 @@ func TestInit(t *testing.T) {
 	if ret[:37] != "Reinitialized existing Git repository" {
 		t.Errorf("Initialized failed. Expected an empty repo to be initialized, instead got: %s", ret)
 	}
-
-	// Reset state, remove repo
-	err = exec.Command("rm", "-rf", ".git").Run()
-	lib.Check(err)
 }
 
 func TestAdd(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	err = os.Chdir(home + "/canaveral")
+	workingPath := home + "/canaveral"
+	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
+		os.MkdirAll(workingPath, os.ModePerm)
+		defer os.RemoveAll(workingPath)
+	} else {
+		t.Errorf("canaveral folder already exists")
+		return
+	}
+	err = os.Chdir(workingPath)
 	lib.Check(err)
 
 	// Initially no git repo
@@ -90,8 +104,12 @@ func TestAdd(t *testing.T) {
 	}
 
 	// Create file to add
-	err = exec.Command("touch", "add-test").Run()
+	f, err := os.Create("add-test")
 	lib.Check(err)
+	defer func() {
+		f.Close()
+		os.Remove("add-test")
+	}()
 
 	// Add file
 	adding := []string{"add-test"}
@@ -107,9 +125,9 @@ func TestAdd(t *testing.T) {
 	}
 
 	// Remove file and git
-	err = exec.Command("rm", "add-test").Run()
+	err = os.Remove("add-test")
 	lib.Check(err)
-	err = exec.Command("rm", "-rf", ".git").Run()
+	err = os.RemoveAll(".git")
 	lib.Check(err)
 
 	// Initialize git repo
@@ -120,12 +138,20 @@ func TestAdd(t *testing.T) {
 	}
 
 	// Make multiple files
-	err = exec.Command("touch", "add-test1").Run()
+	f1, err := os.Create("add-test1")
 	lib.Check(err)
-	err = exec.Command("touch", "add-test2").Run()
+	f2, err := os.Create("add-test2")
 	lib.Check(err)
-	err = exec.Command("touch", "add-test3").Run()
+	f3, err := os.Create("add-test3")
 	lib.Check(err)
+	defer func() {
+		f1.Close()
+		f2.Close()
+		f3.Close()
+		os.Remove("add-test1")
+		os.Remove("add-test2")
+		os.Remove("add-test3")
+	}()
 
 	// Add files
 	adding = []string{"add-test1", "add-test2", "add-test3"}
@@ -139,19 +165,21 @@ func TestAdd(t *testing.T) {
 	if output == "" {
 		t.Errorf("Expected status to have file added. Instead, got: %s", ret)
 	}
-
-	// Remove files and git
-	err = exec.Command("rm", "add-test1", "add-test2", "add-test3").Run()
-	lib.Check(err)
-	err = exec.Command("rm", "-rf", ".git").Run()
-	lib.Check(err)
 }
 
 func TestCommit(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	err = os.Chdir(home + "/canaveral")
+	workingPath := home + "/canaveral"
+	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
+		os.MkdirAll(workingPath, os.ModePerm)
+		defer os.RemoveAll(workingPath)
+	} else {
+		t.Errorf("canaveral folder already exists")
+		return
+	}
+	err = os.Chdir(workingPath)
 	lib.Check(err)
 
 	// Initially no git repo
@@ -169,7 +197,11 @@ func TestCommit(t *testing.T) {
 	}
 
 	// Create file to commit
-	err = exec.Command("touch", "commit-test").Run()
+	f, err := os.Create("commit-test")
+	defer func() {
+		f.Close()
+		os.Remove("commit-test")
+	}()
 	lib.Check(err)
 
 	// Add file
@@ -186,19 +218,21 @@ func TestCommit(t *testing.T) {
 	if output == "" {
 		t.Errorf("Expected commit message to go through. Instead, got: %s", ret)
 	}
-
-	// Remove file and git
-	err = exec.Command("rm", "commit-test").Run()
-	lib.Check(err)
-	err = exec.Command("rm", "-rf", ".git").Run()
-	lib.Check(err)
 }
 
 func TestIgnore(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	err = os.Chdir(home + "/canaveral")
+	workingPath := home + "/canaveral"
+	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
+		os.MkdirAll(workingPath, os.ModePerm)
+		defer os.RemoveAll(workingPath)
+	} else {
+		t.Errorf("canaveral folder already exists")
+		return
+	}
+	err = os.Chdir(workingPath)
 	lib.Check(err)
 
 	// Initially no git repo
@@ -216,9 +250,17 @@ func TestIgnore(t *testing.T) {
 	}
 
 	// Create file to ignore and gitignore file
-	err = exec.Command("touch", "IgnoreMe").Run()
+	f, err := os.Create("IgnoreMe")
+	defer func() {
+		f.Close()
+		os.Remove("IgnoreMe")
+	}()
 	lib.Check(err)
-	err = exec.Command("touch", ".gitignore").Run()
+	gitignore, err := os.Create(".gitignore")
+	defer func() {
+		gitignore.Close()
+		os.Remove(".gitignore")
+	}()
 	lib.Check(err)
 
 	// Check isn't ignored
@@ -244,7 +286,11 @@ func TestIgnore(t *testing.T) {
 	}
 
 	// Create another file to ignore
-	err = exec.Command("touch", "IgnoreMeToo").Run()
+	f2, err := os.Create("IgnoreMeToo")
+	defer func() {
+		f2.Close()
+		os.Remove("IgnoreMeToo")
+	}()
 	lib.Check(err)
 
 	// Check isn't ignored
@@ -273,9 +319,4 @@ func TestIgnore(t *testing.T) {
 	if output != "" {
 		t.Errorf("Expected IgnoreMeToo to not be in git status. Instead got: %s", ret)
 	}
-	// Remove files and git
-	err = exec.Command("rm", "IgnoreMe", "IgnoreMeToo", ".gitignore").Run()
-	lib.Check(err)
-	err = exec.Command("rm", "-rf", ".git").Run()
-	lib.Check(err)
 }
