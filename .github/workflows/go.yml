@@ -37,7 +37,7 @@ jobs:
       - name: Test (gh)
         run: go test ./gh
       - name: Test (git)
-      run: go test ./git
+        run: go test ./git
         
       - name: Build
         run: go build -v .
