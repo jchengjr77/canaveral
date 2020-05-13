@@ -7,13 +7,26 @@ import (
 	"io/ioutil"
 	"fmt"
 	"reflect"
+	"os"
+	"bufio"
+	"io"
 )
 
-func addReminder(file, reminder string) {
+func loadReminders() map[string]interface{} {
 	remindContents, err := ioutil.ReadFile(".remind.json")
 	lib.Check(err)
 	var reminders map[string]interface{}
 	err = json.Unmarshal(remindContents, &reminders)
+	if err != nil && err.Error() == "unexpected end of JSON input" {
+		reminders = make(map[string]interface{})
+	} else {
+		lib.Check(err)
+	}
+	return reminders
+}
+
+func addReminder(file string, reminder string) {
+	reminders := loadReminders()
 	if _, found := reminders[file]; !found {
 		reminders[file] = []string{reminder}
 	} else {
@@ -32,9 +45,56 @@ func addReminder(file, reminder string) {
 		// reminders[file] = append(reminders[file], reminder)
 	}
 	jsonData, err := json.Marshal(reminders)
+	lib.Check(err)
+	fmt.Printf("Will remind you, \"%s\" when you commit %s\n", reminder, file)
 	// This is not that robust of a solution because it rewrites the entire file
 	// ! Research ways to improve this
 	err = ioutil.WriteFile(".remind.json", jsonData, 0644)
+}
+
+func confirmPrint(stdin io.Reader) bool {
+	fmt.Printf("You have reminders stored for this file. Would you like to display them? ('y' or 'n')> ")
+	reader := bufio.NewReader(stdin)
+	response, err := reader.ReadByte()
+	lib.Check(err)
+	return (response == 'y')
+}
+
+func checkReminders(file string, forcePrint bool, reminders map[string]interface{}) bool {
+	// reminders := loadReminders()
+	fetched, found := reminders[file]
+	stored := reflect.ValueOf(fetched)
+	print := false
+	if !forcePrint {
+		if found {
+			print = confirmPrint(os.Stdin)
+		}
+	}
+	if forcePrint || print {
+		fmt.Printf("=====Printing reminders for %s=====\n", file)
+		if !found || stored.Len() == 0 {
+			fmt.Println("No reminders found for", file)
+		} else {
+			var reminder string
+			for i := 0; i < stored.Len(); i++ {
+				reminder = fmt.Sprintf("%v", stored.Index(i))
+				fmt.Printf("Reminder (%d): %s\n", i+1, reminder)
+			}
+		}
+	}
+	return forcePrint || print
+}
+
+// CheckReminders prints all of the reminders stored for file
+func CheckReminders(file string) error {
+	if !lib.FileExists(".remind.json") {
+		return errors.New("You don't have any reminders stored")
+	}
+	if !lib.FileExists(file) {
+		return errors.New("Cannot find file" + file)
+	}
+	checkReminders(file, true, loadReminders())
+	return nil
 }
 
 // AddReminder adds a reminder to be displayed back to the user when committing 
@@ -44,8 +104,7 @@ func AddReminder(file, reminder string) error {
 	if !lib.DirExists(".git") {
 		return errors.New("Git reminders can only be added in git repos")
 	}
-	// ! Change this back to !
-	if lib.FileExists(file) {
+	if !lib.FileExists(file) {
 		return errors.New("Cannot find " + file)
 	}
 	if !lib.FileExists(".remind.json") {

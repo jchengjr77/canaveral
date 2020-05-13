@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 // InitRepo initializes a git repo in the current directory
@@ -49,9 +50,45 @@ func Add(files []string) {
 	}
 }
 
+func getStaged() []string {
+	out, err := exec.Command("git", "diff", "--name-only", "--staged").Output()
+	lib.Check(err)
+	staged := strings.Split(string(out), "\n")
+	var ret []string
+	for i := range staged {
+		curr := strings.TrimSpace(staged[i])
+		if curr != "" {
+			ret = append(ret, curr)
+		}
+	}
+	return ret
+}
+
+func confirmCommit(stdin io.Reader) bool {
+	fmt.Printf("Would you still like to commit? ('y' or 'n')> ")
+	reader := bufio.NewReader(stdin)
+	response, err := reader.ReadByte()
+	lib.Check(err)
+	return (response == 'y')
+}
+
 // Commit performs a git commit on added files
 // * tested
+// ! reminders untested
 func Commit(commitMessage string) {
+	reminders := loadReminders()
+	stagedFiles := getStaged()
+	sawRems := false
+	confirm := true
+	for _, file := range stagedFiles {
+		sawRems = sawRems || checkReminders(file, false, reminders)
+	}
+	if sawRems {
+		confirm = confirmCommit(os.Stdin)
+	}
+	if !confirm {
+		return
+	}
 	gitCommit := exec.Command("git", "commit")
 	gitCommit.Stdout = os.Stdout
 	gitCommit.Stdin = os.Stdin

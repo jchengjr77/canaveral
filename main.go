@@ -215,7 +215,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "git reminders",
+				Name:        "add git reminders",
 				Aliases:     []string{"remind", "gitremind"},
 				Description: `Create a reminder for commits`,
 				Usage:       "Get reminded of important details before comitting changes",
@@ -223,7 +223,28 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					err := git.AddReminder("test", "hello world")
+					if c.Args().Len() < 2 {
+						fmt.Println("Too few arguments for reminder. You must specify a file to add a reminder for and a message (enclosed in quotes) to remind with. Example: canaveral remind test \"test message\"")
+						return nil
+					}
+					if c.Args().Len() >= 3 {
+						fmt.Println("Too many arguments for reminder. You must only specify a file to add a reminder for and a message (enclosed in quotes) to remind with. Example: canaveral remind test \"test message\"")
+						return nil
+					}
+					err := git.AddReminder(c.Args().Get(0), c.Args().Get(1))
+					return err
+				},
+			},
+			{
+				Name:        "print git reminders",
+				Aliases:     []string{"printreminders", "printrem", "prem"},
+				Description: `Create a reminder for commits`,
+				Usage:       "Get reminded of important details before comitting changes",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					err := git.CheckReminders(c.Args().First())
 					return err
 				},
 			},
