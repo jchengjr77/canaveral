@@ -124,3 +124,40 @@ func AddReminder(file, reminder string) error {
 	addReminder(file, reminder)
 	return nil
 }
+
+// DelReminder deletes the specified reminder
+func DelReminder(file, reminder string) error {
+	if !lib.FileExists(".remind.json") {
+		return errors.New("No reminders found")
+	}
+	reminders := loadReminders()
+	fetched, found := reminders[file]
+	stored := reflect.ValueOf(fetched)
+	if !found || stored.Len() == 0 {
+		return errors.New("Couldn't find reminder: \"" + reminder + "\" for file " + file)
+	}
+	// ret := make([]string, stored.Len() - 1)
+	var ret []string
+	found = false
+	// reminders.SetMapIndex(reflect.ValueOf(file), reflect.Value{})
+	for i := 0; i < stored.Len(); i++ {
+		curr := fmt.Sprintf("%v", stored.Index(i))
+		if curr != reminder {
+			ret = append(ret, curr)
+		} else {
+			found = true
+		}
+	}
+	reminders[file] = ret
+	if !found {
+		fmt.Printf("Couldn't find reminder \"%s\" for file %s\n", reminder, file)
+		return nil
+	}
+	fmt.Printf("Deleting reminder \"%s\" from file %s\n", reminder, file)
+	jsonData, err := json.Marshal(reminders)
+	// This is not that robust of a solution because it rewrites the entire file
+	// ! Research ways to improve this
+	err = ioutil.WriteFile(".remind.json", jsonData, 0644)
+	lib.Check(err)
+	return nil
+}

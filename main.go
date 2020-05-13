@@ -249,6 +249,19 @@ func main() {
 				},
 			},
 			{
+				Name:        "delete a git",
+				Aliases:     []string{"deleterem", "delrem", "drem"},
+				Description: `delete a commit reminder for a file`,
+				Usage:       "Delete a stored reminder",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					err := git.DelReminder(c.Args().Get(0), c.Args().Get(1))
+					return err
+				},
+			},
+			{
 				Name:        "code",
 				Aliases:     []string{"vscode"},
 				Description: "Opens selected project in vscode",
