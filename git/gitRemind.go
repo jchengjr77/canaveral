@@ -10,6 +10,7 @@ import (
 	"os"
 	"bufio"
 	"io"
+	"strconv"
 )
 
 func loadReminders() map[string]interface{} {
@@ -96,7 +97,7 @@ func CheckReminders(file string) error {
 		return errors.New("You don't have any reminders stored")
 	}
 	if !lib.FileExists(file) {
-		return errors.New("Cannot find file" + file)
+		return errors.New("Cannot find file " + file)
 	}
 	checkReminders(file, true, loadReminders())
 	return nil
@@ -125,6 +126,14 @@ func AddReminder(file, reminder string) error {
 	return nil
 }
 
+func confirmDeleteAll(file string , stdin io.Reader) bool {
+	fmt.Printf("Are you sure you want to delete all reminders for %s ('y' or 'n')>", file)
+	reader := bufio.NewReader(stdin)
+	response, err := reader.ReadByte()
+	lib.Check(err)
+	return (response == 'y')
+}
+
 // DelReminder deletes the specified reminder
 func DelReminder(file, reminder string) error {
 	if !lib.FileExists(".remind.json") {
@@ -133,13 +142,36 @@ func DelReminder(file, reminder string) error {
 	reminders := loadReminders()
 	fetched, found := reminders[file]
 	stored := reflect.ValueOf(fetched)
+
 	if !found || stored.Len() == 0 {
 		return errors.New("Couldn't find reminder: \"" + reminder + "\" for file " + file)
 	}
-	// ret := make([]string, stored.Len() - 1)
+
+	if reminder == "" {
+		if confirmDeleteAll(file, os.Stdin) {
+			delete(reminders, file)
+			jsonData, err := json.Marshal(reminders)
+			// This is not that robust of a solution because it rewrites the entire file
+			// ! Research ways to improve this
+			err = ioutil.WriteFile(".remind.json", jsonData, 0644)
+			lib.Check(err)
+		}
+		return nil
+	}
+
+	if val, err := strconv.Atoi(reminder); err == nil {
+		if val <= 0 {
+			return errors.New("Reminder number must be positive")
+		}
+		if val > stored.Len() {
+			return errors.New(file + " has fewer than " + reminder + " reminders stored.")
+		}
+		reminder = fmt.Sprintf("%v", stored.Index(val-1))
+	}
+
 	var ret []string
 	found = false
-	// reminders.SetMapIndex(reflect.ValueOf(file), reflect.Value{})
+
 	for i := 0; i < stored.Len(); i++ {
 		curr := fmt.Sprintf("%v", stored.Index(i))
 		if curr != reminder {
@@ -153,6 +185,7 @@ func DelReminder(file, reminder string) error {
 		fmt.Printf("Couldn't find reminder \"%s\" for file %s\n", reminder, file)
 		return nil
 	}
+
 	fmt.Printf("Deleting reminder \"%s\" from file %s\n", reminder, file)
 	jsonData, err := json.Marshal(reminders)
 	// This is not that robust of a solution because it rewrites the entire file
