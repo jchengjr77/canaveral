@@ -215,6 +215,19 @@ func main() {
 				},
 			},
 			{
+				Name:        "git reminders",
+				Aliases:     []string{"remind", "gitremind"},
+				Description: `Create a reminder for commits`,
+				Usage:       "Get reminded of important details before comitting changes",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					err := git.AddReminder("test", "hello world")
+					return err
+				},
+			},
+			{
 				Name:        "code",
 				Aliases:     []string{"vscode"},
 				Description: "Opens selected project in vscode",

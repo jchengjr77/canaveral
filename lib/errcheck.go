@@ -32,3 +32,14 @@ func DirExists(dirname string) bool {
 	}
 	return info.IsDir()
 }
+
+// CreateFile creates a file with the name filename
+// ? untested (low priority)
+func CreateFile(filename string) error {
+	f, err := os.Create(filename)
+	defer f.Close()
+	if err != nil {
+		return err
+	}
+	return nil
+}
