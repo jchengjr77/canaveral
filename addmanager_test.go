@@ -34,7 +34,7 @@ func TestAddProj(t *testing.T) {
 
 func TestAddProjecthandler(t *testing.T) {
 	res := lib.CaptureOutput(func() {
-		addProjectHandler("", "default")
+		addProjectHandler("", "default", false)
 	})
 	want := "Please provide a project name.\n(For more info, 'canaveral --help')\n"
 	if res != want {
