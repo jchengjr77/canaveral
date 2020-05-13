@@ -13,6 +13,9 @@ import (
 )
 
 func loadReminders() map[string]interface{} {
+	if !lib.FileExists(".remind.json") {
+		return make(map[string]interface{})
+	}
 	remindContents, err := ioutil.ReadFile(".remind.json")
 	lib.Check(err)
 	var reminders map[string]interface{}
@@ -61,7 +64,9 @@ func confirmPrint(stdin io.Reader) bool {
 }
 
 func checkReminders(file string, forcePrint bool, reminders map[string]interface{}) bool {
-	// reminders := loadReminders()
+	if !lib.FileExists(".remind.json") {
+		return false
+	}
 	fetched, found := reminders[file]
 	stored := reflect.ValueOf(fetched)
 	print := false
