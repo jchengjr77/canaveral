@@ -33,7 +33,7 @@ jobs:
         name: Test
         runs-on: ubuntu-latest
         steps:
-          - name: Test (Base)
+            - name: Test (Base)
               run: go test
             - name: Test (nativestore)
               run: go test ./nativestore
@@ -47,4 +47,3 @@ jobs:
               run: go test ./gh
             - name: Test (git)
               run: go test ./git
-
