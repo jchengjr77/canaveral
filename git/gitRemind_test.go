@@ -2,9 +2,9 @@ package git
 
 import (
 	"canaveral/lib"
-	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"os/user"
 	"reflect"
 	"testing"
@@ -123,8 +123,6 @@ func TestAddDeleteReminders(t *testing.T) {
 	DelReminder("test", "")
 	actual = loadReminders()
 	intended = make(map[string]interface{})
-	fmt.Println(actual)
-	fmt.Println(intended)
 
 	if !reflect.DeepEqual(actual, intended) {
 		t.Errorf("failed to delete entire file with empty second arg")
@@ -195,5 +193,66 @@ func TestAddDeleteReminders(t *testing.T) {
 }
 
 func TestWrappers(t *testing.T) {
+	usr, err := user.Current()
+	lib.Check(err)
+	home := usr.HomeDir
+	workingPath := home + "/canaveral_remind_ws"
+	if !lib.DirExists(workingPath) {
+		os.MkdirAll(workingPath, os.ModePerm)
+		defer os.RemoveAll(workingPath)
+	} else {
+		t.Errorf("test folder already exists")
+		return
+	}
 
+	os.Chdir(workingPath)
+
+	err = AddReminder("test", "test message")
+	if err.Error() != "Git reminders can only be added in git repos" {
+		t.Errorf("failed to recognize no git repo")
+		return
+	}
+
+	err = exec.Command("git", "init").Run()
+	lib.Check(err)
+
+	err = AddReminder("test", "test message")
+	if err.Error() != "Cannot find test" {
+		t.Errorf("failed to recognize bad filename")
+		return
+	}
+	lib.CreateFile("test")
+	err = AddReminder("test", "")
+	if err.Error() != "reminder cannot be empty" {
+		t.Errorf("failed to recognize empty reminder")
+		return
+	}
+
+	AddReminder("test", "test message")
+	if !lib.FileExists(".remind.json") {
+		t.Errorf("failed to create .remind.json")
+		return
+	}
+	if !lib.FileExists(".gitignore") {
+		t.Errorf("failed to create .gitignore")
+		return
+	}
+	f, _ := os.Open(".gitignore")
+	defer f.Close()
+	if !inFile(f, ".remind.json") {
+		t.Errorf("failed to add remind to gitignore")
+		return
+	}
+
+	err = CheckReminders("bad-test")
+	if err.Error() != "Cannot find file bad-test" {
+		t.Errorf("Check failed to recognize bad filename")
+		return
+	}
+	os.Remove(".remind.json")
+	err = CheckReminders("bad-test")
+	if err.Error() != "You don't have any reminders stored" {
+		t.Errorf("Check failed to recognize missing .remind.json")
+		return
+	}
 }

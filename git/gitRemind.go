@@ -66,6 +66,7 @@ func confirmPrint(stdin io.Reader) bool {
 	return (response == 'y')
 }
 
+// ? untested but low priority because just prints info + manual tests are good
 func checkReminders(file string, forcePrint bool, reminders map[string]interface{}) bool {
 	if !lib.FileExists(".remind.json") {
 		return false
@@ -94,6 +95,7 @@ func checkReminders(file string, forcePrint bool, reminders map[string]interface
 }
 
 // CheckReminders prints all of the reminders stored for file
+// * tested
 func CheckReminders(file string) error {
 	if !lib.FileExists(".remind.json") {
 		return errors.New("You don't have any reminders stored")
@@ -107,6 +109,7 @@ func CheckReminders(file string) error {
 
 // AddReminder adds a reminder to be displayed back to the user when committing
 // to git
+// * tested
 func AddReminder(file, reminder string) error {
 	var err error
 	if !lib.DirExists(".git") {
@@ -114,6 +117,9 @@ func AddReminder(file, reminder string) error {
 	}
 	if !lib.FileExists(file) {
 		return errors.New("Cannot find " + file)
+	}
+	if reminder == "" {
+		return errors.New("reminder cannot be empty")
 	}
 	if !lib.FileExists(".remind.json") {
 		if !lib.FileExists(".gitignore") {
