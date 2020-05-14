@@ -1,18 +1,19 @@
 package git
 
 import (
+	"bufio"
 	"canaveral/lib"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"fmt"
-	"reflect"
-	"os"
-	"bufio"
 	"io"
+	"io/ioutil"
+	"os"
+	"reflect"
 	"strconv"
 )
 
+// * tested
 func loadReminders() map[string]interface{} {
 	if !lib.FileExists(".remind.json") {
 		return make(map[string]interface{})
@@ -22,6 +23,7 @@ func loadReminders() map[string]interface{} {
 	var reminders map[string]interface{}
 	err = json.Unmarshal(remindContents, &reminders)
 	if err != nil && err.Error() == "unexpected end of JSON input" {
+		// file is empty
 		reminders = make(map[string]interface{})
 	} else {
 		lib.Check(err)
@@ -29,6 +31,7 @@ func loadReminders() map[string]interface{} {
 	return reminders
 }
 
+// * tested
 func addReminder(file string, reminder string) {
 	reminders := loadReminders()
 	if _, found := reminders[file]; !found {
@@ -46,7 +49,6 @@ func addReminder(file string, reminder string) {
 		}
 		new[stored.Len()] = reminder
 		reminders[file] = new
-		// reminders[file] = append(reminders[file], reminder)
 	}
 	jsonData, err := json.Marshal(reminders)
 	lib.Check(err)
@@ -103,7 +105,7 @@ func CheckReminders(file string) error {
 	return nil
 }
 
-// AddReminder adds a reminder to be displayed back to the user when committing 
+// AddReminder adds a reminder to be displayed back to the user when committing
 // to git
 func AddReminder(file, reminder string) error {
 	var err error
@@ -126,7 +128,8 @@ func AddReminder(file, reminder string) error {
 	return nil
 }
 
-func confirmDeleteAll(file string , stdin io.Reader) bool {
+// * tested
+func confirmDeleteAll(file string, stdin io.Reader) bool {
 	fmt.Printf("Are you sure you want to delete all reminders for %s ('y' or 'n')>", file)
 	reader := bufio.NewReader(stdin)
 	response, err := reader.ReadByte()
@@ -135,6 +138,7 @@ func confirmDeleteAll(file string , stdin io.Reader) bool {
 }
 
 // DelReminder deletes the specified reminder
+// * tested
 func DelReminder(file, reminder string) error {
 	if !lib.FileExists(".remind.json") {
 		return errors.New("No reminders found")
@@ -179,6 +183,15 @@ func DelReminder(file, reminder string) error {
 		} else {
 			found = true
 		}
+	}
+	if len(ret) == 0 {
+		delete(reminders, file)
+		jsonData, err := json.Marshal(reminders)
+		// This is not that robust of a solution because it rewrites the entire file
+		// ! Research ways to improve this
+		err = ioutil.WriteFile(".remind.json", jsonData, 0644)
+		lib.Check(err)
+		return nil
 	}
 	reminders[file] = ret
 	if !found {
