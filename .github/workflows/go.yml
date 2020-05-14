@@ -27,7 +27,13 @@ jobs:
                       curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
                       dep ensure
                   fi
-            - name: Test (Base)
+            - name: Build
+              run: go build -v .
+    test:
+        name: Test
+        runs-on: ubuntu-latest
+        steps:
+          - name: Test (Base)
               run: go test
             - name: Test (nativestore)
               run: go test ./nativestore
@@ -41,6 +47,4 @@ jobs:
               run: go test ./gh
             - name: Test (git)
               run: go test ./git
-              
-            - name: Build
-              run: go build -v .
+
