@@ -1,6 +1,7 @@
 package main
 
 import (
+	"canaveral/git"
 	"canaveral/lib"
 	"canaveral/node"
 	"canaveral/react"
@@ -8,6 +9,15 @@ import (
 	"io/ioutil"
 	"os"
 )
+
+// Wraps the init repo to perform init in correct directory
+// * wraps tested function
+func createAndInit(projName string) {
+	ws, err := ioutil.ReadFile(usrHome + confDir + wsFName)
+	lib.Check(err)
+	os.Chdir(string(ws) + "/" + projName)
+	git.InitRepo()
+}
 
 // addProj takes in a project name and adds it to the workspace.
 // Requires that the workspace exists.
@@ -27,7 +37,7 @@ func addProj(projName string, wsPath string) {
 // Vanilla behavior includes generating a directory labeled the project name.
 // Initializes all boilerplate code for specified project type.
 // * tested
-func addProjectHandler(projName string, projType string) error {
+func addProjectHandler(projName string, projType string, init bool) error {
 	if projName == "" {
 		fmt.Println("Please provide a project name.")
 		fmt.Println("(For more info, 'canaveral --help')")
@@ -48,6 +58,9 @@ func addProjectHandler(projName string, projType string) error {
 	} else {
 		fmt.Println("Creating generic project...")
 		addProj(projName, usrHome+confDir+wsFName)
+	}
+	if init {
+		createAndInit(projName)
 	}
 	return nil
 }

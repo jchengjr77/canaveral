@@ -11,8 +11,3 @@ var usrHome = ""
 const confDir = "/canaveral/config/"
 const wsFName = "cnavrlws"
 const testFile = "canaveral_test_file"
-
-// GITHUB
-// ! untested
-var label string = "github credentials"
-var url string = "https://api.github.com"

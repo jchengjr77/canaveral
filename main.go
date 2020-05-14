@@ -3,6 +3,8 @@
 package main
 
 import (
+	gh "canaveral/gh"
+	"canaveral/git"
 	"canaveral/lib"
 	"canaveral/vscodesupport"
 	"fmt"
@@ -18,6 +20,8 @@ func main() {
 	// Flags
 	var qFlag = false
 	var projType = "default"
+	var initRepo = false
+	var commitMessage = ""
 
 	// Set home directory path of current user
 	usr, err := user.Current()
@@ -38,7 +42,7 @@ func main() {
 		Commands: []*cli.Command{
 			{
 				Name:        "launch",
-				Aliases:     []string{"c", "add", "create"},
+				Aliases:     []string{"c", "create"},
 				Description: "Creates a new project, specify name and type.",
 				Usage:       "Launch New Project",
 				Action: func(c *cli.Context) error {
@@ -46,7 +50,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					addProjectHandler(projName, projType)
+					addProjectHandler(projName, projType, initRepo)
 					return nil
 				},
 				Flags: []cli.Flag{
@@ -55,6 +59,12 @@ func main() {
 						Aliases:     []string{"t"},
 						Usage:       "Specify the type of project you create.",
 						Destination: &projType,
+					},
+					&cli.BoolFlag{
+						Name:        "gitinit",
+						Aliases:     []string{"g"},
+						Usage:       "Initialize a git repo",
+						Destination: &initRepo,
 					},
 				},
 			},
@@ -90,42 +100,117 @@ func main() {
 				},
 			},
 			{
-				Name:    "add git",
-				Aliases: []string{"git", "addgit"},
-				Description: `Allows canaveral to use your git credentials for repo management.
+				Name:    "add github credentials",
+				Aliases: []string{"agh", "agithub", "addgh", "addgithub"},
+				Description: `Allows canaveral to use your github credentials for repo management.
 					Username and password are required.
 					Username and password are stored in native storage for security.`,
-				Usage: "Add git info to canaveral.",
+				Usage: "Add github info to canaveral.",
 				Action: func(c *cli.Context) error {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					return gitAddWrapper()
+					return gh.GHAddWrapper()
 				},
 			},
 			{
-				Name:    "remove git",
-				Aliases: []string{"rgit", "remgit", "removegit"},
-				Description: `Deletes your git credentials from native storage.
-					Canaveral will no longer have any way to reference your git credentials.`,
-				Usage: "Remove git info from canaveral",
+				Name:        "remove github",
+				Aliases:     []string{"rgh", "remgh", "rgithub", "remgithub", "removegithub"},
+				Description: `Deletes your github credentials from native storage. Canaveral will no longer have any way to reference your githubcredentials.`,
+				Usage:       "Remove github info from canaveral",
 				Action: func(c *cli.Context) error {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					return remGitCredsHandler()
+					return gh.RemGHCredsHandler()
 				},
 			},
 			{
-				Name:        "print git",
-				Aliases:     []string{"pgit", "printgit"},
-				Description: `Prints the git username currntly stored`,
-				Usage:       "Print git info to command line",
+				Name:        "print github",
+				Aliases:     []string{"pgh", "pgithub", "printgithub"},
+				Description: `Prints the github username currntly stored`,
+				Usage:       "Print github info to command line",
 				Action: func(c *cli.Context) error {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					printGitUser()
+					gh.PrintGHUser()
+					return nil
+				},
+			},
+			{
+				Name:        "git status",
+				Aliases:     []string{"status"},
+				Description: `Prints current git status in a git directory`,
+				Usage:       "Print git status",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					git.Status()
+					return nil
+				},
+			},
+			{
+				Name:        "git add",
+				Aliases:     []string{"add"},
+				Description: `Adds all files to next git commit`,
+				Usage:       "Add git files. Specify filenames as commandline arguments, use '.' to add all files",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					if c.Args().Len() == 0 {
+						fmt.Println("Files to add must be specified. Use '.' for all files")
+					}
+					git.Add(c.Args().Slice())
+					return nil
+				},
+			},
+			{
+				Name:        "git commit",
+				Aliases:     []string{"commit"},
+				Description: `Commits currently added files`,
+				Usage:       "Commit changed files",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					git.Commit(commitMessage)
+					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "commit message",
+						Aliases:     []string{"m"},
+						Usage:       "Add commit message from commandline",
+						Destination: &commitMessage,
+					},
+				},
+			},
+			{
+				Name:        "git ignore",
+				Aliases:     []string{"ignore", "ign"},
+				Description: `Add specified file to .gitignore`,
+				Usage:       "Ignore specified files",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					git.Ignore(c.Args().Slice())
+					return nil
+				},
+			},
+			{
+				Name:        "git init",
+				Aliases:     []string{"gitinit"},
+				Description: `Initialize git repo`,
+				Usage:       "Initialize git repo",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					git.InitRepo()
 					return nil
 				},
 			},
