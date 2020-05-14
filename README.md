@@ -17,7 +17,7 @@ While both sites are important, Canaveral just sounded cooler than Vanderberg.
 
 ## Getting Started
 
-### Dependencies: _IMPORTANT_
+### Dependencies
 
 #### npm
 
@@ -114,6 +114,15 @@ Project creation automatically creates `src` and `tests` folders for your code o
 #### C
 
 Project creation automatically creates subdirectories `/src` and `/include` for your modules and headers. Canaveral also gives you a basic `Makefile` that you can customize. Canaveral also automatically initializes a README, personalized with your project's details.
+
+## Troubleshooting
+
+For fixing common problems, please refer to this list of steps:
+
+-   Make sure all dependencies are installed properly. See [dependencies](#dependencies) section
+-   Refer to canaveral's built in help for reference. Type `canaveral --help`
+-   For help on a specific command, such as `launch`, type `canaveral launch -help`
+-   If there are any other bugs, please contact either [JJ Cheng](mailto:jonathanchengjr77@gmail.com) or [Sean Prendi](sean.prendi@gmail.com). You may be able to help identify and patch an important aspect of Canaveral!
 
 ## Contributing
 
