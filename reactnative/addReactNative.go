@@ -29,3 +29,13 @@ func checkToolExists(toolName string) bool {
 	fmt.Printf("%s found in path\n", toolName)
 	return true
 }
+
+// ! Need to write expo install function
+
+// AddReactNativeProj takes a project name and path, and inits an expo project.
+// First, must check if the user has installed expo or not.
+// If yes, then continue. If no, then ask to install.
+// Running 'expo init' with the project name will create a new project.
+func AddReactNativeProj(projName string, wsPath string) {
+
+}

@@ -5,6 +5,8 @@ import (
 	"canaveral/lib"
 	"canaveral/node"
 	"canaveral/react"
+	"canaveral/reactnative"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -41,13 +43,13 @@ func addProjectHandler(projName string, projType string, init bool) error {
 	if projName == "" {
 		fmt.Println("Please provide a project name.")
 		fmt.Println("(For more info, 'canaveral --help')")
-		return nil
+		return errors.New("No project name specified")
 	} else if !lib.FileExists(usrHome + confDir + wsFName) {
 		fmt.Println("No canaveral workspace set. Please specify a workspace.")
 		fmt.Println(
 			"Canaveral needs a workspace to add projects to.")
 		fmt.Println("(For help, type 'canaveral --help')")
-		return nil
+		return errors.New("Unspecified workspace")
 	}
 	if projType == "react" {
 		fmt.Println("Creating React project...")
@@ -55,9 +57,15 @@ func addProjectHandler(projName string, projType string, init bool) error {
 	} else if projType == "node" {
 		fmt.Println("Creating Node project...")
 		node.AddNodeProj(projName, usrHome+confDir+wsFName)
-	} else {
+	} else if projType == "reactnative" {
+		fmt.Println("Creating React Native project...")
+		reactnative.AddReactNativeProj(projName, usrHome+confDir+wsFName)
+	} else if projType == "" {
 		fmt.Println("Creating generic project...")
 		addProj(projName, usrHome+confDir+wsFName)
+	} else {
+		fmt.Printf("Sorry, we do not support the project type '%s'\n", projType)
+		return errors.New("Unsupported project type specified")
 	}
 	if init {
 		createAndInit(projName)
