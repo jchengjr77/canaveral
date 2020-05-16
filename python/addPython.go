@@ -86,19 +86,20 @@ func createREADME(projName string, conda bool) error {
 		lib.Check(err)
 	}()
 	header := "# " + projName
-	setup := ""
+	setup := "## Setup and Installation\n"
 	if conda {
-		setup = "## Setup and Installation\nCreate a conda environment\n`conda create " + projName + "`\nActivate conda environment\n`conda activate " + projName + "`\nInstall python\n`conda install python`\nInstall pip\n`conda install pip`\nInstall Packages\n`sh install_packages.sh`\n\n"
+		setup += "Create a conda environment\n`conda create " + projName + "`\nActivate conda environment\n`conda activate " + projName + "`\nInstall python\n`conda install python`\nInstall pip\n`conda install pip`\n"
 	}
+	install := "Install Packages\n`sh install_packages.sh`\n\n"
 	canaveral := "###### Created with [Canaveral](https://github.com/jchengjr77/canaveral)"
-	_, err = readme.WriteString(header + "\n\n" + setup + canaveral)
+	_, err = readme.WriteString(header + "\n\n" + setup + install + canaveral)
 	return err
 }
 
 // AddPythonProj launches a new python project.
 // It will create a conda environment if conda is installed,
-// create a requirements.sh shell file for installing requirements
-// with pip, create a basic README.md, and a projName.py file
+// create a install_packages.sh shell file for installing requirements
+// with pip, create a basic README.md, and a [projName].py file
 func AddPythonProj(projName string, wsPath string) {
 	// Get workspace path
 	ws, err := ioutil.ReadFile(wsPath)
