@@ -43,7 +43,7 @@ func main() {
 			{
 				Name:        "launch",
 				Aliases:     []string{"c", "create"},
-				Description: "Creates a new project, specify name and type.",
+				Description: "Creates a new project, specify name, type, and initializing a git repo.",
 				Usage:       "Launch New Project",
 				Action: func(c *cli.Context) error {
 					projName := c.Args().Get(0)
@@ -224,7 +224,9 @@ func main() {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
 					projName := c.Args().Get(0)
-					vscodesupport.OpenCode(projName, usrHome+confDir+wsFName)
+					err := vscodesupport.OpenCode(
+						projName, usrHome+confDir+wsFName)
+					lib.Check(err)
 					return nil
 				},
 			},
