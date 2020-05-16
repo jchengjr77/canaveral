@@ -4,6 +4,7 @@ import (
 	"canaveral/git"
 	"canaveral/lib"
 	"canaveral/node"
+	"canaveral/python"
 	"canaveral/react"
 	"fmt"
 	"io/ioutil"
@@ -55,6 +56,9 @@ func addProjectHandler(projName string, projType string, init bool) error {
 	} else if projType == "node" {
 		fmt.Println("Creating Node project...")
 		node.AddNodeProj(projName, usrHome+confDir+wsFName)
+	} else if projType == "python" {
+		fmt.Println("Creating Python project...")
+		python.AddPythonProj(projName, usrHome+confDir+wsFName)
 	} else {
 		fmt.Println("Creating generic project...")
 		addProj(projName, usrHome+confDir+wsFName)
