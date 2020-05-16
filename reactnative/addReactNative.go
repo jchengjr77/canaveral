@@ -38,7 +38,7 @@ func checkToolExists(toolName string) bool {
 
 // installExpo checks first that npm is installed.
 // If it is, then it uses npm to globally install expo
-// ? untested, trivial
+// * tested
 func installExpo() error {
 	if !checkToolExists("npm") {
 		return errors.New("prerequisite tool 'npm' is not installed")
