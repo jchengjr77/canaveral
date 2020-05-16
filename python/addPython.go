@@ -29,6 +29,7 @@ func checkToolExists(toolName string) bool {
 	return true
 }
 
+// ! untested
 func createCondaEnv(projName string) error {
 	err := exec.Command("conda", "create", "-n", projName).Run()
 	if err != nil {
@@ -45,6 +46,7 @@ func createCondaEnv(projName string) error {
 // bash scripts, but none were easily portable to a go function. So for now,
 // this creates and deletes a shell file that uses the workarounds.
 // ? Look for better solutions
+// ! untested
 func activateAndSetupConda(projName string) error {
 	err := lib.CreateFile("tmp.sh")
 	defer os.Remove("tmp.sh")
@@ -61,6 +63,7 @@ func activateAndSetupConda(projName string) error {
 	return err
 }
 
+// ! untested
 func createInstallSh() error {
 	err := lib.CreateFile("install_packages.sh")
 	if err != nil {
@@ -75,6 +78,7 @@ func createInstallSh() error {
 	return err
 }
 
+// ! untested
 func createREADME(projName string, conda bool) error {
 	err := lib.CreateFile("README.md")
 	if err != nil {
@@ -100,6 +104,7 @@ func createREADME(projName string, conda bool) error {
 // It will create a conda environment if conda is installed,
 // create a install_packages.sh shell file for installing requirements
 // with pip, create a basic README.md, and a [projName].py file
+// ! untested
 func AddPythonProj(projName string, wsPath string) {
 	// Get workspace path
 	ws, err := ioutil.ReadFile(wsPath)
