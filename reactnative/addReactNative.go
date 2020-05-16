@@ -53,7 +53,7 @@ func installExpo() error {
 
 // confirmInstall listens for user confirmation and returns a boolean
 // Takes in an input channel to increase testability
-// ! untested
+// * tested
 func confirmInstall(stdin io.Reader) bool {
 	fmt.Printf("Allow canaveral to globally install 'expo'? ('y' or 'n')\n>")
 	reader := bufio.NewReader(stdin)
@@ -66,7 +66,7 @@ func confirmInstall(stdin io.Reader) bool {
 // First, must check if the user has installed expo or not.
 // If yes, then continue. If no, then ask to install.
 // Running 'expo init' with the project name will create a new project.
-// ! untested
+// * tested
 func AddReactNativeProj(projName string, wsPath string) {
 	expoInstalled := checkToolExists("expo")
 	ws, err := ioutil.ReadFile(wsPath)
