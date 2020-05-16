@@ -1,6 +1,7 @@
 package main
 
 import (
+	"canaveral/c"
 	"canaveral/git"
 	"canaveral/lib"
 	"canaveral/node"
@@ -59,6 +60,9 @@ func addProjectHandler(projName string, projType string, init bool) error {
 	} else if projType == "python" {
 		fmt.Println("Creating Python project...")
 		python.AddPythonProj(projName, usrHome+confDir+wsFName)
+	} else if projType == "C" {
+		fmt.Println("Creating C project...")
+		c.AddCProj(projName, usrHome+confDir+wsFName)
 	} else {
 		fmt.Println("Creating generic project...")
 		addProj(projName, usrHome+confDir+wsFName)

@@ -38,8 +38,5 @@ func DirExists(dirname string) bool {
 func CreateFile(filename string) error {
 	f, err := os.Create(filename)
 	defer f.Close()
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
