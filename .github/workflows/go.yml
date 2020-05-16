@@ -46,7 +46,7 @@ jobs:
             - name: go Test (python)
               run: go test ./python
             - name: go Test (C)
-              run: go test ./C
+              run: go test ./c
 
               
             - name: Build
