@@ -104,7 +104,7 @@ func createREADME(projName string, conda bool) error {
 // It will create a conda environment if conda is installed,
 // create a install_packages.sh shell file for installing requirements
 // with pip, create a basic README.md, and a [projName].py file
-// ! untested
+// * tested
 func AddPythonProj(projName string, wsPath string) {
 	// Get workspace path
 	ws, err := ioutil.ReadFile(wsPath)
