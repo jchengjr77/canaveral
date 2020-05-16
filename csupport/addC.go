@@ -1,4 +1,4 @@
-package c
+package csupport
 
 import (
 	"canaveral/lib"
