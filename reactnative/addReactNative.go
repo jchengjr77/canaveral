@@ -3,6 +3,7 @@ package reactnative
 import (
 	"bufio"
 	"canaveral/lib"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -35,9 +36,19 @@ func checkToolExists(toolName string) bool {
 	return true
 }
 
-// ! Need to write expo install function
+// installExpo checks first that npm is installed.
+// If it is, then it uses npm to globally install expo
+// ? untested, trivial
 func installExpo() error {
-	return nil
+	if !checkToolExists("npm") {
+		return errors.New("prerequisite tool 'npm' is not installed")
+	}
+	cmd := exec.Command("npm", "i", "-g", "expo-cli")
+	// set correct pipes
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	return err
 }
 
 // confirmInstall listens for user confirmation and returns a boolean
@@ -69,10 +80,11 @@ func AddReactNativeProj(projName string, wsPath string) {
 			fmt.Printf("Install rejected. Aborting creation of '%s'\n", projName)
 			return
 		}
+		fmt.Println("Attempting to install expo using npm")
 		err = installExpo()
 		lib.Check(err)
 	}
-	cmd := exec.Command("expo", "init", projName)
+	cmd := exec.Command("expo", "i", "-t", "blank", "--npm", "--name", projName, projName)
 	// set correct pipes
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
