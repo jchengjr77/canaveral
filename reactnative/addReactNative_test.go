@@ -10,32 +10,9 @@ import (
 	"testing"
 )
 
-func TestCheckToolExists(t *testing.T) {
-	actual := checkToolExists("")
-	expect := false
-	if expect != actual {
-		t.Errorf("func checkToolExists() did not fail given empty toolname")
-	}
-	actual = checkToolExists("shouldnotexist")
-	expect = false
-	if expect != actual {
-		t.Errorf("func checkToolExists() did not fail given fake toolname")
-	}
-	actual = checkToolExists("--passingAnOption")
-	expect = false
-	if expect != actual {
-		t.Fatalf("func checkToolExists() did not fail given bad parameter")
-	}
-	actual = checkToolExists("which") // runs 'which which'
-	expect = true
-	if expect != actual {
-		t.Errorf("func checkToolExists() did not find built-in command 'which'")
-	}
-}
-
 func TestInstallExpo(t *testing.T) {
 	// make sure expo is installed
-	hadNpmInitially := checkToolExists("npm")
+	hadNpmInitially := lib.CheckToolExists("npm")
 	var actual, expect error
 	actual = installExpo()
 	if !hadNpmInitially {
@@ -49,7 +26,7 @@ func TestInstallExpo(t *testing.T) {
 		if actual != expect {
 			t.Errorf(
 				"func installExpo() threw error when it wasn't supposed to")
-		} else if !checkToolExists("expo") {
+		} else if !lib.CheckToolExists("expo") {
 			t.Errorf(
 				"func installExpo() did not properly install expo")
 		}
@@ -81,7 +58,7 @@ func TestConfirmInstall(t *testing.T) {
 
 func TestAddReactNativeProj(t *testing.T) {
 	// make sure expo is installed
-	hadExpoInitially := checkToolExists("expo")
+	hadExpoInitially := lib.CheckToolExists("expo")
 	if !hadExpoInitially {
 		expoIn := exec.Command("npm", "install", "-g", "expo-cli")
 		expoOut := exec.Command("npm", "uninstall", "-g", "expo-cli")
