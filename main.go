@@ -55,15 +55,18 @@ func main() {
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:        "type",
-						Aliases:     []string{"t"},
-						Usage:       "Specify the type of project you create.",
+						Name:    "type",
+						Aliases: []string{"t"},
+						Usage: `
+	Specify the type of project you create. Supported types: 
+	react, reactnative, node, python, c
+	`,
 						Destination: &projType,
 					},
 					&cli.BoolFlag{
 						Name:        "gitinit",
 						Aliases:     []string{"g"},
-						Usage:       "Initialize a git repo",
+						Usage:       "Initialize a git repo for new project",
 						Destination: &initRepo,
 					},
 				},
