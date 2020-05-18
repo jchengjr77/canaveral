@@ -56,3 +56,5 @@ jobs:
               run: go test ./gh
             - name: Test (git)
               run: go test ./git
+            - name: Test (finder)
+              run: go test ./finder
