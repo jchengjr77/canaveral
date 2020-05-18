@@ -23,7 +23,7 @@ func OpenCode(projName string, configPath string) error {
 	} else if !lib.FileExists(configPath) {
 		fmt.Println("No canaveral workspace set. Please specify a workspace.")
 		fmt.Println(
-			"Canaveral needs a workspace to add projects to.")
+			"Canaveral needs to know where to look for your projects.")
 		fmt.Println("(For help, type 'canaveral --help')")
 		return errors.New("No canaveral workspace set")
 	}

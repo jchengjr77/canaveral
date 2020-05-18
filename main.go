@@ -3,6 +3,7 @@
 package main
 
 import (
+	"canaveral/finder"
 	gh "canaveral/gh"
 	"canaveral/git"
 	"canaveral/lib"
@@ -82,8 +83,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					remProjectHandler(projName)
-					return nil
+					return remProjectHandler(projName)
 				},
 			},
 			{
@@ -98,8 +98,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					setWorkspaceHandler(newWorkspace)
-					return nil
+					return setWorkspaceHandler(newWorkspace)
 				},
 			},
 			{
@@ -229,8 +228,25 @@ func main() {
 					projName := c.Args().Get(0)
 					err := vscodesupport.OpenCode(
 						projName, usrHome+confDir+wsFName)
-					lib.Check(err)
-					return nil
+					return err
+				},
+			},
+			{
+				Name:    "finder",
+				Aliases: []string{"open"},
+				Description: `
+				Opens selected project in a finder window.
+				This is targeted towards macOS users.
+				Argument should be a project name.`,
+				Usage: "Opens selected project in a finder window",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					projName := c.Args().Get(0)
+					err := finder.OpenFinder(
+						projName, usrHome+confDir+wsFName)
+					return err
 				},
 			},
 		},
