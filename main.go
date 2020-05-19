@@ -22,6 +22,7 @@ func main() {
 	var projType = "default"
 	var initRepo = false
 	var commitMessage = ""
+	var projPath = ""
 
 	// Set home directory path of current user
 	usr, err := user.Current()
@@ -147,8 +148,16 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Status()
+					git.Status(usrHome+confDir+wsFName, projPath)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
@@ -163,8 +172,16 @@ func main() {
 					if c.Args().Len() == 0 {
 						fmt.Println("Files to add must be specified. Use '.' for all files")
 					}
-					git.Add(c.Args().Slice())
+					git.Add(c.Args().Slice(), usrHome+confDir+wsFName, projPath)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
@@ -176,15 +193,21 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Commit(commitMessage)
+					git.Commit(commitMessage, usrHome+confDir+wsFName, projPath)
 					return nil
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:        "commit message",
+						Name:        "message",
 						Aliases:     []string{"m"},
 						Usage:       "Add commit message from commandline",
 						Destination: &commitMessage,
+					},
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
 					},
 				},
 			},
@@ -200,6 +223,14 @@ func main() {
 					git.Ignore(c.Args().Slice())
 					return nil
 				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
+				},
 			},
 			{
 				Name:        "gitinit",
@@ -209,8 +240,16 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.InitRepo()
+					git.InitRepo(usrHome+confDir+wsFName, projPath)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
