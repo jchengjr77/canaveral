@@ -100,8 +100,8 @@ func main() {
 				},
 			},
 			{
-				Name:    "add github credentials",
-				Aliases: []string{"agh", "agithub", "addgh", "addgithub"},
+				Name:    "addgh",
+				Aliases: []string{"agh", "agithub", "addgithub"},
 				Description: `Allows canaveral to use your github credentials for repo management.
 					Username and password are required.
 					Username and password are stored in native storage for security.`,
@@ -114,8 +114,8 @@ func main() {
 				},
 			},
 			{
-				Name:        "remove github",
-				Aliases:     []string{"rgh", "remgh", "rgithub", "remgithub", "removegithub"},
+				Name:        "remgh",
+				Aliases:     []string{"rgh", "rgithub", "remgithub", "removegithub"},
 				Description: `Deletes your github credentials from native storage. Canaveral will no longer have any way to reference your githubcredentials.`,
 				Usage:       "Remove github info from canaveral",
 				Action: func(c *cli.Context) error {
@@ -126,7 +126,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "print github",
+				Name:        "printgh",
 				Aliases:     []string{"pgh", "pgithub", "printgithub"},
 				Description: `Prints the github username currntly stored`,
 				Usage:       "Print github info to command line",
@@ -139,7 +139,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "git status",
+				Name:        "gitstatus",
 				Aliases:     []string{"status"},
 				Description: `Prints current git status in a git directory`,
 				Usage:       "Print git status",
@@ -152,7 +152,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "git add",
+				Name:        "gitadd",
 				Aliases:     []string{"add"},
 				Description: `Adds all files to next git commit`,
 				Usage:       "Add git files. Specify filenames as commandline arguments, use '.' to add all files",
@@ -168,7 +168,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "git commit",
+				Name:        "gitcommit",
 				Aliases:     []string{"commit"},
 				Description: `Commits currently added files`,
 				Usage:       "Commit changed files",
@@ -189,7 +189,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "git ignore",
+				Name:        "gitignore",
 				Aliases:     []string{"ignore", "ign"},
 				Description: `Add specified file to .gitignore`,
 				Usage:       "Ignore specified files",
@@ -202,8 +202,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "git init",
-				Aliases:     []string{"gitinit"},
+				Name:        "gitinit",
 				Description: `Initialize git repo`,
 				Usage:       "Initialize git repo",
 				Action: func(c *cli.Context) error {
@@ -215,8 +214,8 @@ func main() {
 				},
 			},
 			{
-				Name:        "add git reminders",
-				Aliases:     []string{"remind", "gitremind"},
+				Name:        "gitremind",
+				Aliases:     []string{"remind"},
 				Description: `Create a reminder for commits`,
 				Usage:       "Get reminded of important details before comitting changes",
 				Action: func(c *cli.Context) error {
@@ -236,8 +235,8 @@ func main() {
 				},
 			},
 			{
-				Name:        "print git reminders",
-				Aliases:     []string{"printreminders", "printrem", "prem"},
+				Name:        "printreminders",
+				Aliases:     []string{"printrem", "prem"},
 				Description: `Create a reminder for commits`,
 				Usage:       "Get reminded of important details before comitting changes",
 				Action: func(c *cli.Context) error {
@@ -249,7 +248,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "delete a reminder",
+				Name:        "delreminder",
 				Aliases:     []string{"deleterem", "delrem", "drem"},
 				Description: `delete a commit reminder for a file`,
 				Usage:       "Delete a stored reminder",
