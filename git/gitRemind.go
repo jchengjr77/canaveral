@@ -56,6 +56,7 @@ func addReminder(file string, reminder string) {
 	// This is not that robust of a solution because it rewrites the entire file
 	// ! Research ways to improve this
 	err = ioutil.WriteFile(".remind.json", jsonData, 0644)
+	lib.Check(err)
 }
 
 func confirmPrint(stdin io.Reader) bool {
@@ -128,7 +129,7 @@ func AddReminder(file, reminder string) error {
 		}
 		err = lib.CreateFile(".remind.json")
 		lib.Check(err)
-		Ignore([]string{".remind.json"})
+		Ignore([]string{".remind.json"}, "", "")
 	}
 	addReminder(file, reminder)
 	return nil

@@ -115,7 +115,7 @@ func confirmCommit(stdin io.Reader) bool {
 // Commit performs a git commit on added files
 // * tested
 // ! reminders untested
-func Commit(commitMessage, wsPath, project string) {
+func Commit(commitMessage string, wsPath string, project string) {
 	if project != "" {
 		// Get workspace path
 		ws, err := ioutil.ReadFile(wsPath)

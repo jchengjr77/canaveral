@@ -220,7 +220,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Ignore(c.Args().Slice())
+					git.Ignore(c.Args().Slice(), usrHome+confDir+wsFName, projPath)
 					return nil
 				},
 				Flags: []cli.Flag{
