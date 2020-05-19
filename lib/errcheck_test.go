@@ -78,3 +78,26 @@ func TestDirExists(t *testing.T) {
 			newPath)
 	}
 }
+
+func TestCheckToolExists(t *testing.T) {
+	actual := CheckToolExists("")
+	expect := false
+	if expect != actual {
+		t.Errorf("func CheckToolExists() did not fail given empty toolname")
+	}
+	actual = CheckToolExists("shouldnotexist")
+	expect = false
+	if expect != actual {
+		t.Errorf("func CheckToolExists() did not fail given fake toolname")
+	}
+	actual = CheckToolExists("--passingAnOption")
+	expect = false
+	if expect != actual {
+		t.Fatalf("func CheckToolExists() did not fail given bad parameter")
+	}
+	actual = CheckToolExists("which") // runs 'which which'
+	expect = true
+	if expect != actual {
+		t.Errorf("func CheckToolExists() did not find built-in command 'which'")
+	}
+}
