@@ -10,13 +10,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/exec"
 )
 
 // OpenFinder will take a project name and config path,
 // and attempt to open the specified project in a new finder window.
 // Returns error if it fails. Otherwise returns nil.
-// ! untested
+// * tested
 func OpenFinder(projName string, configPath string) (finalErr error) {
 	// defer a recover function that returns the thrown error
 	defer func() {
@@ -46,8 +45,8 @@ func OpenFinder(projName string, configPath string) (finalErr error) {
 	}
 	err = os.Chdir(string(ws) + "/" + projName)
 	lib.Check(err)
-	// Open project in finder
-	openFinder := exec.Command("open", ".")
+	// Open project in file explorer (OS dependent)
+	openFinder := openCmd
 	// set correct pipes
 	openFinder.Stdout = os.Stdout
 	openFinder.Stderr = os.Stderr

@@ -51,8 +51,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					addProjectHandler(projName, projType, initRepo)
-					return nil
+					return addProjectHandler(projName, projType, initRepo)
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
