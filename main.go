@@ -22,6 +22,7 @@ func main() {
 	var projType = "default"
 	var initRepo = false
 	var commitMessage = ""
+	var projPath = ""
 
 	// Set home directory path of current user
 	usr, err := user.Current()
@@ -43,7 +44,7 @@ func main() {
 			{
 				Name:        "launch",
 				Aliases:     []string{"c", "create"},
-				Description: "Creates a new project, specify name and type.",
+				Description: "Creates a new project, specify name, type, and initializing a git repo.",
 				Usage:       "Launch New Project",
 				Action: func(c *cli.Context) error {
 					projName := c.Args().Get(0)
@@ -55,15 +56,18 @@ func main() {
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:        "type",
-						Aliases:     []string{"t"},
-						Usage:       "Specify the type of project you create.",
+						Name:    "type",
+						Aliases: []string{"t"},
+						Usage: `
+	Specify the type of project you create. Supported types: 
+	react, reactnative, node, python, c
+	`,
 						Destination: &projType,
 					},
 					&cli.BoolFlag{
 						Name:        "gitinit",
 						Aliases:     []string{"g"},
-						Usage:       "Initialize a git repo",
+						Usage:       "Initialize a git repo for new project",
 						Destination: &initRepo,
 					},
 				},
@@ -100,8 +104,8 @@ func main() {
 				},
 			},
 			{
-				Name:    "add github credentials",
-				Aliases: []string{"agh", "agithub", "addgh", "addgithub"},
+				Name:    "addgh",
+				Aliases: []string{"agh", "agithub", "addgithub"},
 				Description: `Allows canaveral to use your github credentials for repo management.
 					Username and password are required.
 					Username and password are stored in native storage for security.`,
@@ -114,8 +118,8 @@ func main() {
 				},
 			},
 			{
-				Name:        "remove github",
-				Aliases:     []string{"rgh", "remgh", "rgithub", "remgithub", "removegithub"},
+				Name:        "remgh",
+				Aliases:     []string{"rgh", "rgithub", "remgithub", "removegithub"},
 				Description: `Deletes your github credentials from native storage. Canaveral will no longer have any way to reference your githubcredentials.`,
 				Usage:       "Remove github info from canaveral",
 				Action: func(c *cli.Context) error {
@@ -126,7 +130,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "print github",
+				Name:        "printgh",
 				Aliases:     []string{"pgh", "pgithub", "printgithub"},
 				Description: `Prints the github username currntly stored`,
 				Usage:       "Print github info to command line",
@@ -139,7 +143,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "git status",
+				Name:        "gitstatus",
 				Aliases:     []string{"status"},
 				Description: `Prints current git status in a git directory`,
 				Usage:       "Print git status",
@@ -147,12 +151,20 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Status()
+					git.Status(usrHome+confDir+wsFName, projPath)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
-				Name:        "git add",
+				Name:        "gitadd",
 				Aliases:     []string{"add"},
 				Description: `Adds all files to next git commit`,
 				Usage:       "Add git files. Specify filenames as commandline arguments, use '.' to add all files",
@@ -163,12 +175,20 @@ func main() {
 					if c.Args().Len() == 0 {
 						fmt.Println("Files to add must be specified. Use '.' for all files")
 					}
-					git.Add(c.Args().Slice())
+					git.Add(c.Args().Slice(), usrHome+confDir+wsFName, projPath)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
-				Name:        "git commit",
+				Name:        "gitcommit",
 				Aliases:     []string{"commit"},
 				Description: `Commits currently added files`,
 				Usage:       "Commit changed files",
@@ -176,20 +196,26 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Commit(commitMessage)
+					git.Commit(commitMessage, usrHome+confDir+wsFName, projPath)
 					return nil
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:        "commit message",
+						Name:        "message",
 						Aliases:     []string{"m"},
 						Usage:       "Add commit message from commandline",
 						Destination: &commitMessage,
 					},
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
-				Name:        "git ignore",
+				Name:        "gitignore",
 				Aliases:     []string{"ignore", "ign"},
 				Description: `Add specified file to .gitignore`,
 				Usage:       "Ignore specified files",
@@ -197,26 +223,41 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Ignore(c.Args().Slice())
+					git.Ignore(c.Args().Slice(), usrHome+confDir+wsFName, projPath)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
-				Name:        "git init",
-				Aliases:     []string{"gitinit"},
+				Name:        "gitinit",
 				Description: `Initialize git repo`,
 				Usage:       "Initialize git repo",
 				Action: func(c *cli.Context) error {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.InitRepo()
+					git.InitRepo(usrHome+confDir+wsFName, projPath)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
-				Name:        "add git reminders",
-				Aliases:     []string{"remind", "gitremind"},
+				Name:        "gitremind",
+				Aliases:     []string{"remind"},
 				Description: `Create a reminder for commits`,
 				Usage:       "Get reminded of important details before comitting changes",
 				Action: func(c *cli.Context) error {
@@ -236,8 +277,8 @@ func main() {
 				},
 			},
 			{
-				Name:        "print git reminders",
-				Aliases:     []string{"printreminders", "printrem", "prem"},
+				Name:        "printreminders",
+				Aliases:     []string{"printrem", "prem"},
 				Description: `Create a reminder for commits`,
 				Usage:       "Get reminded of important details before comitting changes",
 				Action: func(c *cli.Context) error {
@@ -249,7 +290,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "delete a reminder",
+				Name:        "delreminder",
 				Aliases:     []string{"deleterem", "delrem", "drem"},
 				Description: `delete a commit reminder for a file`,
 				Usage:       "Delete a stored reminder",
@@ -279,7 +320,9 @@ func main() {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
 					projName := c.Args().Get(0)
-					vscodesupport.OpenCode(projName, usrHome+confDir+wsFName)
+					err := vscodesupport.OpenCode(
+						projName, usrHome+confDir+wsFName)
+					lib.Check(err)
 					return nil
 				},
 			},

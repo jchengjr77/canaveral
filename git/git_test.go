@@ -2,6 +2,8 @@ package git
 
 import (
 	"canaveral/lib"
+	"encoding/json"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"os/user"
@@ -25,7 +27,7 @@ func TestStatus(t *testing.T) {
 	lib.Check(err)
 
 	// Initially no git repo
-	ret := lib.CaptureOutput(Status)
+	ret := lib.CaptureOutput(func() { Status("", "") })
 	if ret != "fatal: not a git repository (or any of the parent directories): .git\nexit status 128\n" {
 		t.Errorf("Bad state. Expected directory not to be a git repo, instead got: %s\n", ret)
 	}
@@ -33,7 +35,7 @@ func TestStatus(t *testing.T) {
 	// Initialize git repo
 	err = exec.Command("git", "init").Run()
 	lib.Check(err)
-	ret = lib.CaptureOutput(Status)
+	ret = lib.CaptureOutput(func() { Status("", "") })
 	if ret[:16] != "On branch master" {
 		t.Errorf("Expected git repo to exist, instead got: %s\n", ret)
 	}
@@ -62,13 +64,13 @@ func TestInit(t *testing.T) {
 	}
 
 	// Initialize repo
-	ret = lib.CaptureOutput(InitRepo)
+	ret = lib.CaptureOutput(func() { InitRepo("", "") })
 	if ret[:32] != "Initialized empty Git repository" {
 		t.Errorf("Initialized failed. Expected an empty repo to be initialized, instead got: %s", ret)
 	}
 
 	// Reinitialize repo
-	ret = lib.CaptureOutput(InitRepo)
+	ret = lib.CaptureOutput(func() { InitRepo("", "") })
 	if ret[:37] != "Reinitialized existing Git repository" {
 		t.Errorf("Initialized failed. Expected an empty repo to be initialized, instead got: %s", ret)
 	}
@@ -113,7 +115,7 @@ func TestAdd(t *testing.T) {
 
 	// Add file
 	adding := []string{"add-test"}
-	Add(adding)
+	Add(adding, "", "")
 
 	// Check added
 	retByte, err = exec.Command("git", "status").CombinedOutput()
@@ -155,7 +157,7 @@ func TestAdd(t *testing.T) {
 
 	// Add files
 	adding = []string{"add-test1", "add-test2", "add-test3"}
-	Add(adding)
+	Add(adding, "", "")
 
 	// Check added all
 	retByte, err = exec.Command("git", "status").CombinedOutput()
@@ -210,7 +212,7 @@ func TestCommit(t *testing.T) {
 
 	// Commit file with message
 	ret = lib.CaptureOutput(func() {
-		Commit("Testing commit.")
+		Commit("Testing commit.", "", "")
 	})
 
 	loggedIn := regexp.MustCompile(`Testing commit.`)
@@ -223,6 +225,64 @@ func TestCommit(t *testing.T) {
 
 	if output == "" {
 		t.Errorf("Expected commit message to go through. Instead, got: %s", ret)
+	}
+
+	// Testing detection of reminders
+	r, err := os.Create(".remind.json")
+	defer r.Close()
+	lib.Check(err)
+	_, err = os.OpenFile(".remind.json", os.O_APPEND|os.O_WRONLY, 0644)
+	lib.Check(err)
+
+	commit2, err := os.Create("commit-test-2")
+	defer commit2.Close()
+	lib.Check(err)
+
+	// Add file
+	err = exec.Command("git", "add", "commit-test-2").Run()
+	lib.Check(err)
+
+	// Write sample reminder
+	reminder := make(map[string]interface{})
+	reminder["commit-test-2"] = []string{"this is a test reminder"}
+	jsonData, err := json.Marshal(reminder)
+	lib.Check(err)
+	err = ioutil.WriteFile(".remind.json", jsonData, 0644)
+	lib.Check(err)
+
+	// Test that commit prompts the user to print it, doesn't print given "n"
+	content := []byte("n")
+	tmpno, err := ioutil.TempFile("", "example")
+	lib.Check(err)
+
+	if _, err := tmpno.Write(content); err != nil {
+		lib.Check(err)
+	}
+
+	if _, err := tmpno.Seek(0, 0); err != nil {
+		lib.Check(err)
+	}
+
+	os.Stdin = tmpno
+	// Commit file with message
+	ret = lib.CaptureOutput(func() {
+		Commit("Testing commit.", "", "")
+	})
+
+	foundRems := regexp.MustCompile(`You have reminders stored for this file`)
+	output = foundRems.FindString(ret)
+
+	if output == "" {
+		t.Errorf("Didn't ask to show reminders, but reminders exist\n")
+		return
+	}
+
+	printedRem := regexp.MustCompile(`this is a test reminder`)
+	output = printedRem.FindString(ret)
+
+	if output != "" {
+		t.Errorf("Printed reminders but was told not to.\n")
+		return
 	}
 }
 
@@ -280,7 +340,7 @@ func TestIgnore(t *testing.T) {
 
 	// Ignore the IgnoreMe file
 	ignoring := []string{"IgnoreMe"}
-	Ignore(ignoring)
+	Ignore(ignoring, "", "")
 
 	// Check is ignored
 	retByte, err = exec.Command("git", "status").CombinedOutput()
@@ -311,7 +371,7 @@ func TestIgnore(t *testing.T) {
 	// Ignore the IgnoreMeToo file and skip the IgnoreMe file
 	ignoring = append(ignoring, "IgnoreMeToo")
 	ret = lib.CaptureOutput(func() {
-		Ignore(ignoring)
+		Ignore(ignoring, "", "")
 	})
 	if ret != "Skipping IgnoreMe because it is already being ignored.\n" {
 		t.Errorf("Expected to skip IgnoreMe because it's already being ignored. Instead got: %s", ret)
