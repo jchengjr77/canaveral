@@ -18,7 +18,7 @@ func createAndInit(projName string) {
 	ws, err := ioutil.ReadFile(usrHome + confDir + wsFName)
 	lib.Check(err)
 	os.Chdir(string(ws) + "/" + projName)
-	git.InitRepo()
+	git.InitRepo("", "")
 }
 
 // addProj takes in a project name and adds it to the workspace.
