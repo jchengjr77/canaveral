@@ -43,8 +43,6 @@ func CreateFile(filename string) error {
 	f, err := os.Create(filename)
 	defer f.Close()
 	return err
-<<<<<<< HEAD
-=======
 }
 
 // CheckToolExists uses the 'which' command to find a specific tool.
@@ -70,5 +68,4 @@ func CheckToolExists(toolName string) bool {
 	}
 	fmt.Printf("%s found in path\n", toolName)
 	return true
->>>>>>> c394ec4b4133ac0739248903396c7ddb1ffec841
 }
