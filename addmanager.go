@@ -4,6 +4,7 @@ import (
 	"canaveral/git"
 	"canaveral/lib"
 	"canaveral/node"
+	"canaveral/python"
 	"canaveral/react"
 	"canaveral/reactnative"
 	"errors"
@@ -57,6 +58,9 @@ func addProjectHandler(projName string, projType string, init bool) error {
 	} else if projType == "node" {
 		fmt.Println("Creating Node project...")
 		node.AddNodeProj(projName, usrHome+confDir+wsFName)
+	} else if projType == "python" {
+		fmt.Println("Creating Python project...")
+		python.AddPythonProj(projName, usrHome+confDir+wsFName)
 	} else if projType == "reactnative" {
 		fmt.Println("Creating React Native project...")
 		reactnative.AddReactNativeProj(projName, usrHome+confDir+wsFName)

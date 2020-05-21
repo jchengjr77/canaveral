@@ -56,3 +56,11 @@ jobs:
               run: go test ./gh
             - name: Test (git)
               run: go test ./git
+            - name: Setup Miniconda
+              uses: goanpeca/setup-miniconda@v1.3.0
+            - name: Test (python)
+              run: go test ./python
+
+              
+            - name: Build
+              run: go build -v .
