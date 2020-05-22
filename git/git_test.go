@@ -110,7 +110,7 @@ func TestAdd(t *testing.T) {
 	lib.Check(err)
 	defer func() {
 		f.Close()
-		os.Remove("add-test")
+		// os.Remove("add-test")
 	}()
 
 	// Add file
