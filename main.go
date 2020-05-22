@@ -23,6 +23,7 @@ func main() {
 	var projType = "default"
 	var initRepo = false
 	var commitMessage = ""
+	var projPath = ""
 
 	// Set home directory path of current user
 	usr, err := user.Current()
@@ -101,8 +102,8 @@ func main() {
 				},
 			},
 			{
-				Name:    "add github credentials",
-				Aliases: []string{"agh", "agithub", "addgh", "addgithub"},
+				Name:    "addgh",
+				Aliases: []string{"agh", "agithub", "addgithub"},
 				Description: `Allows canaveral to use your github credentials for repo management.
 					Username and password are required.
 					Username and password are stored in native storage for security.`,
@@ -115,8 +116,8 @@ func main() {
 				},
 			},
 			{
-				Name:        "remove github",
-				Aliases:     []string{"rgh", "remgh", "rgithub", "remgithub", "removegithub"},
+				Name:        "remgh",
+				Aliases:     []string{"rgh", "rgithub", "remgithub", "removegithub"},
 				Description: `Deletes your github credentials from native storage. Canaveral will no longer have any way to reference your githubcredentials.`,
 				Usage:       "Remove github info from canaveral",
 				Action: func(c *cli.Context) error {
@@ -127,7 +128,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "print github",
+				Name:        "printgh",
 				Aliases:     []string{"pgh", "pgithub", "printgithub"},
 				Description: `Prints the github username currntly stored`,
 				Usage:       "Print github info to command line",
@@ -140,7 +141,7 @@ func main() {
 				},
 			},
 			{
-				Name:        "git status",
+				Name:        "gitstatus",
 				Aliases:     []string{"status"},
 				Description: `Prints current git status in a git directory`,
 				Usage:       "Print git status",
@@ -148,12 +149,20 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Status()
+					git.Status(usrHome+confDir+wsFName, projPath)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
-				Name:        "git add",
+				Name:        "gitadd",
 				Aliases:     []string{"add"},
 				Description: `Adds all files to next git commit`,
 				Usage:       "Add git files. Specify filenames as commandline arguments, use '.' to add all files",
@@ -164,12 +173,20 @@ func main() {
 					if c.Args().Len() == 0 {
 						fmt.Println("Files to add must be specified. Use '.' for all files")
 					}
-					git.Add(c.Args().Slice())
+					git.Add(c.Args().Slice(), usrHome+confDir+wsFName, projPath)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
-				Name:        "git commit",
+				Name:        "gitcommit",
 				Aliases:     []string{"commit"},
 				Description: `Commits currently added files`,
 				Usage:       "Commit changed files",
@@ -177,20 +194,26 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Commit(commitMessage)
+					git.Commit(commitMessage, usrHome+confDir+wsFName, projPath)
 					return nil
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:        "commit message",
+						Name:        "message",
 						Aliases:     []string{"m"},
 						Usage:       "Add commit message from commandline",
 						Destination: &commitMessage,
 					},
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
-				Name:        "git ignore",
+				Name:        "gitignore",
 				Aliases:     []string{"ignore", "ign"},
 				Description: `Add specified file to .gitignore`,
 				Usage:       "Ignore specified files",
@@ -198,21 +221,91 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Ignore(c.Args().Slice())
+					git.Ignore(c.Args().Slice(), usrHome+confDir+wsFName, projPath)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
 				},
 			},
 			{
-				Name:        "git init",
-				Aliases:     []string{"gitinit"},
+				Name:        "gitinit",
 				Description: `Initialize git repo`,
 				Usage:       "Initialize git repo",
 				Action: func(c *cli.Context) error {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.InitRepo()
+					git.InitRepo(usrHome+confDir+wsFName, projPath)
 					return nil
+				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "project",
+						Aliases:     []string{"p"},
+						Usage:       "Specify a project to commit",
+						Destination: &projPath,
+					},
+				},
+			},
+			{
+				Name:        "gitremind",
+				Aliases:     []string{"remind"},
+				Description: `Create a reminder for commits`,
+				Usage:       "Get reminded of important details before comitting changes",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					if c.Args().Len() < 2 {
+						fmt.Println("Too few arguments for reminder. You must specify a file to add a reminder for and a message (enclosed in quotes) to remind with. Example: canaveral remind test \"test message\"")
+						return nil
+					}
+					if c.Args().Len() >= 3 {
+						fmt.Println("Too many arguments for reminder. You must only specify a file to add a reminder for and a message (enclosed in quotes) to remind with. Example: canaveral remind test \"test message\"")
+						return nil
+					}
+					err := git.AddReminder(c.Args().Get(0), c.Args().Get(1))
+					return err
+				},
+			},
+			{
+				Name:        "printreminders",
+				Aliases:     []string{"printrem", "prem"},
+				Description: `Create a reminder for commits`,
+				Usage:       "Get reminded of important details before comitting changes",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					err := git.CheckReminders(c.Args().First())
+					return err
+				},
+			},
+			{
+				Name:        "delreminder",
+				Aliases:     []string{"deleterem", "delrem", "drem"},
+				Description: `delete a commit reminder for a file`,
+				Usage:       "Delete a stored reminder",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					if c.Args().Len() < 1 {
+						fmt.Println("You must specify a file to delete reminders for and (optionally) a reminder to delete")
+						return nil
+					}
+					if c.Args().Len() == 1 {
+						err := git.DelReminder(c.Args().First(), "")
+						return err
+					}
+					err := git.DelReminder(c.Args().Get(0), c.Args().Get(1))
+					return err
 				},
 			},
 			{
