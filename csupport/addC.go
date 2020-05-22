@@ -2,9 +2,11 @@ package csupport
 
 import (
 	"canaveral/lib"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 // createMainFile creates a basic projName.c file that uses stdlib.h
@@ -72,6 +74,51 @@ func createMakeFile(projName string) error {
 
 	_, err = make.WriteString(topComment + "\n\n" + CC + "\n" + CFLAGS + "\n" + DEPS + "\n\n" + oFiles + "\n\n" + outfile + "\n\n" + PHONY + "\n" + clean)
 	return err
+}
+
+// AddToMake adds a dependency to a Makefile conforming to the style of the one
+// created by canaveral. It adds [filename].h to the DEPS definition and
+// [filename].o to the make definition for the binary file [binaryAddTo] line of
+// the form [binaryAddTo]: [file].o
+func AddToMake(filename, binaryAddTo string) error {
+	if !lib.FileExists(filename) {
+		return errors.New("File not found: " + filename)
+	}
+	if len(filename) < 2 || filename[len(filename)-2:] != ".c" {
+		return errors.New("Currently addmake only supports adding simple rules for compiling additional c files")
+	}
+	if !lib.FileExists("Makefile") {
+		return errors.New("Cannot find Makefile")
+	}
+	makefile, err := ioutil.ReadFile("Makefile")
+	if err != nil {
+		return err
+	}
+
+	addedDependency := false
+	addedOutfile := false
+
+	lines := strings.Split(string(makefile), "\n")
+	for i, line := range lines {
+		if len(line) >= 4 && line[0:4] == "DEPS" {
+			addedDependency = true
+			lines[i] = line + " " + filename[:len(filename)-2] + ".h"
+		}
+		if len(line) >= len(binaryAddTo) && line[:len(binaryAddTo)] == binaryAddTo {
+			addedOutfile = true
+			lines[i] = line + " " + filename[:len(filename)-2] + ".o"
+		}
+	}
+
+	if addedDependency && addedOutfile {
+		output := strings.Join(lines, "\n")
+		err = ioutil.WriteFile("Makefile", []byte(output), 0644)
+		return err
+	}
+	if !addedDependency {
+		return errors.New("Currently addmake only supports very simple Makefile additions, and the found Makefile doesn't conform to the necessary standards. Missing line: DEPS [file].h")
+	}
+	return errors.New("Currently addmake only supports very simple Makefile additions, and the found Makefile doesn't conform to the necessary standards. Missing line: " + binaryAddTo + ": [file].o")
 }
 
 // AddCProj launches a new C project.

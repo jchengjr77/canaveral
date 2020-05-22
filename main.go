@@ -3,10 +3,12 @@
 package main
 
 import (
+	"canaveral/csupport"
 	gh "canaveral/gh"
 	"canaveral/git"
 	"canaveral/lib"
 	"canaveral/vscodesupport"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -324,6 +326,21 @@ func main() {
 						projName, usrHome+confDir+wsFName)
 					lib.Check(err)
 					return nil
+				},
+			},
+			{
+				Name:        "addmake",
+				Description: "Adds a dependency to a given binary file compilation in a makefile",
+				Usage:       "addmake [dependency] [binary file to make]",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					if c.Args().Len() != 2 {
+						return errors.New("Too few arguments")
+					}
+					err := csupport.AddToMake(c.Args().Get(0), c.Args().Get(1))
+					return err
 				},
 			},
 		},
