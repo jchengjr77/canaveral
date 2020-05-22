@@ -77,9 +77,9 @@ func createMakeFile(projName string) error {
 }
 
 // AddToMake adds a dependency to a Makefile conforming to the style of the one
-// created by canaveral. It adds [filename].h to the DEPS definition and
-// [filename].o to the make definition for the binary file [binaryAddTo] line of
-// the form [binaryAddTo]: [file].o
+// created by canaveral. It takes in [filename].c, adds [filename].h to the
+// DEPS definition and [filename].o to the make definition for the binary file
+// [binaryAddTo] line of the form [binaryAddTo]: [file].o
 // ! untested
 func AddToMake(filename, binaryAddTo string) error {
 	if !lib.FileExists(filename) {
