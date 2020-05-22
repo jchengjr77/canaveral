@@ -128,7 +128,13 @@ func TestAdd(t *testing.T) {
 
 	// Remove file and git
 	err = os.Remove("add-test")
-	lib.Check(err)
+	// lib.Check(err)
+	if err != nil {
+		pwd, err := exec.Command("pwd").Output()
+		t.Errorf(string(pwd))
+		t.Errorf("Expected removing add-test to succeed, instead got: " + err.Error() + "\n")
+		return
+	}
 	err = os.RemoveAll(".git")
 	lib.Check(err)
 
