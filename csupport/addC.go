@@ -80,7 +80,7 @@ func createMakeFile(projName string) error {
 // created by canaveral. It takes in [filename].c, adds [filename].h to the
 // DEPS definition and [filename].o to the make definition for the binary file
 // [binaryAddTo] line of the form [binaryAddTo]: [file].o
-// ! untested
+// * tested
 func AddToMake(filename, binaryAddTo string) error {
 	if !lib.FileExists(filename) {
 		return errors.New("File not found: " + filename)
