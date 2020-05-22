@@ -37,6 +37,14 @@ func DirExists(dirname string) bool {
 	return info.IsDir()
 }
 
+// CreateFile creates a file with the name filename
+// ? untested (low priority)
+func CreateFile(filename string) error {
+	f, err := os.Create(filename)
+	defer f.Close()
+	return err
+}
+
 // CheckToolExists uses the 'which' command to find a specific tool.
 // It then parses the output of the command, and checks if
 // 'which' found the toolname in the path or not.
