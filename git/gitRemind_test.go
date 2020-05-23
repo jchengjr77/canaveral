@@ -14,7 +14,7 @@ func TestAddDeleteReminders(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral_remind_ws"
+	workingPath := home + "/canaveral_add_del_remind_ws"
 	if !lib.DirExists(workingPath) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
@@ -209,7 +209,7 @@ func TestWrappers(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral_remind_ws"
+	workingPath := home + "/canaveral_wrappers_remind_ws"
 	if !lib.DirExists(workingPath) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)

@@ -15,7 +15,7 @@ func TestStatus(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral_git_ws"
+	workingPath := home + "/canaveral_status_git_ws"
 	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
@@ -45,7 +45,7 @@ func TestInit(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral_git_ws"
+	workingPath := home + "/canaveral_init_git_ws"
 	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
@@ -80,7 +80,7 @@ func TestAdd(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral_git_ws"
+	workingPath := home + "/canaveral_add_git_ws"
 	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
@@ -126,9 +126,7 @@ func TestAdd(t *testing.T) {
 		t.Errorf("Expected status to have file added. Instead, got: %s", ret)
 	}
 
-	// Remove file and git
-	err = os.Remove("add-test")
-	lib.Check(err)
+	// Remove git
 	err = os.RemoveAll(".git")
 	lib.Check(err)
 
@@ -173,7 +171,7 @@ func TestCommit(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral_git_ws"
+	workingPath := home + "/canaveral_commit_git_ws"
 	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
@@ -290,7 +288,7 @@ func TestIgnore(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral_git_ws"
+	workingPath := home + "/canaveral_ignore_git_ws"
 	if _, err = os.Stat(workingPath); os.IsNotExist(err) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
