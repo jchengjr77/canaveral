@@ -86,9 +86,7 @@ func addProjectHandler(projName string, projType string, init bool) error {
 	}
 	if init {
 		err := createAndInit(projName)
-		if err != nil {
-			return err
-		}
+		return err
 	}
 	return nil
 }
