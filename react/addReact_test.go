@@ -9,7 +9,8 @@ import (
 )
 
 func TestCheckCRAExists(t *testing.T) {
-	craPath := setCRAPath()
+	craPath, err := setCRAPath()
+	lib.Check(err)
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
