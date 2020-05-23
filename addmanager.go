@@ -15,11 +15,11 @@ import (
 
 // Wraps the init repo to perform init in correct directory
 // * wraps tested function
-func createAndInit(projName string) {
+func createAndInit(projName string) error {
 	ws, err := ioutil.ReadFile(usrHome + confDir + wsFName)
 	lib.Check(err)
 	os.Chdir(string(ws) + "/" + projName)
-	git.InitRepo("", "")
+	return git.InitRepo("", "")
 }
 
 // addProj takes in a project name and adds it to the workspace.
