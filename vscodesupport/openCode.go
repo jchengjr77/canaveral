@@ -15,7 +15,13 @@ import (
 // OpenCode will take in a project name, and open it in vscode.
 // If such a project doesn't exist, it will return an error.
 // * tested
-func OpenCode(projName string, configPath string) error {
+func OpenCode(projName string, configPath string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	if projName == "" {
 		fmt.Println("Please provide a project name.")
 		fmt.Println("(For more info, 'canaveral --help')")

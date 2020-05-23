@@ -68,15 +68,14 @@ func activateAndSetupConda(projName string) error {
 // createInstallSh creates the install_packages.sh file with the shebang and
 // example comment showing how to use it to install packages with pip
 // * tested
-func createInstallSh() error {
+func createInstallSh() (finalErr error) {
 	err := lib.CreateFile("install_packages.sh")
 	if err != nil {
 		return err
 	}
 	install, err := os.OpenFile("install_packages.sh", os.O_APPEND|os.O_WRONLY, 0644)
 	defer func() {
-		err := install.Close()
-		lib.Check(err)
+		finalErr = install.Close()
 	}()
 	_, err = install.WriteString("#!/bin/sh\n\n# Ex: pip install [package]==[version]\n")
 	return err
@@ -85,15 +84,14 @@ func createInstallSh() error {
 // createREADME creates a README.md file, with optional conda setup information
 // if conda is true
 // * tested
-func createREADME(projName string, conda bool) error {
+func createREADME(projName string, conda bool) (finalErr error) {
 	err := lib.CreateFile("README.md")
 	if err != nil {
 		return err
 	}
 	readme, err := os.OpenFile("README.md", os.O_APPEND|os.O_WRONLY, 0644)
 	defer func() {
-		err := readme.Close()
-		lib.Check(err)
+		finalErr = readme.Close()
 	}()
 	header := "# " + projName
 	setup := "## Setup and Installation\n"
@@ -111,7 +109,13 @@ func createREADME(projName string, conda bool) error {
 // create a install_packages.sh shell file for installing requirements
 // with pip, create a basic README.md, and a [projName].py file
 // * tested
-func AddPythonProj(projName string, wsPath string) {
+func AddPythonProj(projName string, wsPath string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	// Get workspace path
 	ws, err := ioutil.ReadFile(wsPath)
 	lib.Check(err)
@@ -139,4 +143,5 @@ func AddPythonProj(projName string, wsPath string) {
 
 	err = lib.CreateFile(projName + ".py")
 	lib.Check(err)
+	return nil
 }

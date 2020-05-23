@@ -165,13 +165,16 @@ func Commit(
 		err = os.Chdir(string(ws) + "/" + project)
 		lib.Check(err)
 	}
-	reminders := loadReminders()
+	reminders, err := loadReminders()
+	lib.Check(err)
 	stagedFiles, err := getStaged()
 	lib.Check(err)
 	sawRems := false
 	confirm := true
 	for _, file := range stagedFiles {
-		sawRems = sawRems || checkReminders(file, false, reminders)
+		res, err := checkReminders(file, false, reminders)
+		lib.Check(err)
+		sawRems = sawRems || res
 	}
 	if sawRems {
 		confirm = confirmCommit(os.Stdin)

@@ -95,6 +95,7 @@ func checkReminders(file string, forcePrint bool, reminders map[string]interface
 			finalErr = r.(error)
 		}
 	}()
+	var err error
 	if !lib.FileExists(".remind.json") {
 		return false, nil
 	}
@@ -103,7 +104,7 @@ func checkReminders(file string, forcePrint bool, reminders map[string]interface
 	print := false
 	if !forcePrint {
 		if found {
-			print, err := confirmPrint(os.Stdin)
+			print, err = confirmPrint(os.Stdin)
 			lib.Check(err)
 		}
 	}
@@ -139,7 +140,7 @@ func CheckReminders(file string) (finalErr error) {
 	}
 	arg, err := loadReminders()
 	lib.Check(err)
-	res, err := checkReminders(file, true, arg)
+	_, err = checkReminders(file, true, arg)
 	lib.Check(err)
 	return nil
 }

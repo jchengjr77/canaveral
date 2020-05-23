@@ -15,7 +15,13 @@ import (
 
 // Wraps the init repo to perform init in correct directory
 // * wraps tested function
-func createAndInit(projName string) error {
+func createAndInit(projName string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	ws, err := ioutil.ReadFile(usrHome + confDir + wsFName)
 	lib.Check(err)
 	os.Chdir(string(ws) + "/" + projName)
@@ -26,12 +32,19 @@ func createAndInit(projName string) error {
 // Requires that the workspace exists.
 // Requires that the project name is non-empty
 // * tested
-func addProj(projName string, wsPath string) {
+func addProj(projName string, wsPath string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	ws, err := ioutil.ReadFile(wsPath)
 	lib.Check(err)
 	err = os.MkdirAll(string(ws)+"/"+projName, os.ModePerm)
 	lib.Check(err)
 	fmt.Printf("Added project %s to workspace %s\n", projName, string(ws))
+	return nil
 }
 
 // ? Incomplete functionality
@@ -72,7 +85,10 @@ func addProjectHandler(projName string, projType string, init bool) error {
 		return errors.New("Unsupported project type specified")
 	}
 	if init {
-		createAndInit(projName)
+		err := createAndInit(projName)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
