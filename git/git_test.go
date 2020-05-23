@@ -126,15 +126,7 @@ func TestAdd(t *testing.T) {
 		t.Errorf("Expected status to have file added. Instead, got: %s", ret)
 	}
 
-	// Remove file and git
-	// err = os.Remove("add-test")
-	// // lib.Check(err)
-	// if err != nil {
-	// 	pwd, err := exec.Command("pwd").Output()
-	// 	t.Errorf(string(pwd))
-	// 	t.Errorf("Expected removing add-test to succeed, instead got: " + err.Error() + "\n")
-	// 	return
-	// }
+	// Remove git
 	err = os.RemoveAll(".git")
 	lib.Check(err)
 
