@@ -14,7 +14,7 @@ func TestAddDeleteReminders(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral_remind_ws"
+	workingPath := home + "/canaveral_add_del_remind_ws"
 	if !lib.DirExists(workingPath) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)
@@ -25,7 +25,8 @@ func TestAddDeleteReminders(t *testing.T) {
 
 	os.Chdir(workingPath)
 
-	actual := loadReminders()
+	actual, err := loadReminders()
+	lib.Check(err)
 	intended := make(map[string]interface{})
 
 	if !reflect.DeepEqual(actual, intended) {
@@ -36,7 +37,8 @@ func TestAddDeleteReminders(t *testing.T) {
 	lib.CreateFile(".remind.json")
 	defer os.Remove(".remind.json")
 
-	actual = loadReminders()
+	actual, err = loadReminders()
+	lib.Check(err)
 	intended = make(map[string]interface{})
 	if !reflect.DeepEqual(actual, intended) {
 		t.Errorf("failed when .remind.json is empty")
@@ -44,7 +46,8 @@ func TestAddDeleteReminders(t *testing.T) {
 	}
 
 	addReminder("test", "This is a test message")
-	actual = loadReminders()
+	actual, err = loadReminders()
+	lib.Check(err)
 	intended = make(map[string]interface{})
 	intended["test"] = []interface{}{"This is a test message"}
 
@@ -54,14 +57,16 @@ func TestAddDeleteReminders(t *testing.T) {
 	}
 
 	out := lib.CaptureOutput(func() {
-		addReminder("test", "This is a test message")
+		err = addReminder("test", "This is a test message")
+		lib.Check(err)
 	})
 	if out != "\"This is a test message\" is already a stored reminder for this file\n" {
 		t.Errorf("failed to recognize adding already added reminder")
 		return
 	}
 
-	actual = loadReminders()
+	actual, err = loadReminders()
+	lib.Check(err)
 	intended = make(map[string]interface{})
 	intended["test"] = []interface{}{"This is a test message"}
 
@@ -71,7 +76,8 @@ func TestAddDeleteReminders(t *testing.T) {
 	}
 
 	addReminder("test", "Another test")
-	actual = loadReminders()
+	actual, err = loadReminders()
+	lib.Check(err)
 	intended = make(map[string]interface{})
 	intended["test"] = []interface{}{"This is a test message", "Another test"}
 
@@ -81,7 +87,8 @@ func TestAddDeleteReminders(t *testing.T) {
 	}
 
 	addReminder("test2", "Different file")
-	actual = loadReminders()
+	actual, err = loadReminders()
+	lib.Check(err)
 	intended = make(map[string]interface{})
 	intended["test"] = []interface{}{"This is a test message", "Another test"}
 	intended["test2"] = []interface{}{"Different file"}
@@ -92,7 +99,8 @@ func TestAddDeleteReminders(t *testing.T) {
 	}
 
 	DelReminder("test2", "Different file")
-	actual = loadReminders()
+	actual, err = loadReminders()
+	lib.Check(err)
 	intended = make(map[string]interface{})
 	intended["test"] = []interface{}{"This is a test message", "Another test"}
 
@@ -121,7 +129,8 @@ func TestAddDeleteReminders(t *testing.T) {
 	os.Stdin = tmpfile
 
 	DelReminder("test", "")
-	actual = loadReminders()
+	actual, err = loadReminders()
+	lib.Check(err)
 	intended = make(map[string]interface{})
 
 	if !reflect.DeepEqual(actual, intended) {
@@ -134,7 +143,8 @@ func TestAddDeleteReminders(t *testing.T) {
 	addReminder("test", "Message 1")
 	addReminder("test", "Message 2")
 	addReminder("test", "Message 3")
-	actual = loadReminders()
+	actual, err = loadReminders()
+	lib.Check(err)
 	intended = make(map[string]interface{})
 	intended["test"] = []interface{}{"Message 1", "Message 2", "Message 3"}
 
@@ -156,7 +166,8 @@ func TestAddDeleteReminders(t *testing.T) {
 	}
 
 	DelReminder("test", "1")
-	actual = loadReminders()
+	actual, err = loadReminders()
+	lib.Check(err)
 	intended = make(map[string]interface{})
 	intended["test"] = []interface{}{"Message 2", "Message 3"}
 	if !reflect.DeepEqual(actual, intended) {
@@ -169,7 +180,8 @@ func TestAddDeleteReminders(t *testing.T) {
 		t.Errorf("failed to recognize negative number")
 		return
 	}
-	actual = loadReminders()
+	actual, err = loadReminders()
+	lib.Check(err)
 	intended = make(map[string]interface{})
 	intended["test"] = []interface{}{"Message 2", "Message 3"}
 	if !reflect.DeepEqual(actual, intended) {
@@ -182,7 +194,8 @@ func TestAddDeleteReminders(t *testing.T) {
 		t.Errorf("failed to recognize too big number")
 		return
 	}
-	actual = loadReminders()
+	actual, err = loadReminders()
+	lib.Check(err)
 	intended = make(map[string]interface{})
 	intended["test"] = []interface{}{"Message 2", "Message 3"}
 	if !reflect.DeepEqual(actual, intended) {
@@ -196,7 +209,7 @@ func TestWrappers(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	workingPath := home + "/canaveral_remind_ws"
+	workingPath := home + "/canaveral_wrappers_remind_ws"
 	if !lib.DirExists(workingPath) {
 		os.MkdirAll(workingPath, os.ModePerm)
 		defer os.RemoveAll(workingPath)

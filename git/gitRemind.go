@@ -14,9 +14,15 @@ import (
 )
 
 // * tested
-func loadReminders() map[string]interface{} {
+func loadReminders() (res map[string]interface{}, finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	if !lib.FileExists(".remind.json") {
-		return make(map[string]interface{})
+		return make(map[string]interface{}), nil
 	}
 	remindContents, err := ioutil.ReadFile(".remind.json")
 	lib.Check(err)
@@ -28,12 +34,19 @@ func loadReminders() map[string]interface{} {
 	} else {
 		lib.Check(err)
 	}
-	return reminders
+	return reminders, nil
 }
 
 // * tested
-func addReminder(file string, reminder string) {
-	reminders := loadReminders()
+func addReminder(file string, reminder string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
+	reminders, err := loadReminders()
+	lib.Check(err)
 	if _, found := reminders[file]; !found {
 		reminders[file] = []string{reminder}
 	} else {
@@ -57,27 +70,42 @@ func addReminder(file string, reminder string) {
 	// ! Research ways to improve this
 	err = ioutil.WriteFile(".remind.json", jsonData, 0644)
 	lib.Check(err)
+	return nil
 }
 
-func confirmPrint(stdin io.Reader) bool {
+func confirmPrint(stdin io.Reader) (res bool, finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	fmt.Printf("You have reminders stored for this file. Would you like to display them? ('y' or 'n')> ")
 	reader := bufio.NewReader(stdin)
 	response, err := reader.ReadByte()
 	lib.Check(err)
-	return (response == 'y')
+	return (response == 'y'), nil
 }
 
 // ? untested but low priority because just prints info + manual tests are good
-func checkReminders(file string, forcePrint bool, reminders map[string]interface{}) bool {
+func checkReminders(file string, forcePrint bool, reminders map[string]interface{}) (res bool, finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
+	var err error
 	if !lib.FileExists(".remind.json") {
-		return false
+		return false, nil
 	}
 	fetched, found := reminders[file]
 	stored := reflect.ValueOf(fetched)
 	print := false
 	if !forcePrint {
 		if found {
-			print = confirmPrint(os.Stdin)
+			print, err = confirmPrint(os.Stdin)
+			lib.Check(err)
 		}
 	}
 	if forcePrint || print {
@@ -92,26 +120,41 @@ func checkReminders(file string, forcePrint bool, reminders map[string]interface
 			}
 		}
 	}
-	return forcePrint || print
+	return forcePrint || print, nil
 }
 
 // CheckReminders prints all of the reminders stored for file
 // * tested
-func CheckReminders(file string) error {
+func CheckReminders(file string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	if !lib.FileExists(".remind.json") {
 		return errors.New("You don't have any reminders stored")
 	}
 	if !lib.FileExists(file) {
 		return errors.New("Cannot find file " + file)
 	}
-	checkReminders(file, true, loadReminders())
+	arg, err := loadReminders()
+	lib.Check(err)
+	_, err = checkReminders(file, true, arg)
+	lib.Check(err)
 	return nil
 }
 
 // AddReminder adds a reminder to be displayed back to the user when committing
 // to git
 // * tested
-func AddReminder(file, reminder string) error {
+func AddReminder(file, reminder string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	var err error
 	if !lib.DirExists(".git") {
 		return errors.New("Git reminders can only be added in git repos")
@@ -129,28 +172,43 @@ func AddReminder(file, reminder string) error {
 		}
 		err = lib.CreateFile(".remind.json")
 		lib.Check(err)
-		Ignore([]string{".remind.json"}, "", "")
+		err = Ignore([]string{".remind.json"}, "", "")
+		lib.Check(err)
 	}
-	addReminder(file, reminder)
+	err = addReminder(file, reminder)
+	lib.Check(err)
 	return nil
 }
 
 // * tested
-func confirmDeleteAll(file string, stdin io.Reader) bool {
+func confirmDeleteAll(file string, stdin io.Reader) (res bool, finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	fmt.Printf("Are you sure you want to delete all reminders for %s ('y' or 'n')>", file)
 	reader := bufio.NewReader(stdin)
 	response, err := reader.ReadByte()
 	lib.Check(err)
-	return (response == 'y')
+	return (response == 'y'), nil
 }
 
 // DelReminder deletes the specified reminder
 // * tested
-func DelReminder(file, reminder string) error {
+func DelReminder(file, reminder string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	if !lib.FileExists(".remind.json") {
 		return errors.New("No reminders found")
 	}
-	reminders := loadReminders()
+	reminders, err := loadReminders()
+	lib.Check(err)
 	fetched, found := reminders[file]
 	stored := reflect.ValueOf(fetched)
 
@@ -159,7 +217,9 @@ func DelReminder(file, reminder string) error {
 	}
 
 	if reminder == "" {
-		if confirmDeleteAll(file, os.Stdin) {
+		res, err := confirmDeleteAll(file, os.Stdin)
+		lib.Check(err)
+		if res {
 			delete(reminders, file)
 			jsonData, err := json.Marshal(reminders)
 			// This is not that robust of a solution because it rewrites the entire file

@@ -27,7 +27,13 @@ func checkCRAExists(craPath string) bool {
 // REQUIRES (soft): create-react-app isn't already installed.
 // This is a soft requirement bc npm will just update it if it is.
 // ? untested, low priority
-func installCRA() {
+func installCRA() (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	fmt.Println(
 		"\nLooks like you don't have create-react-app. Let's install it...")
 	// Install it locally instead of globally
@@ -41,23 +47,37 @@ func installCRA() {
 	installCRA.Stderr = os.Stderr
 	err = installCRA.Run()
 	lib.Check(err)
+	return nil
 }
 
 // setCRAPath generates the path to create-react-app
 // ? untested, trivial
-func setCRAPath() string {
+func setCRAPath() (res string, finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	return home + "/canaveral/node_modules/.bin/create-react-app"
+	return home + "/canaveral/node_modules/.bin/create-react-app", nil
 }
 
 // AddReactProj launches a new react project.
 // The main mechanism is similar to addProj (in root folder).
 // However, create-react-app plays a large role in setup.
 // * tested
-func AddReactProj(projName string, wsPath string) {
-	craPath := setCRAPath()
+func AddReactProj(projName string, wsPath string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
+	craPath, err := setCRAPath()
+	lib.Check(err)
 	ws, err := ioutil.ReadFile(wsPath)
 	lib.Check(err)
 	err = os.MkdirAll(string(ws), os.ModePerm)
@@ -72,4 +92,5 @@ func AddReactProj(projName string, wsPath string) {
 	err = cmd.Run()
 	lib.Check(err)
 	fmt.Printf("Added React project %s to workspace %s\n", projName, string(ws))
+	return nil
 }
