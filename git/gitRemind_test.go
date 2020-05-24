@@ -1,13 +1,14 @@
 package git
 
 import (
-	"canaveral/lib"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"os/user"
 	"reflect"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestAddDeleteReminders(t *testing.T) {

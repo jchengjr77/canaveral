@@ -1,10 +1,11 @@
 package vscodesupport
 
 import (
-	"canaveral/lib"
 	"errors"
 	"os/user"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestOpenCode(t *testing.T) {

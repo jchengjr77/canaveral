@@ -1,11 +1,12 @@
 package python
 
 import (
-	"canaveral/lib"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func checkToolExists(toolName string) bool {

@@ -1,7 +1,6 @@
 package git
 
 import (
-	"canaveral/lib"
 	"encoding/json"
 	"io/ioutil"
 	"os"
@@ -9,6 +8,8 @@ import (
 	"os/user"
 	"regexp"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestStatus(t *testing.T) {

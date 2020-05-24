@@ -1,11 +1,12 @@
 package react
 
 import (
-	"canaveral/lib"
 	"os"
 	"os/exec"
 	"os/user"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestCheckCRAExists(t *testing.T) {

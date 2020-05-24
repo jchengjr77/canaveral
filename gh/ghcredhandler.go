@@ -1,8 +1,6 @@
 package github
 
 import (
-	"canaveral/lib"
-	"canaveral/nativestore"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -10,6 +8,9 @@ import (
 	"net/http"
 	"strings"
 	"syscall"
+
+	"github.com/jchengjr77/canaveral/lib"
+	"github.com/jchengjr77/canaveral/nativestore"
 
 	"golang.org/x/crypto/ssh/terminal"
 )

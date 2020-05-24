@@ -2,7 +2,6 @@ package git
 
 import (
 	"bufio"
-	"canaveral/lib"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -11,6 +10,8 @@ import (
 	"os"
 	"reflect"
 	"strconv"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // * tested

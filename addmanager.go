@@ -1,16 +1,17 @@
 package main
 
 import (
-	"canaveral/git"
-	"canaveral/lib"
-	"canaveral/node"
-	"canaveral/python"
-	"canaveral/react"
-	"canaveral/reactnative"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
+
+	"github.com/jchengjr77/canaveral/git"
+	"github.com/jchengjr77/canaveral/lib"
+	"github.com/jchengjr77/canaveral/node"
+	"github.com/jchengjr77/canaveral/python"
+	"github.com/jchengjr77/canaveral/react"
+	"github.com/jchengjr77/canaveral/reactnative"
 )
 
 // Wraps the init repo to perform init in correct directory

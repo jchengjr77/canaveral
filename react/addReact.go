@@ -1,12 +1,13 @@
 package react
 
 import (
-	"canaveral/lib"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"os/user"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // checkCRAExists looks in the parent for create-react-app

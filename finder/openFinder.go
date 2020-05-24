@@ -5,11 +5,12 @@
 package finder
 
 import (
-	"canaveral/lib"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // OpenFinder will take a project name and config path,

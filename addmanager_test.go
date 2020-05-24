@@ -1,10 +1,11 @@
 package main
 
 import (
-	"canaveral/lib"
 	"os"
 	"os/user"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestAddProj(t *testing.T) {
