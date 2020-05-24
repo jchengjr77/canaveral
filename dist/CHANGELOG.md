@@ -2,5 +2,5 @@
 
 ## Changelog
 
-dec5d20 Trying (again) to use goreleaser for publishing
+2bb9d8b Retrying the release.
 
