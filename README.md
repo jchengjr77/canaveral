@@ -5,17 +5,17 @@
 
 ## Contents
 
-- [Introduction](#introduction)
-- [The Name](#the-name)
-- [Getting Started](#getting-started)
-  - [Dependencies](#dependencies)
-  - [Installation](#installation)
-- [Basic usage](#basic-usage)
-- [Project Types](#project-types)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
-- [Credits](#credits)
+-   [Introduction](#introduction)
+-   [The Name](#the-name)
+-   [Getting Started](#getting-started)
+    -   [Dependencies](#dependencies)
+    -   [Installation](#installation)
+-   [Basic usage](#basic-usage)
+-   [Project Types](#project-types)
+-   [Troubleshooting](#troubleshooting)
+-   [Contributing](#contributing)
+-   [License](#license)
+-   [Credits](#credits)
 
 ## Introduction
 
@@ -56,7 +56,7 @@ There are two ways to install Canaveral. We suggest [downloading the executable]
 #### Download Executable
 
 In the [Canaveral Releases](https://github.com/jchengjr77/canaveral/releases) section, you will find all current releases of Canaveral.
-We suggest you grab the latest one: [v0.2.0](https://github.com/jchengjr77/canaveral/releases/tag/v0.2.0)
+We suggest you grab the latest one: [v0.6.0](https://github.com/jchengjr77/canaveral/releases/tag/v0.6.0)
 
 Select the correct package for your computer system and download it. See release notes for guidance.
 After you download and unzip Canaveral, you will be left with a single executable. You need to add it to your \$PATH.
@@ -120,8 +120,6 @@ NOTE: Though it is not necessary, we recommend you add a script or alias to help
 alias gotoprojs="cd ~/path/to/canaveral/workspace"
 ```
 
-
-
 After you specify your workspace, running `canaveral` should show a list of projects in your workspace. At this point, it may be the case that your workspace is empty. Lets **launch a new project**!
 
 ```bash
@@ -146,8 +144,6 @@ $ canaveral code coolreactproject
 
 This should open a new VSCode window showing your new project `coolreactproject`.
 
-
-
 Additionally, Canaveral can make a new Github repo for you! First, make sure you **add your git credentials**:
 
 ```bash
@@ -157,7 +153,7 @@ $ canaveral addgithub
 
 Again, for guidance on how to get a personal auth token from github, follow [this link](https://code.visualstudio.com/docs/editor/command-line#_launching-from-command-line).
 
-To **view your git credentials**: 
+To **view your git credentials**:
 
 ```bash
 $ canaveral printgithub
@@ -184,11 +180,11 @@ Canaveral should be usable for all developers. Creating projects, looking at all
 Furthermore, if you use one of the following technologies, you're in luck. More features for you!
 (This list will most likely expand, so keep an eye out).
 
-- [React.js](https://reactjs.org/)
-- [React Native](https://reactnative.dev/)
-- [Node.js](https://nodejs.org/en/)
-- [Python (miniconda)](https://docs.conda.io/en/latest/miniconda.html)
-- [C](https://www.cprogramming.com/)
+-   [React.js](https://reactjs.org/)
+-   [React Native](https://reactnative.dev/)
+-   [Node.js](https://nodejs.org/en/)
+-   [Python (miniconda)](https://docs.conda.io/en/latest/miniconda.html)
+-   [C](https://www.cprogramming.com/)
 
 ## Troubleshooting
 
@@ -218,4 +214,3 @@ See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
 JJ Cheng - [github](https://github.com/jchengjr77) - [jjcheng.me](https://jjcheng.me)
 
 Sean Prendi - [github](https://github.com/SeanPrendi) - [seanprendi.me](https://www.seanprendi.me)
-
