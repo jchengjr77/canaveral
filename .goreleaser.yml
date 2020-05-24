@@ -9,14 +9,14 @@ before:
 builds:
   - env:
       - CGO_ENABLED=0
-  - goos:
+    goos:
       - darwin
       - windows
       - linux
-  - goarch:
+    goarch:
       - amd64
       - 386
-  - ignore:
+    ignore:
       - goos: darwin
         goarch: 386
 archives:
