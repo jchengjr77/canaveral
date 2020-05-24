@@ -2,13 +2,14 @@ package git
 
 import (
 	"bufio"
-	"canaveral/lib"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // InitRepo initializes a git repo in the current directory

@@ -1,12 +1,13 @@
 package python
 
 import (
-	"canaveral/lib"
 	"os"
 	"os/exec"
 	"os/user"
 	"regexp"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestCreateCondaEnv(t *testing.T) {

@@ -2,11 +2,12 @@ package main
 
 import (
 	"bufio"
-	"canaveral/lib"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // confirmDelete listens for user confirmation and returns a boolean

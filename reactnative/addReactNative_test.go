@@ -2,12 +2,13 @@ package reactnative
 
 import (
 	"bytes"
-	"canaveral/lib"
 	"errors"
 	"os"
 	"os/exec"
 	"os/user"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestInstallExpo(t *testing.T) {

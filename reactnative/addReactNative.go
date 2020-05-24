@@ -2,13 +2,14 @@ package reactnative
 
 import (
 	"bufio"
-	"canaveral/lib"
 	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // installExpo checks first that npm is installed.

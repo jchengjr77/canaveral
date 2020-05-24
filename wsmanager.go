@@ -1,13 +1,14 @@
 package main
 
 import (
-	"canaveral/lib"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"runtime"
 	"strings"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // formatProjects takes the raw ls output and removes extra lines.

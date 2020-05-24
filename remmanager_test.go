@@ -2,10 +2,11 @@ package main
 
 import (
 	"bytes"
-	"canaveral/lib"
 	"os"
 	"os/user"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestConfirmDelete(t *testing.T) {

@@ -3,15 +3,16 @@
 package main
 
 import (
-	"canaveral/finder"
-	gh "canaveral/gh"
-	"canaveral/git"
-	"canaveral/lib"
-	"canaveral/vscodesupport"
 	"fmt"
 	"log"
 	"os"
 	"os/user"
+
+	"github.com/jchengjr77/canaveral/finder"
+	gh "github.com/jchengjr77/canaveral/gh"
+	"github.com/jchengjr77/canaveral/git"
+	"github.com/jchengjr77/canaveral/lib"
+	"github.com/jchengjr77/canaveral/vscodesupport"
 
 	"github.com/urfave/cli/v2"
 )

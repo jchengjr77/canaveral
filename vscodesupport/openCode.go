@@ -4,12 +4,13 @@
 package vscodesupport
 
 import (
-	"canaveral/lib"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // OpenCode will take in a project name, and open it in vscode.

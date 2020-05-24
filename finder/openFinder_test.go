@@ -1,10 +1,11 @@
 package finder
 
 import (
-	"canaveral/lib"
 	"errors"
 	"os/user"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestOpenFinder(t *testing.T) {

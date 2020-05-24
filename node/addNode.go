@@ -1,11 +1,12 @@
 package node
 
 import (
-	"canaveral/lib"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // AddNodeProj launches a new node project.

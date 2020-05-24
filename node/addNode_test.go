@@ -1,10 +1,11 @@
 package node
 
 import (
-	"canaveral/lib"
 	"os"
 	"os/user"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestAddNodeProj(t *testing.T) {
