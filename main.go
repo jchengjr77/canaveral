@@ -322,13 +322,13 @@ func main() {
 				},
 			},
 			{
-				Name:    "finder",
-				Aliases: []string{"open"},
+				Name:    "explore",
+				Aliases: []string{"open", "find"},
 				Description: `
-				Opens selected project in a finder window.
-				This is targeted towards macOS users.
+				Opens selected project in a file explorer window.
+				For MacOS users, this will be the Finder.
 				Argument should be a project name.`,
-				Usage: "Opens selected project in a finder window",
+				Usage: "Opens selected project in a file explorer window",
 				Action: func(c *cli.Context) error {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
