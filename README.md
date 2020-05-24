@@ -51,7 +51,22 @@ Canaveral has support for opening projects in [VSCode](https://code.visualstudio
 
 WARNING: The CLI is still in development, and has yet to be packaged properly. If you want to jump in early, follow the instructions below. Otherwise, stay posted for the next stable release.
 
-There are two ways to install Canaveral. We suggest [downloading the executable](#download-executable) for simplicity. However, if you have previous experience with Go or already have a working Go environment set up, then the [go install method](#go-build) may be easier.
+There are two ways to install Canaveral.
+
+#### Go build
+
+First, you need to have Go installed. If you don't, follow the instructions [here](https://golang.org/doc/install).
+
+Be sure that your GOPATH is configured correctly, so you are able to execute go binaries.
+
+Then, `go get` Canaveral and install it:
+
+```bash
+$ go get github.com/jchengjr77/canaveral
+$ go install github.com/jchengjr77/canaveral
+```
+
+This should have put an executable named `canaveral` into the folder `$GOPATH/bin`. If Canaveral isn't working, check that folder to see if the executable really exists.
 
 #### Download Executable
 
@@ -59,37 +74,22 @@ In the [Canaveral Releases](https://github.com/jchengjr77/canaveral/releases) se
 We suggest you grab the latest one: [v0.6.0](https://github.com/jchengjr77/canaveral/releases/tag/v0.6.0)
 
 Select the correct package for your computer system and download it. See release notes for guidance.
-After you download and unzip Canaveral, you will be left with a single executable. You need to add it to your \$PATH.
+After you download and unzip Canaveral, you will be left with a single executable. **You need to add it to your \$PATH.**
+
+Add the following line to your shell's config file (.bashrc, .zshrc for bash and zsh respectively).
+_NOTE: Windows users must add to their PATH a different way. See link to instructions below._
 
 ```bash
 $ export PATH=$PATH:$HOME/path/to/canaveral
 ```
 
-If you are having trouble, here are some helpful links related to adding to \$PATH:
+Here are some helpful links related to adding to \$PATH:
 
 [For Mac](https://apple.stackexchange.com/questions/41542/adding-a-new-executable-to-the-path-environment-variable)
 
 [For Linux](https://askubuntu.com/questions/322772/how-do-i-add-an-executable-to-my-search-path)
 
-#### Go build
-
-First, you need to have Go installed. If you don't, follow the instructions [here](https://golang.org/doc/install).
-
-Be sure that your GOPATH is configured correctly, so you are able to execute go binaries.\\
-This should be set by default, but here it is just in case:
-
-```bash
-$ export PATH=$PATH:$GOPATH/bin
-```
-
-Finally, clone this repo and install Canaveral:
-
-```bash
-$ git clone https://github.com/jchengjr77/canaveral.git
-$ go install canaveral
-```
-
-This should have put an executable named `canaveral` into the folder `$GOPATH/bin`. If Canaveral isn't working, check that folder to see if the executable really exists.
+[For Windows 10 (Important)](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
 
 ## Basic Usage
 
