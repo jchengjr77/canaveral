@@ -1,4 +1,4 @@
-module canaveral
+module github.com/jchengjr77/canaveral
 
 go 1.13
 
