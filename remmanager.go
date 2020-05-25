@@ -52,7 +52,7 @@ func tryRemProj(projName string, wsPath string) (res bool, finalErr error) {
 			}
 			err = os.RemoveAll(string(ws) + "/" + projName)
 			lib.Check(err)
-			fmt.Printf("Removed Project: %s\n", string(ws)+"/"+projName)
+			fmt.Printf("Removed Project: %s\n", projName)
 			return true, nil
 		}
 	}
