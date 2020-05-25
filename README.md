@@ -51,24 +51,69 @@ Canaveral has support for opening projects in [VSCode](https://code.visualstudio
 
 WARNING: The CLI is still in development, and has yet to be packaged properly. If you want to jump in early, follow the instructions below. Otherwise, stay posted for the next stable release.
 
-There are two ways to install Canaveral.
+There are **three ways** to install Canaveral: Homebrew, Go get/install, or download the executable.
 
-#### Method 1: Go build
+#### Method 1: Homebrew (MacOS only)
 
-First, you need to have Go installed. If you don't, follow the instructions [here](https://golang.org/doc/install).
+This method might only work for MacOS users, since it requires `brew`.
 
-Be sure that your GOPATH is configured correctly, so you are able to execute go binaries.
+1. Make sure you have [Homebrew](https://brew.sh/) installed and working.
 
-Then, `go get` Canaveral and install it:
+2. Run:
+
+   ```bash
+   $ brew tap jchengjr77/homebrew-private https://github.com/jchengjr77/homebrew-private.git
+   $ brew install canaveral
+   ```
+
+3. If there are no errors, you should be done! Check that canaveral is properly installed by running:
+
+   ```bash
+   $ which canaveral
+   ```
+
+   A path to the executable `canaveral` should be returned.
+
+#### Method 2: Go build
+
+1. First, you need to have Go installed. If you don't, follow the instructions [here](https://golang.org/doc/install).
+
+   Go should have automatically configured your GOPATH to be `~/go`, or another reasonable default. If you are new to Go, you may need to add `$GOPATH/bin` to your PATH, so you can execute Go programs from the command line. _NOTE: Windows users must add to their PATH a different way. See link to instructions below._
+
+   You can add : 
+
+   `export PATH=$PATH:$(go env GOPATH)/bin` 
+
+   or
+
+   `PATH=$PATH:$(go env GOPATH)/bin`
+
+   to the very end of your `.zshrc` or `.bashrc` (whatever your shell's config file is).
+
+   **For Windows users:** [Add to PATH Windows 10](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
+
+   To check your current gopath, run `go env gopath`. For more information, run `go help gopath`.
+
+2. Then, `go get` Canaveral and install it:
 
 ```bash
 $ go get github.com/jchengjr77/canaveral
 $ go install github.com/jchengjr77/canaveral
 ```
 
-This should have put an executable named `canaveral` into the folder `$GOPATH/bin`. If Canaveral isn't working, check that folder to see if the executable really exists.
+NOTE: `go get` can take a while to run (30-60s). Allow it to run for a couple minutes if necessary.
 
-#### Method 2: Download Executable
+This should have put an executable named `canaveral` into the folder `$GOPATH/bin`. If you set your PATH 	to include `$GOPATH/bin`, then you should be good to go.
+
+3. Check that Canaveral is properly installed by running:
+
+```bash
+$ which canaveral
+```
+
+And the path that is returned should be `$GOPATH/bin`, where `$GOPATH` is replaced with your actual gopath. For instance, JJ's canaveral will install in `~/go/bin`, because `~/go` is the `$GOPATH`.
+
+#### Method 3: Download Executable
 
 In the [Canaveral Releases](https://github.com/jchengjr77/canaveral/releases) section, you will find all current releases of Canaveral.
 We suggest you grab the latest one: [v0.6.0](https://github.com/jchengjr77/canaveral/releases/tag/v0.6.0)
@@ -111,7 +156,7 @@ $ canaveral space /path/to/your/workspace
 
 ##### What is a workspace?
 
-Your canaveral workspace is the place where you will put all your projects. A workspace is a path to a folder of your choosing. Every time you use canaveral, you will be interacting with projects in your workspace. You can specify your workspace to be anywhere you want. For instance, JJ's workspace is `/Users/[omitted]/Documents/Personal/projects`. Note that workspace paths should from root (`/`).
+Your canaveral workspace is the place where you will put all your projects. A workspace is a path to a folder of your choosing. Every time you use canaveral, you will be interacting with projects in your workspace. You can specify your workspace to be anywhere you want. For instance, JJ's workspace is `/Users/[omitted]/Documents/Personal/projects`. Note that workspace paths should start from root (`/`).
 
 NOTE: Though it is not necessary, we recommend you add a script or alias to help you quickly navigate to your selected workspace. While developing canaveral, this simple little tool save us a lot of headache from navigation. An alias would look something like this: (more information on zsh aliases [here](https://blog.lftechnology.com/command-line-productivity-with-zsh-aliases-28b7cebfdff9))
 
