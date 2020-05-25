@@ -53,7 +53,7 @@ WARNING: The CLI is still in development, and has yet to be packaged properly. I
 
 There are two ways to install Canaveral.
 
-#### Go build
+#### Method 1: Go build
 
 First, you need to have Go installed. If you don't, follow the instructions [here](https://golang.org/doc/install).
 
@@ -68,7 +68,7 @@ $ go install github.com/jchengjr77/canaveral
 
 This should have put an executable named `canaveral` into the folder `$GOPATH/bin`. If Canaveral isn't working, check that folder to see if the executable really exists.
 
-#### Download Executable
+#### Method 2: Download Executable
 
 In the [Canaveral Releases](https://github.com/jchengjr77/canaveral/releases) section, you will find all current releases of Canaveral.
 We suggest you grab the latest one: [v0.6.0](https://github.com/jchengjr77/canaveral/releases/tag/v0.6.0)
@@ -151,7 +151,7 @@ $ canaveral addgithub
 ... (prompt for username and personal auth token) ...
 ```
 
-Again, for guidance on how to get a personal auth token from github, follow [this link](https://code.visualstudio.com/docs/editor/command-line#_launching-from-command-line).
+Again, for guidance on how to get a personal auth token from github, follow [this link](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).
 
 To **view your git credentials**:
 
