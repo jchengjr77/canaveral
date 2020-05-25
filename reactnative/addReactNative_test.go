@@ -2,12 +2,13 @@ package reactnative
 
 import (
 	"bytes"
-	"canaveral/lib"
 	"errors"
 	"os"
 	"os/exec"
 	"os/user"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestInstallExpo(t *testing.T) {
@@ -40,17 +41,20 @@ func TestConfirmInstall(t *testing.T) {
 	}()
 	var stdin bytes.Buffer // testable io
 	stdin.WriteByte(byte('y'))
-	res := confirmInstall(&stdin)
+	res, err := confirmInstall(&stdin)
+	lib.Check(err)
 	if !res {
 		t.Errorf("func confirmInstall() did not return true when fed 'y'")
 	}
 	stdin.WriteByte(byte('n'))
-	res = confirmInstall(&stdin)
+	res, err = confirmInstall(&stdin)
+	lib.Check(err)
 	if res {
 		t.Errorf("func confirmInstall() did not return false when fed 'n'")
 	}
 	stdin.Write([]byte("foo"))
-	res = confirmInstall(&stdin)
+	res, err = confirmInstall(&stdin)
+	lib.Check(err)
 	if res {
 		t.Errorf("func confirmInstall() did not return false when fed 'foo'")
 	}

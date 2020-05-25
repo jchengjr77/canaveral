@@ -3,16 +3,18 @@
 package main
 
 import (
-	"canaveral/csupport"
-	gh "canaveral/gh"
-	"canaveral/git"
-	"canaveral/lib"
-	"canaveral/vscodesupport"
 	"errors"
 	"fmt"
 	"log"
 	"os"
 	"os/user"
+
+	"github.com/jchengjr77/canaveral/csupport"
+	"github.com/jchengjr77/canaveral/finder"
+	gh "github.com/jchengjr77/canaveral/gh"
+	"github.com/jchengjr77/canaveral/git"
+	"github.com/jchengjr77/canaveral/lib"
+	"github.com/jchengjr77/canaveral/vscodesupport"
 
 	"github.com/urfave/cli/v2"
 )
@@ -53,8 +55,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					addProjectHandler(projName, projType, initRepo)
-					return nil
+					return addProjectHandler(projName, projType, initRepo)
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
@@ -85,8 +86,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					remProjectHandler(projName)
-					return nil
+					return remProjectHandler(projName)
 				},
 			},
 			{
@@ -101,8 +101,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					setWorkspaceHandler(newWorkspace)
-					return nil
+					return setWorkspaceHandler(newWorkspace)
 				},
 			},
 			{
@@ -153,8 +152,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Status(usrHome+confDir+wsFName, projPath)
-					return nil
+					return git.Status(usrHome+confDir+wsFName, projPath)
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
@@ -177,8 +175,8 @@ func main() {
 					if c.Args().Len() == 0 {
 						fmt.Println("Files to add must be specified. Use '.' for all files")
 					}
-					git.Add(c.Args().Slice(), usrHome+confDir+wsFName, projPath)
-					return nil
+					return git.Add(
+						c.Args().Slice(), usrHome+confDir+wsFName, projPath)
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
@@ -198,8 +196,8 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Commit(commitMessage, usrHome+confDir+wsFName, projPath)
-					return nil
+					return git.Commit(
+						commitMessage, usrHome+confDir+wsFName, projPath)
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
@@ -225,8 +223,8 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.Ignore(c.Args().Slice(), usrHome+confDir+wsFName, projPath)
-					return nil
+					return git.Ignore(
+						c.Args().Slice(), usrHome+confDir+wsFName, projPath)
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
@@ -245,8 +243,7 @@ func main() {
 					if qFlag {
 						fmt.Println("(okay, I'll try to be quiet.)")
 					}
-					git.InitRepo(usrHome+confDir+wsFName, projPath)
-					return nil
+					return git.InitRepo(usrHome+confDir+wsFName, projPath)
 				},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
@@ -324,8 +321,25 @@ func main() {
 					projName := c.Args().Get(0)
 					err := vscodesupport.OpenCode(
 						projName, usrHome+confDir+wsFName)
-					lib.Check(err)
-					return nil
+					return err
+				},
+			},
+			{
+				Name:    "explore",
+				Aliases: []string{"open", "find"},
+				Description: `
+				Opens selected project in a file explorer window.
+				For MacOS users, this will be the Finder.
+				Argument should be a project name.`,
+				Usage: "Opens selected project in a file explorer window",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					projName := c.Args().Get(0)
+					err := finder.OpenFinder(
+						projName, usrHome+confDir+wsFName)
+					return err
 				},
 			},
 			{

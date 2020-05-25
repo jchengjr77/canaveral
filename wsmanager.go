@@ -1,13 +1,14 @@
 package main
 
 import (
-	"canaveral/lib"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"runtime"
 	"strings"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // formatProjects takes the raw ls output and removes extra lines.
@@ -24,7 +25,13 @@ func formatProjects(rawString string) string {
 // If such a file exists, it reads its contents and navigates to that path.
 // Otherwise, it notifies the user that there is no canaveral workspace set.
 // ? untested, low priority
-func showWorkspaceHandler() error {
+func showWorkspaceHandler() (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	if !lib.FileExists(usrHome + confDir + wsFName) {
 		fmt.Printf("Can't find workspace file in %s\n", usrHome+confDir+wsFName)
 		fmt.Println("Please specify a canaveral workspace.")
@@ -52,7 +59,13 @@ func showWorkspaceHandler() error {
 // If the workspace file already exists, it overwrites it with the new path.
 // Otherwise, it creates the workspace file and writes the path in.
 // ? untested, low priority
-func setWorkspaceHandler(newWorkspace string) error {
+func setWorkspaceHandler(newWorkspace string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	err := os.MkdirAll(usrHome+confDir, os.ModePerm)
 	lib.Check(err)
 	f, err := os.Create(usrHome + confDir + wsFName)

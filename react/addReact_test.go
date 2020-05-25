@@ -1,15 +1,17 @@
 package react
 
 import (
-	"canaveral/lib"
 	"os"
 	"os/exec"
 	"os/user"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestCheckCRAExists(t *testing.T) {
-	craPath := setCRAPath()
+	craPath, err := setCRAPath()
+	lib.Check(err)
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir

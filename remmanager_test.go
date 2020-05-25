@@ -2,10 +2,11 @@ package main
 
 import (
 	"bytes"
-	"canaveral/lib"
 	"os"
 	"os/user"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestConfirmDelete(t *testing.T) {
@@ -15,17 +16,20 @@ func TestConfirmDelete(t *testing.T) {
 	}()
 	var stdin bytes.Buffer // testable io
 	stdin.WriteByte(byte('y'))
-	res := confirmDelete("testProj", &stdin)
+	res, err := confirmDelete("testProj", &stdin)
+	lib.Check(err)
 	if !res {
 		t.Errorf("func confirmDelete() did not return true when fed 'y'")
 	}
 	stdin.WriteByte(byte('n'))
-	res = confirmDelete("testProj", &stdin)
+	res, err = confirmDelete("testProj", &stdin)
+	lib.Check(err)
 	if res {
 		t.Errorf("func confirmDelete() did not return false when fed 'n'")
 	}
 	stdin.Write([]byte("foo"))
-	res = confirmDelete("testProj", &stdin)
+	res, err = confirmDelete("testProj", &stdin)
+	lib.Check(err)
 	if res {
 		t.Errorf("func confirmDelete() did not return false when fed 'foo'")
 	}
@@ -45,7 +49,9 @@ func TestTryRemProj(t *testing.T) {
 	defer os.Remove(tempHome + "/tempWSPath")
 	defer wsF.Close()
 	wsF.Write([]byte(newPath))
-	res := tryRemProj("testProjFoo", tempHome+"/tempWSPath") // should be false
+	res, err := tryRemProj("testProjFoo", tempHome+"/tempWSPath")
+	// should be false
+	lib.Check(err)
 	if res {
 		t.Logf("Path: %s\n", newPath)
 		t.Errorf("func tryRemProj() returned true. Should be false.")

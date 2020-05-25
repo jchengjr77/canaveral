@@ -5,17 +5,17 @@
 
 ## Contents
 
-- [Introduction](#introduction)
-- [The Name](#the-name)
-- [Getting Started](#getting-started)
-  - [Dependencies](#dependencies)
-  - [Installation](#installation)
-- [Basic usage](#basic-usage)
-- [Project Types](#project-types)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
-- [Credits](#credits)
+-   [Introduction](#introduction)
+-   [The Name](#the-name)
+-   [Getting Started](#getting-started)
+    -   [Dependencies](#dependencies)
+    -   [Installation](#installation)
+-   [Basic usage](#basic-usage)
+-   [Project Types](#project-types)
+-   [Troubleshooting](#troubleshooting)
+-   [Contributing](#contributing)
+-   [License](#license)
+-   [Credits](#credits)
 
 ## Introduction
 
@@ -51,45 +51,45 @@ Canaveral has support for opening projects in [VSCode](https://code.visualstudio
 
 WARNING: The CLI is still in development, and has yet to be packaged properly. If you want to jump in early, follow the instructions below. Otherwise, stay posted for the next stable release.
 
-There are two ways to install Canaveral. We suggest [downloading the executable](#download-executable) for simplicity. However, if you have previous experience with Go or already have a working Go environment set up, then the [go install method](#go-build) may be easier.
-
-#### Download Executable
-
-In the [Canaveral Releases](https://github.com/jchengjr77/canaveral/releases) section, you will find all current releases of Canaveral.
-We suggest you grab the latest one: [v0.2.0](https://github.com/jchengjr77/canaveral/releases/tag/v0.2.0)
-
-Select the correct package for your computer system and download it. See release notes for guidance.
-After you download and unzip Canaveral, you will be left with a single executable. You need to add it to your \$PATH.
-
-```bash
-$ export PATH=$PATH:$HOME/path/to/canaveral
-```
-
-If you are having trouble, here are some helpful links related to adding to \$PATH:
-
-[For Mac](https://apple.stackexchange.com/questions/41542/adding-a-new-executable-to-the-path-environment-variable)
-
-[For Linux](https://askubuntu.com/questions/322772/how-do-i-add-an-executable-to-my-search-path)
+There are two ways to install Canaveral.
 
 #### Go build
 
 First, you need to have Go installed. If you don't, follow the instructions [here](https://golang.org/doc/install).
 
-Be sure that your GOPATH is configured correctly, so you are able to execute go binaries.\\
-This should be set by default, but here it is just in case:
+Be sure that your GOPATH is configured correctly, so you are able to execute go binaries.
+
+Then, `go get` Canaveral and install it:
 
 ```bash
-$ export PATH=$PATH:$GOPATH/bin
-```
-
-Finally, clone this repo and install Canaveral:
-
-```bash
-$ git clone https://github.com/jchengjr77/canaveral.git
-$ go install canaveral
+$ go get github.com/jchengjr77/canaveral
+$ go install github.com/jchengjr77/canaveral
 ```
 
 This should have put an executable named `canaveral` into the folder `$GOPATH/bin`. If Canaveral isn't working, check that folder to see if the executable really exists.
+
+#### Download Executable
+
+In the [Canaveral Releases](https://github.com/jchengjr77/canaveral/releases) section, you will find all current releases of Canaveral.
+We suggest you grab the latest one: [v0.6.0](https://github.com/jchengjr77/canaveral/releases/tag/v0.6.0)
+
+Select the correct package for your computer system and download it. See release notes for guidance.
+After you download and unzip Canaveral, you will be left with a single executable. **You need to add it to your \$PATH.**
+
+Add the following line to your shell's config file (.bashrc, .zshrc for bash and zsh respectively).
+_NOTE: Windows users must add to their PATH a different way. See link to instructions below._
+
+```bash
+$ export PATH=$PATH:$HOME/path/to/canaveral
+```
+
+Here are some helpful links related to adding to \$PATH:
+
+[For Mac](https://apple.stackexchange.com/questions/41542/adding-a-new-executable-to-the-path-environment-variable)
+
+[For Linux](https://askubuntu.com/questions/322772/how-do-i-add-an-executable-to-my-search-path)
+
+[For Windows 10 (Important)](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
 
 ## Basic Usage
 
@@ -120,8 +120,6 @@ NOTE: Though it is not necessary, we recommend you add a script or alias to help
 alias gotoprojs="cd ~/path/to/canaveral/workspace"
 ```
 
-
-
 After you specify your workspace, running `canaveral` should show a list of projects in your workspace. At this point, it may be the case that your workspace is empty. Lets **launch a new project**!
 
 ```bash
@@ -146,8 +144,6 @@ $ canaveral code coolreactproject
 
 This should open a new VSCode window showing your new project `coolreactproject`.
 
-
-
 Additionally, Canaveral can make a new Github repo for you! First, make sure you **add your git credentials**:
 
 ```bash
@@ -157,7 +153,7 @@ $ canaveral addgithub
 
 Again, for guidance on how to get a personal auth token from github, follow [this link](https://code.visualstudio.com/docs/editor/command-line#_launching-from-command-line).
 
-To **view your git credentials**: 
+To **view your git credentials**:
 
 ```bash
 $ canaveral printgithub
@@ -184,11 +180,11 @@ Canaveral should be usable for all developers. Creating projects, looking at all
 Furthermore, if you use one of the following technologies, you're in luck. More features for you!
 (This list will most likely expand, so keep an eye out).
 
-- [React.js](https://reactjs.org/)
-- [React Native](https://reactnative.dev/)
-- [Node.js](https://nodejs.org/en/)
-- [Python (miniconda)](https://docs.conda.io/en/latest/miniconda.html)
-- [C](https://www.cprogramming.com/)
+-   [React.js](https://reactjs.org/)
+-   [React Native](https://reactnative.dev/)
+-   [Node.js](https://nodejs.org/en/)
+-   [Python (miniconda)](https://docs.conda.io/en/latest/miniconda.html)
+-   [C](https://www.cprogramming.com/)
 
 ## Troubleshooting
 
@@ -218,4 +214,3 @@ See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
 JJ Cheng - [github](https://github.com/jchengjr77) - [jjcheng.me](https://jjcheng.me)
 
 Sean Prendi - [github](https://github.com/SeanPrendi) - [seanprendi.me](https://www.seanprendi.me)
-

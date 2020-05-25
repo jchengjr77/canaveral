@@ -2,18 +2,25 @@ package git
 
 import (
 	"bufio"
-	"canaveral/lib"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // InitRepo initializes a git repo in the current directory
 // * tested
-func InitRepo(wsPath, project string) {
+func InitRepo(wsPath, project string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	if project != "" {
 		// Get workspace path
 		ws, err := ioutil.ReadFile(wsPath)
@@ -35,11 +42,18 @@ func InitRepo(wsPath, project string) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	return nil
 }
 
 // Status prints current git status in a git directory
 // * tested
-func Status(wsPath, project string) {
+func Status(wsPath, project string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	if project != "" {
 		// Get workspace path
 		ws, err := ioutil.ReadFile(wsPath)
@@ -61,11 +75,18 @@ func Status(wsPath, project string) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	return nil
 }
 
 // Add performs a git add on the specified files
 // * tested
-func Add(files []string, wsPath string, project string) {
+func Add(files []string, wsPath string, project string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	if project != "" {
 		// Get workspace path
 		ws, err := ioutil.ReadFile(wsPath)
@@ -88,9 +109,16 @@ func Add(files []string, wsPath string, project string) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	return nil
 }
 
-func getStaged() []string {
+func getStaged() (res []string, finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	out, err := exec.Command("git", "diff", "--name-only", "--staged").Output()
 	lib.Check(err)
 	staged := strings.Split(string(out), "\n")
@@ -101,7 +129,9 @@ func getStaged() []string {
 			ret = append(ret, curr)
 		}
 	}
-	return ret
+	res = ret
+	finalErr = nil
+	return
 }
 
 func confirmCommit(stdin io.Reader) bool {
@@ -115,7 +145,14 @@ func confirmCommit(stdin io.Reader) bool {
 // Commit performs a git commit on added files
 // * tested
 // ! reminders untested
-func Commit(commitMessage string, wsPath string, project string) {
+func Commit(
+	commitMessage string, wsPath string, project string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	if project != "" {
 		// Get workspace path
 		ws, err := ioutil.ReadFile(wsPath)
@@ -129,12 +166,16 @@ func Commit(commitMessage string, wsPath string, project string) {
 		err = os.Chdir(string(ws) + "/" + project)
 		lib.Check(err)
 	}
-	reminders := loadReminders()
-	stagedFiles := getStaged()
+	reminders, err := loadReminders()
+	lib.Check(err)
+	stagedFiles, err := getStaged()
+	lib.Check(err)
 	sawRems := false
 	confirm := true
 	for _, file := range stagedFiles {
-		sawRems = sawRems || checkReminders(file, false, reminders)
+		res, err := checkReminders(file, false, reminders)
+		lib.Check(err)
+		sawRems = sawRems || res
 	}
 	if sawRems {
 		confirm = confirmCommit(os.Stdin)
@@ -149,10 +190,12 @@ func Commit(commitMessage string, wsPath string, project string) {
 	if commitMessage != "" {
 		gitCommit.Args = append(gitCommit.Args, "-m", "\""+commitMessage+"\"")
 	}
-	err := gitCommit.Run()
+	err = gitCommit.Run()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	lib.Check(err)
+	return nil
 }
 
 // Checks if searchFor is a line in file
@@ -172,7 +215,13 @@ func inFile(file io.Reader, searchFor string) bool {
 
 // Ignore adds files to the .gitignore file in the current directory
 // * tested
-func Ignore(files []string, wsPath, project string) {
+func Ignore(files []string, wsPath, project string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	if project != "" {
 		// Get workspace path
 		ws, err := ioutil.ReadFile(wsPath)
@@ -209,4 +258,5 @@ func Ignore(files []string, wsPath, project string) {
 		_, err = gitignore.WriteString(file)
 	}
 	lib.Check(err)
+	return nil
 }

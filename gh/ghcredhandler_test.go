@@ -1,9 +1,10 @@
 package github
 
 import (
-	"canaveral/lib"
 	"os"
 	"testing"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 func TestAddGHCredsHandler(t *testing.T) {

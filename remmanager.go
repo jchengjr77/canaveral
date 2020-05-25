@@ -2,47 +2,61 @@ package main
 
 import (
 	"bufio"
-	"canaveral/lib"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // confirmDelete listens for user confirmation and returns a boolean
 // Takes in an input channel to increase testability
 // * tested
-func confirmDelete(projName string, stdin io.Reader) bool {
+func confirmDelete(projName string, stdin io.Reader) (res bool, finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	fmt.Printf("Are you sure you want to delete %s? ('y' or 'n')\n>", projName)
 	reader := bufio.NewReader(stdin)
 	response, err := reader.ReadByte()
 	lib.Check(err)
-	return (response == 'y')
+	return (response == 'y'), nil
 }
 
 // tryRemProj tries to delete a project of specified name.
 // if the project exists, it will delete it and return true.
 // else, it will return false or throw an error.
 // * tested
-func tryRemProj(projName string, wsPath string) bool {
+func tryRemProj(projName string, wsPath string) (res bool, finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	ws, err := ioutil.ReadFile(wsPath)
 	lib.Check(err)
 	files, err := ioutil.ReadDir(string(ws))
 	lib.Check(err)
 	for _, file := range files {
 		if file.Name() == projName {
-			confirm := confirmDelete(projName, os.Stdin)
+			confirm, err := confirmDelete(projName, os.Stdin)
+			lib.Check(err)
 			if !confirm {
 				fmt.Println("Cancelling project deletion.")
-				return true
+				return true, nil
 			}
 			err = os.RemoveAll(string(ws) + "/" + projName)
 			lib.Check(err)
 			fmt.Printf("Removed Project: %s\n", string(ws)+"/"+projName)
-			return true
+			return true, nil
 		}
 	}
-	return false
+	return false, nil
 }
 
 // remProjectHandler deletes a project from the canaveral workspace.
@@ -64,9 +78,12 @@ func remProjectHandler(projName string) error {
 		return nil
 	}
 	wsPath := usrHome + confDir + wsFName
-	if tryRemProj(projName, wsPath) {
-		return nil
+	res, err := tryRemProj(projName, wsPath)
+	if err != nil {
+		return err
+	} else if !res {
+		fmt.Printf(
+			"Could not find project %s in canaveral workspace.\n", projName)
 	}
-	fmt.Printf("Could not find project %s in canaveral workspace.\n", projName)
 	return nil
 }

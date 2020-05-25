@@ -1,12 +1,13 @@
 package csupport
 
 import (
-	"canaveral/lib"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // createMainFile creates a basic projName.c file that uses stdlib.h

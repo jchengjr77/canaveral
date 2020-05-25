@@ -2,13 +2,14 @@ package reactnative
 
 import (
 	"bufio"
-	"canaveral/lib"
 	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
+
+	"github.com/jchengjr77/canaveral/lib"
 )
 
 // installExpo checks first that npm is installed.
@@ -29,12 +30,18 @@ func installExpo() error {
 // confirmInstall listens for user confirmation and returns a boolean
 // Takes in an input channel to increase testability
 // * tested
-func confirmInstall(stdin io.Reader) bool {
+func confirmInstall(stdin io.Reader) (res bool, finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	fmt.Printf("Allow canaveral to globally install 'expo'? ('y' or 'n')\n>")
 	reader := bufio.NewReader(stdin)
 	response, err := reader.ReadByte()
 	lib.Check(err)
-	return (response == 'y')
+	return (response == 'y'), nil
 }
 
 // AddReactNativeProj takes a project name and path, and inits an expo project.
@@ -42,7 +49,13 @@ func confirmInstall(stdin io.Reader) bool {
 // If yes, then continue. If no, then ask to install.
 // Running 'expo init' with the project name will create a new project.
 // * tested
-func AddReactNativeProj(projName string, wsPath string) {
+func AddReactNativeProj(projName string, wsPath string) (finalErr error) {
+	// defer a recover function that returns the thrown error
+	defer func() {
+		if r := recover(); r != nil {
+			finalErr = r.(error)
+		}
+	}()
 	expoInstalled := lib.CheckToolExists("expo")
 	ws, err := ioutil.ReadFile(wsPath)
 	lib.Check(err)
@@ -50,7 +63,8 @@ func AddReactNativeProj(projName string, wsPath string) {
 	lib.Check(err)
 	if !expoInstalled {
 		fmt.Println("Looks like you haven't installed 'expo'...")
-		confirm := confirmInstall(os.Stdin)
+		confirm, err := confirmInstall(os.Stdin)
+		lib.Check(err)
 		if !confirm {
 			fmt.Printf("Install rejected. Aborting creation of '%s'\n", projName)
 			return
@@ -70,4 +84,5 @@ func AddReactNativeProj(projName string, wsPath string) {
 	err = cmd.Run()
 	lib.Check(err)
 	fmt.Printf("Added React Native project %s to workspace %s\n", projName, string(ws))
+	return nil
 }
