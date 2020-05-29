@@ -49,15 +49,13 @@ Canaveral has support for opening projects in [VSCode](https://code.visualstudio
 
 ### Installation
 
-WARNING: The CLI is still in development, and has yet to be packaged properly. If you want to jump in early, follow the instructions below. Otherwise, stay posted for the next stable release.
-
 There are **three ways** to install Canaveral: Homebrew, Go get/install, or download the executable.
 
-#### Method 1: Homebrew (MacOS only)
+#### Method 1: Homebrew (MacOS)
 
 This method might only work for MacOS users, since it requires `brew`.
 
-1. Make sure you have [Homebrew](https://brew.sh/) installed and working.
+1. Make sure you have [Homebrew](https://brew.sh/) installed and updated (`brew update`).
 
 2. Run:
 
@@ -72,7 +70,7 @@ This method might only work for MacOS users, since it requires `brew`.
    $ which canaveral
    ```
 
-   A path to the executable `canaveral` should be returned.
+   A path to the executable `canaveral` should be printed.
 
 #### Method 2: Go build
 
@@ -80,15 +78,13 @@ This method might only work for MacOS users, since it requires `brew`.
 
    Go should have automatically configured your GOPATH to be `~/go`, or another reasonable default. If you are new to Go, you may need to add `$GOPATH/bin` to your PATH, so you can execute Go programs from the command line. _NOTE: Windows users must add to their PATH a different way. See link to instructions below._
 
-   You can add : 
+   To the end of your `.zshrc` or `.bashrc` (whatever your shell's config file is), you can add: 
 
    `export PATH=$PATH:$(go env GOPATH)/bin` 
 
    or
 
    `PATH=$PATH:$(go env GOPATH)/bin`
-
-   to the very end of your `.zshrc` or `.bashrc` (whatever your shell's config file is).
 
    **For Windows users:** [Add to PATH Windows 10](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
 
