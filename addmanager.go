@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/jchengjr77/canaveral/csupport"
 	"github.com/jchengjr77/canaveral/git"
 	"github.com/jchengjr77/canaveral/lib"
 	"github.com/jchengjr77/canaveral/node"
@@ -75,6 +76,9 @@ func addProjectHandler(projName string, projType string, init bool) error {
 	} else if projType == "python" {
 		fmt.Println("Creating Python project...")
 		python.AddPythonProj(projName, usrHome+confDir+wsFName)
+	} else if projType == "C" {
+		fmt.Println("Creating C project...")
+		csupport.AddCProj(projName, usrHome+confDir+wsFName)
 	} else if projType == "reactnative" {
 		fmt.Println("Creating React Native project...")
 		reactnative.AddReactNativeProj(projName, usrHome+confDir+wsFName)

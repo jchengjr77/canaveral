@@ -3,11 +3,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
 	"os/user"
 
+	"github.com/jchengjr77/canaveral/csupport"
 	"github.com/jchengjr77/canaveral/finder"
 	gh "github.com/jchengjr77/canaveral/gh"
 	"github.com/jchengjr77/canaveral/git"
@@ -337,6 +339,21 @@ func main() {
 					projName := c.Args().Get(0)
 					err := finder.OpenFinder(
 						projName, usrHome+confDir+wsFName)
+					return err
+				},
+			},
+			{
+				Name:        "addmake",
+				Description: "Adds a dependency to a given binary file compilation in a makefile",
+				Usage:       "addmake [dependency] [binary file to make]",
+				Action: func(c *cli.Context) error {
+					if qFlag {
+						fmt.Println("(okay, I'll try to be quiet.)")
+					}
+					if c.Args().Len() != 2 {
+						return errors.New("Too few arguments")
+					}
+					err := csupport.AddToMake(c.Args().Get(0), c.Args().Get(1))
 					return err
 				},
 			},
