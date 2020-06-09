@@ -7,23 +7,28 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Bug Description
+Briefly describe the bug that you've encountered.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Type '...'
-3. Run '...'
+## Expected Behavior
+What do you expect to happen? 
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## Actual Behavior
+What behavior do you actually observe?
 
-**Screenshots / Exceptions / Errors**
-If applicable, add screenshots, exception stack traces, or error messages to help explain your problem.
+## Stack Trace
+If applicable, what was the stack trace printed to the console?
 
-**Canaveral Details (please complete the following information):**
- - Version: [e.g. 0.6.0]
 
-**Additional context**
-Add any other context about the problem here.
+## Steps to Reproduce the Problem
+
+  1.
+  2.
+  3.
+
+## Specifications
+
+  - Canaveral Version:
+  - Operating System:
+  - Shell:
+  
