@@ -165,13 +165,73 @@ At any point in time, if you wish to **remove your git credentials**, you can do
 $ canaveral removegithub
 ```
 
-Lets try to get canaveral to **initialize a new project and repo**! This time, let's create a [node](https://nodejs.org/en/) project:
+Lets try to get canaveral to **initialize a new project and git repo**! This time, let's create a [node](https://nodejs.org/en/) project:
 
 ```bash
 $ canaveral launch --gitinit --type node coolproject2
 ```
 
 Now, your project `coolproject2` is git enabled! You start by adding your own remote repository, staging changes and pushing commits, and all that other good git stuff.
+
+Suppose we hadn't initialized `coolproject2` as a git repo, we could do 
+
+```bash
+$ canaveral gitinit -p coolproject2
+```
+
+or navigate to the project directory and simply do 
+
+```bash
+$ canaveral gitinit
+```
+
+instead. Now suppose that we've made some changes to `coolproject2` that we want to add to git. We can stage all of our changes with
+
+```bash
+$ canaveral gitadd .
+```
+
+or only specific files with
+
+```bash
+$ canaveral gitadd file1 file2 file3 ...
+```
+
+and then we can commit these changes. Much like the git cli, we can either do
+
+```bash
+$ canaveral gitcommit
+```
+
+to open the vim editor, or 
+
+```bash
+$ canaveral gitcommit -m "My commit message."
+```
+
+to commit our changes with the message "My commit message." One new git feature introduced by Canaveral is the concept of commit reminders. Suppose that we've added some print statements to the file `MyFile.go` and we want to remove them before we commit our changes. Rather than relying on our memory, we can do
+
+```bash
+$ canaveral gitremind MyFile.go "Remove the print statements on lines 13, 29, and 81."
+```
+
+then when we do
+
+```bash
+$ canaveral gitcommit MyFile.go
+```
+
+we will be prompted with a reminder informing us that we have some reminders setup for `MyFile.go`. At the time of commit we can then choose whether or not to display them. If we do choose to see the reminders, we're also given the option to cancel the commit if we no longer want to go through with it.
+
+**Note: Currently `canaveral gitinit` and `canaveral gitadd` are equivalent to simply doing `git init` and `git add`. However, these functions exist as they may interface with the `canaveral gitremind` command in the future. However, `git commit` is not the same as `canaveral gitcommit` in that `git commit` will not print reminders.**
+
+Suppose our project has hit a nasty bug and we've decided to configure the handy-dandy debugger in VSCode. We can quickly solve our problem, but configuring this tool creates a pesky `.vscode/` folder that git wants to track every time we commit. Rather than manually ignoring the folder, we can do
+
+```bash
+$ canaveral gitignore .vscode/
+```
+
+and `.vscode/` will be appended to the `.gitignore` file. If you don't have a `.gitignore` yet, it will be created.
 
 ## Project Types
 
