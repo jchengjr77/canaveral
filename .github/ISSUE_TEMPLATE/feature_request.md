@@ -7,14 +7,18 @@ assignees: ''
 
 ---
 
-**Is your feature request related to a problem? If yes, please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Feature Request
+What feature would you like to see added to Canaveral?
+
+**Is your feature request related to a problem? If so, please describe it.**
+A clear and concise description of what the problem is. Ex. I have an issue when [...]
 
 **Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+A clear and concise description of what you want to happen. Add any considered drawbacks.
 
 **Describe alternatives you've considered**
 A clear and concise description of any alternative solutions or features you've considered.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+**Teachability, Documentation, Adoption, Migration Strategy**
+If you can, explain how users will be able to use this and possibly write out a version the docs.
+Maybe a screenshot or design?
