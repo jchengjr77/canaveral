@@ -21,6 +21,27 @@ import (
 
 func main() {
 
+	// ? List of all possible commands (this needs to be updated)
+	var commandList = []string{
+		"launch",
+		"remove",
+		"space",
+		"addgithub",
+		"remgithub",
+		"printgithub",
+		"gitstatus",
+		"gitcommit",
+		"gitignore",
+		"gitinit",
+		"gitremind",
+		"printreminders",
+		"delreminder",
+		"vscode",
+		"explore",
+		"addmake",
+		"help",
+	}
+
 	// Flags
 	var qFlag = false
 	var projType = "default"
@@ -34,8 +55,9 @@ func main() {
 	usrHome = usr.HomeDir
 
 	app := &cli.App{
-		Name:  "canaveral",
-		Usage: "Launch your new project effortlessly.",
+		Name:                 "canaveral",
+		Usage:                "Launch your new project effortlessly.",
+		EnableBashCompletion: true,
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
 				Name:        "quiet",
@@ -364,6 +386,14 @@ func main() {
 			}
 			showWorkspaceHandler()
 			return nil
+		},
+		BashComplete: func(c *cli.Context) {
+			if c.NArg() > 0 {
+				return
+			}
+			for _, cmd := range commandList {
+				fmt.Printf("	%s\n", cmd)
+			}
 		},
 	}
 
