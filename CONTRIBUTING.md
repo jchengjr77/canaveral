@@ -14,7 +14,7 @@ These guidelines are meant to reduce friction between developers, striving towar
 
 TLDR: Any Help Is Appreciated.
 
-Whether it is documentation improvements, feature PRs, bug finds/fixes, DevOps improvements, new deployment methods, etc, a contribution makes Canaveral a better tool for everyone.
+Whether it is documentation improvements, feature PRs, bug finds/fixes, DevOps improvements, new deployment methods, etc, every contribution makes Canaveral a better tool for everyone.
 
 # Ground Rules
 
