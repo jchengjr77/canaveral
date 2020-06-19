@@ -5,8 +5,8 @@ import "testing"
 // test configuration directory location
 func TestConfDir(t *testing.T) {
 	res := confDir
-	if res != "/canaveral/config/" {
-		t.Errorf("confDir is '%s' --> should be '/canaveral/config/'", confDir)
+	if res != "/.canaveral/config/" {
+		t.Errorf("confDir is '%s' --> should be '/.canaveral/config/'", confDir)
 	}
 }
 
