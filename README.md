@@ -3,6 +3,8 @@
 ![Go](https://github.com/jchengjr77/canaveral/workflows/Go/badge.svg?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+https://www.youtube.com/watch?v=wL0LG4mU6-Q
+
 ## Contents
 
 -   [Introduction](#introduction)
