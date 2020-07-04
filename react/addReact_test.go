@@ -15,7 +15,10 @@ func TestCheckCRAExists(t *testing.T) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	err = os.Chdir(home + "/canaveral")
+	err = os.MkdirAll(home+"/.canaveral", os.ModePerm)
+	lib.Check(err)
+	err = os.Chdir(home + "/.canaveral")
+	lib.Check(err)
 	uninCRA := exec.Command("npm", "uninstall", "create-react-app")
 	uninCRA.Stderr = os.Stderr
 	uninCRA.Stdout = os.Stdout

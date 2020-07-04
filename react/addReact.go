@@ -41,8 +41,8 @@ func installCRA() (finalErr error) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	err = os.MkdirAll(home+"/canaveral", os.ModePerm)
-	err = os.Chdir(home + "/canaveral")
+	err = os.MkdirAll(home+"/.canaveral", os.ModePerm)
+	err = os.Chdir(home + "/.canaveral")
 	installCRA := exec.Command("npm", "install", "create-react-app")
 	installCRA.Stdout = os.Stdout
 	installCRA.Stderr = os.Stderr
@@ -63,7 +63,7 @@ func setCRAPath() (res string, finalErr error) {
 	usr, err := user.Current()
 	lib.Check(err)
 	home := usr.HomeDir
-	return home + "/canaveral/node_modules/.bin/create-react-app", nil
+	return home + "/.canaveral/node_modules/.bin/create-react-app", nil
 }
 
 // AddReactProj launches a new react project.
