@@ -1,9 +1,16 @@
-# Canaveral
+```
+   ______                                        __
+  / ____/___ _____  ____ __   _____  _________ _/ /
+ / /   / __ `/ __ \/ __ `/ | / / _ \/ ___/ __ `/ /
+/ /___/ /_/ / / / / /_/ /| |/ /  __/ /  / /_/ / /
+\____/\__,_/_/ /_/\__,_/ |___/\___/_/   \__,_/_/
+
+```
 
 ![Go](https://github.com/jchengjr77/canaveral/workflows/Go/badge.svg?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Contents
+## Canaveral Contents
 
 -   [Introduction](#introduction)
 -   [The Name](#the-name)
