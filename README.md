@@ -12,6 +12,9 @@
 
 ## Demo Video [Here](https://www.youtube.com/watch?v=wL0LG4mU6-Q&t=13s)
 
+Words often aren't enough. We believe the value of Canaveral is best witnessed in action.
+Visit [this youtube link](https://www.youtube.com/watch?v=wL0LG4mU6-Q&t=13s) to see it.
+
 ## Canaveral Contents
 
 -   [Introduction](#introduction)
